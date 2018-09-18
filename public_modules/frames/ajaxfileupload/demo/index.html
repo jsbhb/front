@@ -11,21 +11,21 @@
 
     <body>
         <div>
-            <h5><span class="tit">商户LOGO：</span>
+            <h5><span class="tit">商户LOGO：1</span>
                 <img id="preview" style="width:80px;height:80px"  alt="上传头像">
                 <span><input type="file" name="file" id="file" onchange="setImagePreview()"></span>
                 <input type="button" onclick="ajaxFileUpload();" value="上传">
             </h5>
-            
+
         </div>
     </body>
-    
+
      <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="../ajaxfileupload.js"></script>
 	<script type="text/javascript">
 
 		 <!--==========图片预览~=====================================================================-->
-     
+
         function setImagePreview(){
             var docObj=document.getElementById("file");
             var fileSize = docObj.files[0].size;
@@ -91,7 +91,7 @@
                 }
             });
         }
-      
+
 
 	</script>
 
