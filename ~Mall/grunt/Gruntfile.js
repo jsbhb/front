@@ -1,7 +1,8 @@
 
 module.exports = function(grunt) {
 
-    var public_modules = '/Storm/NongKun/public_modules';
+    var public_modules = '/coopfront/front/public_modules';
+
 
     var paths = {
         "text":                  public_modules + "/frames/text/text",
@@ -337,7 +338,7 @@ module.exports = function(grunt) {
                     base: [
                         '<%=config.dev%>/pack/region/native/fmp',
                         '<%=config.dev%>/app/fmp/web',
-                        '<%=config.dev%>/app/mp/web2',
+                        '<%=config.dev%>/app/fmp/web2',
                         '<%=config.dev%>/app/fmp/',
                         '<%=config.public%>'
                     ]
