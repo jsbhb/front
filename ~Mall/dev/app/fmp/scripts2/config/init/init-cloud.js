@@ -2878,7 +2878,7 @@
         var optDomain =    window.localStorage.getItem("domain");
         var optDomainDB =  window.localStorage.getItem("domainData");
         var emptyOption =  [ "domain", "domainData", "replaceUrl" ];
-        var domainRegex =  /^(http:\/\/)?([^\/]+)(\/.*)?/i;
+        var domainRegex =  /^(http:\/\/|https:\/\/)?([^\/]+)(\/.*)?/i;
 
         var getDomain =    newDomain   || optDomain   || '';
         var getDomainDB =  newDomainDB || optDomainDB || '{}';

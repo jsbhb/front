@@ -1635,7 +1635,9 @@
                         mounted: function(){
                             var that = this;
                             var content = jsData.location.redirect;
-                            var tContent =  content.replace(jsData.siteInfo.domainName, jsData.siteInfo.mDomainName);
+                            var domainNameRegex = jsData.siteInfo.domainName.replace(/http:\/\/|https:\/\//i, '');
+                            var mDomainNameRegex = jsData.siteInfo.mDomainName.replace(/http:\/\/|https:\/\//i, '');
+                            var tContent = content.replace(domainNameRegex, mDomainNameRegex);
                             var $groups = $(that.$el).find(".classifyGroup");
                             if((/\.html$|\.htm$/i).test(that.mdData.detailPath)){
                                 $(that.$el).find('.showMsgContent').load(that.mdData.detailPath);
