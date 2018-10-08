@@ -14,19 +14,19 @@ var app =          require('express')();
 
 var visitTimer =      null;
 var VisitOnceTimer =  null;
-var isDebug =         true;
+var isDebug =         false;
 var edition =         '';
-var defRegion =       '/test';
+var defRegion =       '/www';
 var rootPath =        '/opt/front/~Mall' + edition;
 var certPath =        '/opt/front/~Mall' + edition + '/pack/.cert';
-var mDomain =         'https://test.cncoopbuy.com';
-var pDomain =         'https://test2.cncoopbuy.com';
-var fDomain =         'https://test3.cncoopbuy.com';
+var mDomain =         'https://m.cncoopbuy.com';
+var pDomain =         'https://www.cncoopbuy.com';
+var fDomain =         'https://fl.cncoopbuy.com';
 
 var privateKey  =     fs.readFileSync(certPath + '/ssl.key', 'utf8');
 var certificate =     fs.readFileSync(certPath + '/ssl.pem', 'utf8');
 var httpsServer =     https.createServer({ key: privateKey, cert: certificate }, app);
-var client =          redis.createClient(6379, '47.100.2.239', {});
+var client =          redis.createClient(6379, 'r-uf6ea16669ac6594.redis.rds.aliyuncs.com', {});
 
 
 var DBHandle = function(opt) {
@@ -604,7 +604,7 @@ var shouldFilter = function(req, res){
 };
 
 
-client.auth('redis');
+client.auth('Xinhai2017');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(compression({filter: shouldFilter}));
@@ -617,7 +617,7 @@ app.route("*")
         res.header("Content-Type", "application/json;charset=utf-8");
         res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        var isHostname = (/^testfront\.cncoopbuy\.com$/).test(req.hostname);
+        var isHostname = (/^front\.cncoopbuy\.com$/).test(req.hostname);
         isHostname || res.redirect(301, "https://" + req.hostname + req.url);
         isHostname && (/^OPTIONS$/i).test(req.method) && res.send(200);
         isHostname && !(/^OPTIONS$/i).test(req.method) && next();
@@ -1991,4 +1991,3 @@ app.route("/Redis/handle/gradeBO")
             }
         });
     });
-

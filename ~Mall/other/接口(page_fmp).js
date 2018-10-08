@@ -1,7 +1,8 @@
 
-//"http://front.cncoopbuy.com";
-//"http://testfront.cncoopbuy.com";
-var host = "http://front.cncoopbuy.com";
+//"http://localhost:8888";
+//"https://front.cncoopbuy.com";
+//"https://testfront.cncoopbuy.com";
+var host = "http://localhost:8888";
 
 /** 区域中心页面创建 */
 function addPage(region, page) {
@@ -17,7 +18,7 @@ function addPage(region, page) {
             page:    "nav",
             file:    'nav',
             path:    '',
-            region:  '',
+            region:  region,
             system:  'fmpMall',
             module: [
                 {
@@ -89,7 +90,7 @@ function addPage(region, page) {
             page:    "error",
             file:    'error',
             path:    '',
-            region:  '',
+            region:  region,
             system:  "fmpMall",
             module: [
                 {
@@ -159,7 +160,7 @@ function addPage(region, page) {
             page:    "customerService",
             file:    'customerService',
             path:    '',
-            region:  '',
+            region:  region,
             system:  'fmpMall',
             module: [
                 {
@@ -248,21 +249,21 @@ function delPage(region, page) {
             page:    "nav",
             file:    'nav',
             path:    '',
-            region:  '',
+            region:  region,
             system:  'fmpMall'
         },
         error:            {
             page:    "error",
             file:    'error',
             path:    '',
-            region:  '',
+            region:  region,
             system:  "fmpMall"
         },
         customerService:  {
             page:    'customerService',
             file:    'customerService',
             path:    '',
-            region:  '',
+            region:  region,
             system:  'fmpMall'
         }
     };

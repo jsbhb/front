@@ -42,17 +42,17 @@
                 {{#each cont}}
                     {{#toRange @index 4 4}}
                         <div class="floor-item">
-                            <a href="{{{href}}}" target="_blank">
-                                <ul>
-                                    <li><img src="{{{picPath}}}" alt="{{title}}"></li>
-                                    <li>{{title}}</li>
-                                    <li>
-                                        <span class="price">￥{{toFixed price}}</span>
-                                        <span class="iconBox"></span>
-                                    </li>
-                                </ul>
-                            </a>
-                        </div>
+                        <a href="{{{href}}}" target="_blank">
+                            <ul>
+                                <li><img src="{{{picPath}}}" alt="{{title}}"></li>
+                                <li>{{title}}</li>
+                                <li>
+                                    <span class="price">￥{{toFixed price}}</span>
+                                    <span class="iconBox"></span>
+                                </li>
+                            </ul>
+                        </a>
+                    </div>
                     {{/toRange}}
                 {{/each}}
             </div>

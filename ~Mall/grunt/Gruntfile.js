@@ -1,7 +1,7 @@
 
 module.exports = function(grunt) {
 
-    var public_modules = '/coopfront/front/public_modules';
+    var public_modules = '/work/cncoopfront/front/public_modules';
 
 
     var paths = {
@@ -305,7 +305,7 @@ module.exports = function(grunt) {
                     useAvailablePort: false,
                     keepalive: false,
                     base: [
-                        '<%=config.dev%>/pack/region/native/mp',
+                        '<%=config.dev%>/pack/region/native/app/mp',
                         '<%=config.dev%>/app/mp/web',
                         '<%=config.dev%>/app/mp/web2',
                         '<%=config.dev%>/app/mp/',
@@ -321,7 +321,7 @@ module.exports = function(grunt) {
                     useAvailablePort: false,
                     keepalive: false,
                     base: [
-                        '<%=config.dev%>/pack/region/native/pc',
+                        '<%=config.dev%>/pack/region/native/app/pc',
                         '<%=config.dev%>/app/pc/web',
                         '<%=config.dev%>/app/pc/',
                         '<%=config.public%>'
@@ -336,7 +336,7 @@ module.exports = function(grunt) {
                     useAvailablePort: false,
                     keepalive: true,
                     base: [
-                        '<%=config.dev%>/pack/region/native/fmp',
+                        '<%=config.dev%>/pack/region/native/app/fmp',
                         '<%=config.dev%>/app/fmp/web',
                         '<%=config.dev%>/app/fmp/web2',
                         '<%=config.dev%>/app/fmp/',

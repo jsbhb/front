@@ -15,13 +15,15 @@ var client =       redis.createClient(6379, '47.100.2.239', {});
 var visitTimer =      null;
 var VisitOnceTimer =  null;
 var isDebug =         true;
-var rootPath =       '/opt/front/~Mall';
-var mDomain =        'http://test.cncoopbuy.com';
-var pDomain =        'http://test2.cncoopbuy.com';
-var fDomain =        'http://test3.cncoopbuy.com';
+var edition =         '';
+var defRegion =       '/test';
+var rootPath =        '/opt/front/~Mall' + edition;
+var mDomain =         'http://test.cncoopbuy.com';
+var pDomain =         'http://test2.cncoopbuy.com';
+var fDomain =         'http://test3.cncoopbuy.com';
 
 
-var DBHandle =  function(opt) {
+var DBHandle = function(opt) {
     var req =       opt.req;
     var res =       opt.res;
     var code =      opt.code;
@@ -29,18 +31,19 @@ var DBHandle =  function(opt) {
     var goods =     opt.goods;
     var handle =    opt.handle;
     var systems =   opt.systems;
-    var goodsPath = null;
+    var goodsPath = {};
     systems.forEach(function (system, index) {
         var html =      null;
         var json =      null;
-        var distDB =    null;
-        var publicDB =  rootPath + '/data/mall/public';
         var distMod =   null;
+        var distType =  null;
         var fileData =  null;
         var jsonFile =  null;
         var dataFile =  null;
         var htmlFile =  null;
         var htmlTags =  null;
+        var pathList =  null;
+
         switch (page) {
             case "goodsDetail":
                 goodsFunc();
@@ -48,15 +51,15 @@ var DBHandle =  function(opt) {
         }
         switch (system) {
             case "pcMall":
-                distDB =   rootPath + '/data/mall/pc';
+                distType =   '/data/mall/pc';
                 distMod =  rootPath + '/app/pc/scripts/module';
                 break;
             case "mpMall":
-                distDB =   rootPath + '/data/mall/mp';
+                distType =   '/data/mall/mp';
                 distMod =  rootPath + '/app/mp/scripts/module';
                 break;
             case "fmpMall":
-                distDB =   rootPath + '/data/mall/fmp';
+                distType =   '/data/mall/fmp';
                 distMod =  rootPath + '/app/fmp/scripts/module';
                 break;
         }
@@ -84,310 +87,396 @@ var DBHandle =  function(opt) {
                 fmpNavFunc();
                 break;
         }
-        function goodsFunc() {
-            var goodsMapFile = publicDB + "/map/goods.json";
-            var goodsMapCont = iUtil.getFileSync(goodsMapFile, 'utf-8');
-            var oldGoodsPath = JSON.parse(goodsMapCont || '{}');
-            var newGoodsPath = iUtil.inExtend({}, oldGoodsPath);
-            var goodsIsExist = iUtil.isArray(goods) && !iUtil.isEmpty(goods);
-            var oldPathIsExist = iUtil.isObject(oldGoodsPath) && !iUtil.isEmpty(oldGoodsPath);
-            var newPathIsExist = iUtil.isObject(newGoodsPath) && !iUtil.isEmpty(newGoodsPath);
-            if (goodsIsExist && newPathIsExist) {
-                goods.forEach(function(goodsId){
-                    var file = goodsId + 'd.json';
-                    if (iUtil.isFileSync(publicDB + '/goods/' + file)) {
-                        var json = iUtil.getFileSync(publicDB + '/goods/' + file, 'utf-8');
-                        var data = json && Object.assign({}, JSON.parse(json || '{}')) || {};
-                        var contObj = iUtil.isObject(data) && iUtil.isObject(data.cont) && data.cont;
-                        if (!contObj && newGoodsPath[contObj.goodsId]) {
-                            delete newGoodsPath[contObj.goodsId];
-                        }
-                        if (contObj) {
-                            newGoodsPath[contObj.goodsId] = {};
-                            newGoodsPath[contObj.goodsId].href = contObj.href || "";
-                            newGoodsPath[contObj.goodsId].firstId = contObj.firstCategory || "";
-                            newGoodsPath[contObj.goodsId].secondId = contObj.secondCategory || "";
-                            newGoodsPath[contObj.goodsId].thirdId = contObj.thirdCategory || "";
-                        }
-                    }
+
+        function pathFunc() {
+            var regFile = null;
+            var regPath = rootPath + '/pack/region';
+            var regInfo = iUtil.getDirSync(regPath);
+            if (!pathList) {
+                pathList = [rootPath];
+                regInfo.forEach(function(file){
+                    regFile = regPath + '/' + file;
+                    iUtil.isDirSync(regFile) && pathList.push(regFile);
                 })
             }
-            if (!goodsIsExist || !newPathIsExist) {
-                newGoodsPath = {};
-                iUtil.getDirSync(publicDB + '/goods').forEach(function(file){
-                    if (iUtil.isFileSync(publicDB + '/goods/' + file)) {
-                        var json = iUtil.getFileSync(publicDB + '/goods/' + file, 'utf-8');
-                        var data = json && Object.assign({}, JSON.parse(json || '{}')) || {};
-                        var contObj = iUtil.isObject(data) && iUtil.isObject(data.cont) && data.cont;
-                        if (!contObj && newGoodsPath[contObj.goodsId]) {
-                            delete newGoodsPath[contObj.goodsId];
-                        }
-                        if (contObj) {
-                            newGoodsPath[contObj.goodsId] = {};
-                            newGoodsPath[contObj.goodsId].href = contObj.href || "";
-                            newGoodsPath[contObj.goodsId].firstId = contObj.firstCategory || "";
-                            newGoodsPath[contObj.goodsId].secondId = contObj.secondCategory || "";
-                            newGoodsPath[contObj.goodsId].thirdId = contObj.thirdCategory || "";
-                        }
-                    }
-                });
+        }
+        function goodsFunc() {
+            if (!pathList) {
+                pathFunc();
             }
-            if (!iUtil.isEmpty(oldPathIsExist)) { goodsPath = oldGoodsPath; }
-            if (iUtil.isEmpty(oldPathIsExist)) { goodsPath = newGoodsPath; }
-            iUtil.setFileSync(publicDB + "/map/goods.json", JSON.stringify(newGoodsPath, null, 2), null, true);
+            for (var i in pathList) {
+                if (pathList[i]) {
+                    var publicDB =  pathList[i] + '/data/mall/public';
+                    var goodsMapFile = publicDB + "/map/goods.json";
+                    var goodsMapCont = iUtil.getFileSync(goodsMapFile, 'utf-8');
+                    var oldGoodsPath = JSON.parse(goodsMapCont || '{}');
+                    var newGoodsPath = iUtil.inExtend({}, oldGoodsPath);
+                    var goodsIsExist = iUtil.isArray(goods) && !iUtil.isEmpty(goods);
+                    var oldPathIsExist = iUtil.isObject(oldGoodsPath) && !iUtil.isEmpty(oldGoodsPath);
+                    var newPathIsExist = iUtil.isObject(newGoodsPath) && !iUtil.isEmpty(newGoodsPath);
+                    if (goodsIsExist && newPathIsExist) {
+                        goods.forEach(function(goodsId){
+                            var file = goodsId + 'd.json';
+                            if (iUtil.isFileSync(publicDB + '/goods/' + file)) {
+                                var json = iUtil.getFileSync(publicDB + '/goods/' + file, 'utf-8');
+                                var data = json && Object.assign({}, JSON.parse(json || '{}')) || {};
+                                var contObj = iUtil.isObject(data) && iUtil.isObject(data.cont) && data.cont;
+                                if (!contObj && newGoodsPath[contObj.goodsId]) {
+                                    delete newGoodsPath[contObj.goodsId];
+                                }
+                                if (contObj) {
+                                    newGoodsPath[contObj.goodsId] = {};
+                                    newGoodsPath[contObj.goodsId].href = contObj.href || "";
+                                    newGoodsPath[contObj.goodsId].firstId = contObj.firstCategory || "";
+                                    newGoodsPath[contObj.goodsId].secondId = contObj.secondCategory || "";
+                                    newGoodsPath[contObj.goodsId].thirdId = contObj.thirdCategory || "";
+                                }
+                            }
+                            else {
+                                delete newGoodsPath[goodsId];
+                            }
+                        })
+                    }
+                    if (!goodsIsExist || !newPathIsExist) {
+                        newGoodsPath = {};
+                        iUtil.getDirSync(publicDB + '/goods').forEach(function(file){
+                            if (iUtil.isFileSync(publicDB + '/goods/' + file)) {
+                                var json = iUtil.getFileSync(publicDB + '/goods/' + file, 'utf-8');
+                                var data = json && Object.assign({}, JSON.parse(json || '{}')) || {};
+                                var contObj = iUtil.isObject(data) && iUtil.isObject(data.cont) && data.cont;
+                                if (!contObj && newGoodsPath[contObj.goodsId]) {
+                                    delete newGoodsPath[contObj.goodsId];
+                                }
+                                if (contObj) {
+                                    newGoodsPath[contObj.goodsId] = {};
+                                    newGoodsPath[contObj.goodsId].href = contObj.href || "";
+                                    newGoodsPath[contObj.goodsId].firstId = contObj.firstCategory || "";
+                                    newGoodsPath[contObj.goodsId].secondId = contObj.secondCategory || "";
+                                    newGoodsPath[contObj.goodsId].thirdId = contObj.thirdCategory || "";
+                                }
+                            }
+                        });
+                    }
+                    if (!iUtil.isEmpty(oldPathIsExist)) { goodsPath[pathList[i]] = oldGoodsPath; }
+                    if (iUtil.isEmpty(oldPathIsExist)) { goodsPath[pathList[i]] = newGoodsPath; }
+                    if (!iUtil.isEmpty(newGoodsPath)) { iUtil.setFileSync(publicDB + "/map/goods.json", JSON.stringify(newGoodsPath, null, 2), null, true); }
+                    if (iUtil.isEmpty(newGoodsPath)) { iUtil.delFileSync(publicDB + "/map/goods.json"); iUtil.clrDirSync(publicDB); }
+                }
+            }
         }
         function pcNavFunc() {
-            json = [];
-            fileData = {};
-            dataFile = distDB  + '/nav/1p.html';
-            htmlFile = distMod + '/nav-1.mustache';
-            htmlTags = ['<div id="nav-1-{{sign}}" v-cloak>','</div>'];
-            json.push(iUtil.getFileSync(distDB + '/nav/1p.json', 'utf-8'));
-            json.push(iUtil.getFileSync(publicDB + '/nav/1d.json', 'utf-8'));
-            json.forEach(function(v){ v && Object.assign(fileData, JSON.parse(v)) });
-            iUtil.isEmpty(fileData) || (html = iUtil.finds(iUtil.getFileSync(htmlFile, 'utf-8'), htmlTags));
-            iUtil.isEmpty(fileData) || iUtil.setFileSync(dataFile, iUtil.clean(iUtil.render(html, fileData)), null, true);
-            iUtil.isEmpty(fileData) && iUtil.delFileSync(dataFile);
-        }
-        function fmpNavFunc() {
-            var tFile = '';
-            var fFile = distDB  + '/nav/1f.json';
-            var mFile = distDB  + '/nav/1m.json';
-            var tData = { data: {} };
-            var fData = { data: {} };
-            var mData = { data: [] };
-            var isFirst = true;
-            json = [];
-            fileData = {};
-            dataFile = distDB  + '/nav/1p.html';
-            jsonFile = distDB  + '/nav/1p.json';
-            htmlFile = distMod + '/nav-1.mustache';
-            htmlTags = ['<div id="nav-1-{{sign}}" v-cloak>','</div>'];
-            json.push(iUtil.getFileSync(publicDB + '/nav/1d.json', 'utf-8'));
-            json.forEach(function(v){ v && Object.assign(fileData, JSON.parse(v)) });
-            if (iUtil.isObject(fileData) && iUtil.isArray(fileData.data)) {
-                var navCont = iUtil.getFileSync(jsonFile, 'utf-8');
-                var navData = JSON.parse(navCont || '{ "data": {} }');
-                var goodsIsExist = iUtil.isArray(goods) && !iUtil.isEmpty(goods);
-                var navDataIsExist = iUtil.isObject(navData) && iUtil.isObject(navData.data) && !iUtil.isEmpty(navData.data);
-
-                if (!goodsPath) {
-                    goodsPath = JSON.parse(iUtil.getFileSync(publicDB + "/map/goods.json", 'utf-8') || '{}');
-                }
-
-                if (goodsIsExist && navDataIsExist) {
-                    goods.forEach(function(goodsId){
-                        var file = goodsId + 'd.json';
-                        var goodsData = goodsPath[goodsId];
-                        var tFirstId =  goodsData && goodsData.firstId;
-                        var tSecondId = goodsData && goodsData.secondId;
-                        var tThirdId =  goodsData && goodsData.thirdId;
-
-                        if (tFirstId && tSecondId && tThirdId) {
-                            var tFirstObj = navData.data[tFirstId] || {};
-                            if (!iUtil.isEmpty(tFirstObj) && !iUtil.isEmpty(tFirstObj.dictList)) {
-                                var tSecondObj = tFirstObj['dictList'][tSecondId] || {};
-                                if (!iUtil.isEmpty(tSecondObj) && !iUtil.isEmpty(tSecondObj.entryList)) {
-                                    var tThirdObj = tSecondObj['entryList'][tThirdId] || {};
-                                    if (!iUtil.isEmpty(tThirdObj) && !iUtil.isEmpty(tThirdObj.goods)) {
-                                        if (tThirdObj.goods[goodsId]) {
-                                            delete tThirdObj.goods[goodsId];
-                                        }
-                                        if (iUtil.isEmpty(tThirdObj.goods)) {
-                                            delete tSecondObj['entryList'][tThirdId];
-                                        }
-                                    }
-                                    if (iUtil.isEmpty(tSecondObj.entryList)) {
-                                        delete tFirstObj['dictList'][tSecondId];
-                                    }
-                                }
-                                if (iUtil.isEmpty(tFirstObj.dictList)) {
-                                    delete navData.data[tFirstId];
-                                }
-                            }
-                        }
-
-                        if (iUtil.isFileSync(publicDB + '/goods/' + file)) {
-                            var k1, k2, k3, l1, l2, l3;
-                            var json = iUtil.getFileSync(publicDB + '/goods/' + file, 'utf-8');
-                            var data = json && Object.assign({}, JSON.parse(json || '{}')) || {};
-                            var contObj = iUtil.isObject(data) && iUtil.isObject(data.cont) && data.cont;
-                            if (contObj) {
-                                var specsList = contObj.goodsSpecsList;
-                                if (iUtil.isArray(specsList)) {
-                                    for (var n in specsList) {
-                                        var itemObj = specsList[n];
-                                        if (itemObj.fx === 0 || itemObj.fx === '0') {
-                                            specsList.splice(n, 1);
-                                        }
-                                    }
-                                }
-                            }
-                            if (contObj && iUtil.isArray(specsList) && !iUtil.isEmpty(specsList)) {
-                                var id = contObj.goodsId;
-                                var firstId =  contObj.firstCategory;
-                                var secondId = contObj.secondCategory;
-                                var thirdId =  contObj.thirdCategory;
-                                if (id && firstId && secondId && thirdId) {
-                                    for (k1 = 0, l1 = fileData.data.length; k1 < l1; k1++) {
-                                        var firstData = fileData.data[k1];
-                                        if(iUtil.isObject(firstData) && firstData.id === firstId){
-                                            var fCache = {};
-                                            for (var f in firstData) {
-                                                if (f !== 'dictList') {
-                                                    fCache[f] = firstData[f];
-                                                }
-                                                else {
-                                                    fCache[f] = {};
-                                                }
-                                            }
-                                            if (iUtil.isArray(firstData.dictList)){
-                                                for (k2 = 0, l2 = firstData.dictList.length; k2 < l2; k2++) {
-                                                    var secondData = firstData.dictList[k2];
-                                                    if(iUtil.isObject(secondData) && secondData.id === secondId) {
-                                                        var sCache = {};
-                                                        for (var s in secondData) {
-                                                            if (s !== 'entryList') {
-                                                                sCache[s] = secondData[s];
-                                                            }
-                                                            else {
-                                                                sCache[s] = {};
-                                                            }
-                                                        }
-                                                        if (iUtil.isArray(secondData.entryList)){
-                                                            for (k3 = 0, l3 = secondData.entryList.length; k3 < l3; k3++) {
-                                                                var thirdData = secondData.entryList[k3];
-                                                                if(iUtil.isObject(thirdData) && thirdData.id === thirdId) {
-                                                                    var tCache = {};
-                                                                    for (var t in thirdData) {
-                                                                        tCache[t] = thirdData[t];
-                                                                    }
-                                                                    var firstObj = navData.data[firstId] = navData.data[firstId] || fCache;
-                                                                    var secondObj = firstObj['dictList'][secondId] = firstObj['dictList'][secondId] || sCache;
-                                                                    var thirdObj = secondObj['entryList'][thirdId] = secondObj['entryList'][thirdId] || tCache;
-                                                                    thirdObj.goods = thirdObj.goods || {};
-                                                                    thirdObj.goods[id] = contObj;
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-
-                if (!goodsIsExist || !navDataIsExist) {
-                    navData = { "data": {} };
-                    iUtil.getDirSync(publicDB + '/goods').forEach(function(file){
-                        if (iUtil.isFileSync(publicDB + '/goods/' + file)) {
-                            var k1, k2, k3, l1, l2, l3;
-                            var json = iUtil.getFileSync(publicDB + '/goods/' + file, 'utf-8');
-                            var data = json && Object.assign({}, JSON.parse(json)) || {};
-                            var contObj = iUtil.isObject(data.cont) && data.cont;
-                            if (contObj) {
-                                var specsList = contObj.goodsSpecsList;
-                                var isArray = iUtil.isArray(specsList);
-                                if (isArray) {
-                                    for (var n in specsList) {
-                                        var itemObj = specsList[n];
-                                        if (itemObj.fx === 0 || itemObj.fx === '0') {
-                                            specsList.splice(n, 1);
-                                        }
-                                    }
-                                }
-                            }
-                            if (contObj && isArray && !iUtil.isEmpty(specsList)) {
-                                var id = file.replace(/d\.json$/i, '');
-                                var firstId =  contObj.firstCategory;
-                                var secondId = contObj.secondCategory;
-                                var thirdId =  contObj.thirdCategory;
-                                if (id && firstId && secondId && thirdId) {
-                                    for (k1 = 0, l1 = fileData.data.length; k1 < l1; k1++) {
-                                        var firstData = fileData.data[k1];
-                                        if(iUtil.isObject(firstData) && firstData.id === firstId){
-                                            var fCache = {};
-                                            for (var f in firstData) {
-                                                if (f !== 'dictList') {
-                                                    fCache[f] = firstData[f];
-                                                }
-                                                else {
-                                                    fCache[f] = {};
-                                                }
-                                            }
-                                            if (iUtil.isArray(firstData.dictList)){
-                                                for (k2 = 0, l2 = firstData.dictList.length; k2 < l2; k2++) {
-                                                    var secondData = firstData.dictList[k2];
-                                                    if(iUtil.isObject(secondData) && secondData.id === secondId) {
-                                                        var sCache = {};
-                                                        for (var s in secondData) {
-                                                            if (s !== 'entryList') {
-                                                                sCache[s] = secondData[s];
-                                                            }
-                                                            else {
-                                                                sCache[s] = {};
-                                                            }
-                                                        }
-                                                        if (iUtil.isArray(secondData.entryList)){
-                                                            for (k3 = 0, l3 = secondData.entryList.length; k3 < l3; k3++) {
-                                                                var thirdData = secondData.entryList[k3];
-                                                                if(iUtil.isObject(thirdData) && thirdData.id === thirdId) {
-                                                                    var tCache = {};
-                                                                    for (var t in thirdData) {
-                                                                        tCache[t] = thirdData[t];
-                                                                    }
-                                                                    var firstObj = navData.data[firstId] = navData.data[firstId] || fCache;
-                                                                    var secondObj = firstObj['dictList'][secondId] = firstObj['dictList'][secondId] || sCache;
-                                                                    var thirdObj = secondObj['entryList'][thirdId] = secondObj['entryList'][thirdId] || tCache;
-                                                                    thirdObj.goods = thirdObj.goods || {};
-                                                                    thirdObj.goods[id] = contObj;
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-
-                if (iUtil.isObject(navData)) {
-                    for(var key in navData.data){
-                        if(isFirst){
-                            fData = { data: {} };
-                            fData.data[key] = navData.data[key];
-                            iUtil.setFileSync(fFile, JSON.stringify(fData), null, true);
-                            isFirst = false;
-                        }
-                        tData = { data: {} };
-                        mData.data.push(key);
-                        tData.data[key] = navData.data[key];
-                        tFile = distDB  + '/nav/1p_' + key + '.json';
-                        iUtil.setFileSync(tFile, JSON.stringify(tData), null, true);
+            if (!pathList) {
+                pathFunc();
+            }
+            for (var i in pathList) {
+                var distDB;
+                var publicDB;
+                var rootDistDB;
+                var rootPublicDB;
+                var distFile;
+                var publicFile;
+                var rootDistFile;
+                var rootPublicFile;
+                if (pathList[i]) {
+                    json = [];
+                    fileData = {};
+                    distDB = pathList[i] + distType;
+                    rootDistDB = rootPath + distType;
+                    dataFile = distDB + '/nav/1p.html';
+                    htmlFile = distMod + '/nav-1.mustache';
+                    htmlTags = ['<div id="nav-1-{{sign}}" v-cloak>','</div>'];
+                    publicDB = pathList[i] + '/data/mall/public';
+                    rootPublicDB = rootPath + '/data/mall/public';
+                    distFile = distDB + '/nav/1p.json';
+                    publicFile = publicDB + '/nav/1d.json';
+                    rootDistFile = rootDistDB + '/nav/1p.json';
+                    rootPublicFile = rootPublicDB + '/nav/1d.json';
+                    if (iUtil.isFileSync(distFile) || iUtil.isFileSync(publicFile)) {
+                        iUtil.isFileSync(distFile) && json.push(iUtil.getFileSync(distFile, 'utf-8'));
+                        iUtil.isFileSync(distFile) || json.push(iUtil.getFileSync(rootDistFile, 'utf-8'));
+                        iUtil.isFileSync(publicFile) && json.push(iUtil.getFileSync(publicFile, 'utf-8'));
+                        iUtil.isFileSync(publicFile) || json.push(iUtil.getFileSync(rootPublicFile, 'utf-8'));
+                        json.forEach(function(v){ v && Object.assign(fileData, JSON.parse(v)) });
                     }
-                    iUtil.setFileSync(mFile, JSON.stringify(mData), null, true);
-                    iUtil.setFileSync(jsonFile, JSON.stringify(navData), null, true);
-                    html = iUtil.finds(iUtil.getFileSync(htmlFile, 'utf-8'), htmlTags);
-                    fileData = iUtil.clean(iUtil.render(html, navData));
-                    iUtil.setFileSync(dataFile, fileData, null, true);
+                    iUtil.isEmpty(fileData) || (html = iUtil.finds(iUtil.getFileSync(htmlFile, 'utf-8'), htmlTags));
+                    iUtil.isEmpty(fileData) || iUtil.setFileSync(dataFile, iUtil.clean(iUtil.render(html, fileData)), null, true);
+                    iUtil.isEmpty(fileData) && iUtil.delFileSync(dataFile);
                 }
             }
-            else {
-                iUtil.delDirSync(distDB +'/nav', true);
+        }
+        function fmpNavFunc() {
+            if (!pathList) {
+                pathFunc();
+            }
+            for (var i in pathList) {
+                if (pathList[i]) {
+                    var tFile;
+                    var navFile;
+                    var rootNavFile;
+                    var goodsKey;
+                    var goodsDir;
+                    var finallyDB;
+                    var distDB = pathList[i] + distType;
+                    var publicDB = pathList[i] + '/data/mall/public';
+                    var rootPublicDB = rootPath + '/data/mall/public';
+                    var fFile = distDB  + '/nav/1f.json';
+                    var mFile = distDB  + '/nav/1m.json';
+                    var tData = { data: {} };
+                    var fData = { data: {} };
+                    var mData = { data: [] };
+                    var isFirst = true;
+
+                    json = [];
+                    fileData = {};
+                    dataFile = distDB  + '/nav/1p.html';
+                    jsonFile = distDB  + '/nav/1p.json';
+                    htmlFile = distMod + '/nav-1.mustache';
+                    htmlTags = ['<div id="nav-1-{{sign}}" v-cloak>','</div>'];
+                    goodsDir = publicDB + '/goods/';
+                    navFile = publicDB + '/nav/1d.json';
+                    rootNavFile = rootPublicDB + '/nav/1d.json';
+
+                    if (iUtil.isDirSync(goodsDir) || iUtil.isFileSync(navFile)) {
+                        iUtil.isDirSync(goodsDir) && (finallyDB = publicDB);
+                        iUtil.isDirSync(goodsDir) && (goodsKey = pathList[i]);
+                        iUtil.isDirSync(goodsDir) || (finallyDB = rootPublicDB);
+                        iUtil.isDirSync(goodsDir) || (goodsKey = rootPath);
+                        iUtil.isFileSync(navFile) && json.push(iUtil.getFileSync(navFile, 'utf-8'));
+                        iUtil.isFileSync(navFile) || json.push(iUtil.getFileSync(rootNavFile, 'utf-8'));
+                        json.forEach(function(v){ v && Object.assign(fileData, JSON.parse(v)) });
+                    }
+
+                    if (iUtil.isObject(fileData) && iUtil.isArray(fileData.data)) {
+                        var navCont = iUtil.getFileSync(jsonFile, 'utf-8');
+                        var navData = JSON.parse(navCont || '{ "data": {} }');
+                        var goodsIsExist = iUtil.isArray(goods) && !iUtil.isEmpty(goods);
+                        var navDataIsExist = iUtil.isObject(navData) && iUtil.isObject(navData.data) && !iUtil.isEmpty(navData.data);
+
+                        if (!goodsPath[goodsKey]) {
+                            goodsPath[goodsKey] = JSON.parse(iUtil.getFileSync(finallyDB + "/map/goods.json", 'utf-8') || '{}');
+                        }
+
+                        if (goodsIsExist && navDataIsExist) {
+                            goods.forEach(function(goodsId){
+                                var file = goodsId + 'd.json';
+                                var goodsData = goodsPath[goodsKey][goodsId];
+                                var tFirstId =  goodsData && goodsData.firstId;
+                                var tSecondId = goodsData && goodsData.secondId;
+                                var tThirdId =  goodsData && goodsData.thirdId;
+
+                                if (tFirstId && tSecondId && tThirdId) {
+                                    var tFirstObj = navData.data[tFirstId] || {};
+                                    if (!iUtil.isEmpty(tFirstObj) && !iUtil.isEmpty(tFirstObj.dictList)) {
+                                        var tSecondObj = tFirstObj['dictList'][tSecondId] || {};
+                                        if (!iUtil.isEmpty(tSecondObj) && !iUtil.isEmpty(tSecondObj.entryList)) {
+                                            var tThirdObj = tSecondObj['entryList'][tThirdId] || {};
+                                            if (!iUtil.isEmpty(tThirdObj) && !iUtil.isEmpty(tThirdObj.goods)) {
+                                                if (tThirdObj.goods[goodsId]) {
+                                                    delete tThirdObj.goods[goodsId];
+                                                }
+                                                if (iUtil.isEmpty(tThirdObj.goods)) {
+                                                    delete tSecondObj['entryList'][tThirdId];
+                                                }
+                                            }
+                                            if (iUtil.isEmpty(tSecondObj.entryList)) {
+                                                delete tFirstObj['dictList'][tSecondId];
+                                            }
+                                        }
+                                        if (iUtil.isEmpty(tFirstObj.dictList)) {
+                                            delete navData.data[tFirstId];
+                                        }
+                                    }
+                                }
+
+                                if (iUtil.isFileSync(finallyDB + '/goods/' + file)) {
+                                    var k1, k2, k3, l1, l2, l3;
+                                    var json = iUtil.getFileSync(finallyDB + '/goods/' + file, 'utf-8');
+                                    var data = json && Object.assign({}, JSON.parse(json || '{}')) || {};
+                                    var contObj = iUtil.isObject(data) && iUtil.isObject(data.cont) && data.cont;
+                                    if (contObj) {
+                                        var specsList = contObj.goodsSpecsList;
+                                        if (iUtil.isArray(specsList)) {
+                                            for (var n in specsList) {
+                                                var itemObj = specsList[n];
+                                                if (itemObj.fx === 0 || itemObj.fx === '0') {
+                                                    specsList.splice(n, 1);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (contObj && iUtil.isArray(specsList) && !iUtil.isEmpty(specsList)) {
+                                        var id = contObj.goodsId;
+                                        var firstId =  contObj.firstCategory;
+                                        var secondId = contObj.secondCategory;
+                                        var thirdId =  contObj.thirdCategory;
+                                        if (id && firstId && secondId && thirdId) {
+                                            for (k1 = 0, l1 = fileData.data.length; k1 < l1; k1++) {
+                                                var firstData = fileData.data[k1];
+                                                if(iUtil.isObject(firstData) && firstData.id === firstId){
+                                                    var fCache = {};
+                                                    for (var f in firstData) {
+                                                        if (f !== 'dictList') {
+                                                            fCache[f] = firstData[f];
+                                                        }
+                                                        else {
+                                                            fCache[f] = {};
+                                                        }
+                                                    }
+                                                    if (iUtil.isArray(firstData.dictList)){
+                                                        for (k2 = 0, l2 = firstData.dictList.length; k2 < l2; k2++) {
+                                                            var secondData = firstData.dictList[k2];
+                                                            if(iUtil.isObject(secondData) && secondData.id === secondId) {
+                                                                var sCache = {};
+                                                                for (var s in secondData) {
+                                                                    if (s !== 'entryList') {
+                                                                        sCache[s] = secondData[s];
+                                                                    }
+                                                                    else {
+                                                                        sCache[s] = {};
+                                                                    }
+                                                                }
+                                                                if (iUtil.isArray(secondData.entryList)){
+                                                                    for (k3 = 0, l3 = secondData.entryList.length; k3 < l3; k3++) {
+                                                                        var thirdData = secondData.entryList[k3];
+                                                                        if(iUtil.isObject(thirdData) && thirdData.id === thirdId) {
+                                                                            var tCache = {};
+                                                                            for (var t in thirdData) {
+                                                                                tCache[t] = thirdData[t];
+                                                                            }
+                                                                            var firstObj = navData.data[firstId] = navData.data[firstId] || fCache;
+                                                                            var secondObj = firstObj['dictList'][secondId] = firstObj['dictList'][secondId] || sCache;
+                                                                            var thirdObj = secondObj['entryList'][thirdId] = secondObj['entryList'][thirdId] || tCache;
+                                                                            thirdObj.goods = thirdObj.goods || {};
+                                                                            thirdObj.goods[id] = contObj;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        if (!goodsIsExist || !navDataIsExist) {
+                            navData = { "data": {} };
+                            iUtil.getDirSync(finallyDB + '/goods').forEach(function(file){
+                                if (iUtil.isFileSync(finallyDB + '/goods/' + file)) {
+                                    var k1, k2, k3, l1, l2, l3;
+                                    var json = iUtil.getFileSync(finallyDB + '/goods/' + file, 'utf-8');
+                                    var data = json && Object.assign({}, JSON.parse(json)) || {};
+                                    var contObj = iUtil.isObject(data.cont) && data.cont;
+                                    if (contObj) {
+                                        var specsList = contObj.goodsSpecsList;
+                                        var isArray = iUtil.isArray(specsList);
+                                        if (isArray) {
+                                            for (var n in specsList) {
+                                                var itemObj = specsList[n];
+                                                if (itemObj.fx === 0 || itemObj.fx === '0') {
+                                                    specsList.splice(n, 1);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (contObj && isArray && !iUtil.isEmpty(specsList)) {
+                                        var id = file.replace(/d\.json$/i, '');
+                                        var firstId =  contObj.firstCategory;
+                                        var secondId = contObj.secondCategory;
+                                        var thirdId =  contObj.thirdCategory;
+                                        if (id && firstId && secondId && thirdId) {
+                                            for (k1 = 0, l1 = fileData.data.length; k1 < l1; k1++) {
+                                                var firstData = fileData.data[k1];
+                                                if(iUtil.isObject(firstData) && firstData.id === firstId){
+                                                    var fCache = {};
+                                                    for (var f in firstData) {
+                                                        if (f !== 'dictList') {
+                                                            fCache[f] = firstData[f];
+                                                        }
+                                                        else {
+                                                            fCache[f] = {};
+                                                        }
+                                                    }
+                                                    if (iUtil.isArray(firstData.dictList)){
+                                                        for (k2 = 0, l2 = firstData.dictList.length; k2 < l2; k2++) {
+                                                            var secondData = firstData.dictList[k2];
+                                                            if(iUtil.isObject(secondData) && secondData.id === secondId) {
+                                                                var sCache = {};
+                                                                for (var s in secondData) {
+                                                                    if (s !== 'entryList') {
+                                                                        sCache[s] = secondData[s];
+                                                                    }
+                                                                    else {
+                                                                        sCache[s] = {};
+                                                                    }
+                                                                }
+                                                                if (iUtil.isArray(secondData.entryList)){
+                                                                    for (k3 = 0, l3 = secondData.entryList.length; k3 < l3; k3++) {
+                                                                        var thirdData = secondData.entryList[k3];
+                                                                        if(iUtil.isObject(thirdData) && thirdData.id === thirdId) {
+                                                                            var tCache = {};
+                                                                            for (var t in thirdData) {
+                                                                                tCache[t] = thirdData[t];
+                                                                            }
+                                                                            var firstObj = navData.data[firstId] = navData.data[firstId] || fCache;
+                                                                            var secondObj = firstObj['dictList'][secondId] = firstObj['dictList'][secondId] || sCache;
+                                                                            var thirdObj = secondObj['entryList'][thirdId] = secondObj['entryList'][thirdId] || tCache;
+                                                                            thirdObj.goods = thirdObj.goods || {};
+                                                                            thirdObj.goods[id] = contObj;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        if (iUtil.isObject(navData)) {
+                            if (iUtil.isDirSync(distDB +'/nav')) {
+                                iUtil.clrDirSync(distDB +'/nav', true);
+                            }
+                            for(var key in navData.data){
+                                if(isFirst){
+                                    fData = { data: {} };
+                                    fData.data[key] = navData.data[key];
+                                    isFirst = false;
+                                }
+                                tData = { data: {} };
+                                mData.data.push(key);
+                                tData.data[key] = navData.data[key];
+                                tFile = distDB + '/nav/1p_' + key + '.json';
+                                iUtil.setFileSync(tFile, JSON.stringify(tData), null, true);
+                            }
+                            iUtil.setFileSync(fFile, JSON.stringify(fData), null, true);
+                            iUtil.setFileSync(mFile, JSON.stringify(mData), null, true);
+                            iUtil.setFileSync(jsonFile, JSON.stringify(navData), null, true);
+                            html = iUtil.finds(iUtil.getFileSync(htmlFile, 'utf-8'), htmlTags);
+                            fileData = iUtil.clean(iUtil.render(html, navData));
+                            iUtil.setFileSync(dataFile, fileData, null, true);
+                        }
+                        else {
+                            iUtil.delDirSync(distDB +'/nav', true);
+                        }
+                    }
+                    else {
+                        iUtil.delDirSync(distDB +'/nav', true);
+                    }
+                }
             }
         }
     });
@@ -532,9 +621,17 @@ app.route("*")
 app.route("/Sitemap/handle")
     .delete(function(req, res){
 
-        var setDomain = "";
+        var setDomain =   "";
         var SitemapPath = "";
         var SitemapList = [];
+        var getRegion =   req.body.region;
+        var getRegPath =  rootPath + '/pack/region/' + (getRegion||defRegion);
+        var getCfgFile =  iUtil.getFileSync(getRegPath + '/.cert/cfg.txt', 'utf-8');
+
+        if (getCfgFile !== ('region:' + (getRegion||defRegion))){
+            res.send({errorMsg: '该区域中心未创建！', success: false, obj: null });
+            return;
+        }
 
         if(req.body.domain){
             setDomain = req.body.domain.replace(/^(http:\/\/|https:\/\/)?([^\/]+)(\/.*)?/i, '$1$2');
@@ -542,15 +639,15 @@ app.route("/Sitemap/handle")
 
         switch (setDomain) {
             case pDomain:
-                SitemapPath = rootPath + "/pack/region/test/pc/security";
+                SitemapPath = rootPath + "/pack/region/" + (getRegion||defRegion) + "/app/pc/security";
                 SitemapList = iUtil.getDirSync(SitemapPath);
                 break;
             case mDomain:
-                SitemapPath = rootPath + "/pack/region/test/mp/security";
+                SitemapPath = rootPath + "/pack/region/" + (getRegion||defRegion) + "/app/mp/security";
                 SitemapList = iUtil.getDirSync(SitemapPath);
                 break;
             case fDomain:
-                SitemapPath = rootPath + "/pack/region/test/fmp/security";
+                SitemapPath = rootPath + "/pack/region/" + (getRegion||defRegion) + "/app/fmp/security";
                 SitemapList = iUtil.getDirSync(SitemapPath);
                 break;
             default:
@@ -570,17 +667,25 @@ app.route("/Sitemap/handle")
     .post(function(req, res){
 
         var defs =         [];
-        var maps =         {};
+        var maps =         [];
         var files =        [];
         var paths =        [];
         var fileRE =       [];
         var pathRE =       [];
         var sitemaps =     [];
-        var getDomain =    req.body.domain;
         var setDomain =    "";
         var mustache =     "/pack/.cfg/build/sitemap.mustache";
         var SitemapXml =   iUtil.getFileSync(rootPath + mustache, "utf8");
         var SitemapFile =  "";
+        var getDomain =    req.body.domain;
+        var getRegion =    req.body.region;
+        var getRegPath =   rootPath + '/pack/region/' + (getRegion||defRegion);
+        var getCfgFile =   iUtil.getFileSync(getRegPath + '/.cert/cfg.txt', 'utf-8');
+
+        if (getCfgFile !== ('region:' + (getRegion||defRegion))){
+            res.send({errorMsg: '该区域中心未创建！', success: false, obj: null });
+            return;
+        }
 
         if(req.body.domain){
             getDomain = req.body.domain.replace(/^(http:\/\/|https:\/\/)?([^\/]+)(\/.*)?/i, '$1$2');
@@ -593,28 +698,28 @@ app.route("/Sitemap/handle")
 
         switch (getDomain) {
             case pDomain:
-                maps =   {"(/app|/pack/region/test)/pc/web": ""};
-                paths =  ["/app/pc/web", "/pack/region/test/pc/web"];
-                fileRE = ["#/amount-access.html", "#/shop-show.html", "^/app/pc/web/*", "^/pack/region/test/pc/web/*"];
+                maps =   ["(/app|/pack/region/" + (getRegion||defRegion) + "/app)/pc/web"];
+                paths =  ["/app/pc/web", "/pack/region/" + (getRegion||defRegion) + "/app/pc/web"];
+                fileRE = ["#/amount-access.html", "#/shop-show.html", "^/app/pc/web/*", "^/pack/region/" + (getRegion||defRegion) + "/app/pc/web/*"];
                 pathRE = [];
                 setDomain = pDomain;
-                SitemapFile = rootPath + "/pack/region/test/pc/security";
+                SitemapFile = rootPath + "/pack/region/" + (getRegion||defRegion) + "/app/pc/security";
                 break;
             case mDomain:
-                maps =   {"(/app|/pack/region/test)/mp/web": ""};
-                paths =  ["/app/mp/web", "/pack/region/test/mp/web"];
-                fileRE = ["^/app/mp/web/*", "^/pack/region/test/mp/web/*"];
+                maps =   ["(/app|/pack/region/" + (getRegion||defRegion) + "/app)/mp/web"];
+                paths =  ["/app/mp/web", "/pack/region/" + (getRegion||defRegion) + "/app/mp/web"];
+                fileRE = ["^/app/mp/web/*", "^/pack/region/" + (getRegion||defRegion) + "/app/mp/web/*"];
                 pathRE = [];
                 setDomain = mDomain;
-                SitemapFile = rootPath + "/pack/region/test/mp/security";
+                SitemapFile = rootPath + "/pack/region/" + (getRegion||defRegion) + "/app/mp/security";
                 break;
             case fDomain:
-                maps =   {"(/app|/pack/region/test)/fmp/web": ""};
-                paths =  ["/app/mp/web", "/pack/region/test/fmp/web"];
-                fileRE = ["^/app/mp/web/*", "^/pack/region/test/fmp/web/*"];
+                maps =   ["(/app|/pack/region/" + (getRegion||defRegion) + "/app)/fmp/web"];
+                paths =  ["/app/fmp/web", "/pack/region/" + (getRegion||defRegion) + "/app/fmp/web"];
+                fileRE = ["^/app/fmp/web/*", "^/pack/region/" + (getRegion||defRegion) + "/app/fmp/web/*"];
                 pathRE = [];
                 setDomain = fDomain;
-                SitemapFile = rootPath + "/pack/region/test/fmp/security";
+                SitemapFile = rootPath + "/pack/region/" + (getRegion||defRegion) + "/app/fmp/security";
                 break;
             default:
                 res.send({errorMsg: '未指定正确的域名!', success: false, obj: null });
@@ -665,7 +770,11 @@ app.route("/Sitemap/handle")
         }
         function pathHandle(path, maps){
             var n;
-            for(n in maps) path = path.replace(new RegExp(n, "g"), maps[n]);
+            for(n in maps) {
+                if (iUtil.isString(maps[n]) && maps[n].trim()) {
+                    path = path.replace(new RegExp(maps[n], "g"), '');
+                }
+            }
             return path.replace(rootPath, '');
         }
 
@@ -730,13 +839,13 @@ app.route("/Region/handle")
         var gradeId =     req.body.gradeId;
         var cfgPath =     rootPath + '/pack/.cfg';
         var regPath =     rootPath + '/pack/region/' + region;
-        var pcDataPath =  rootPath + '/pack/region/' + region + '/pc/data';
-        var mpDataPath =  rootPath + '/pack/region/' + region + '/mp/data';
-        var fmpDataPath = rootPath + '/pack/region/' + region + '/fmp/data';
-        var pcScript =    rootPath + '/pack/region/' + region + '/pc/scripts/config';
-        var mpScript =    rootPath + '/pack/region/' + region + '/mp/scripts/config';
-        var fmpScript =   rootPath + '/pack/region/' + region + '/fmp/scripts/config';
-        var cfgFile =    iUtil.getFileSync(regPath + '/.cert/cfg.txt', 'utf-8');
+        var pcDataPath =  rootPath + '/pack/region/' + region + '/data/mall/pc';
+        var mpDataPath =  rootPath + '/pack/region/' + region + '/data/mall/mp';
+        var fmpDataPath = rootPath + '/pack/region/' + region + '/data/mall/fmp';
+        var pcScript =    rootPath + '/pack/region/' + region + '/app/pc/scripts/config';
+        var mpScript =    rootPath + '/pack/region/' + region + '/app/mp/scripts/config';
+        var fmpScript =   rootPath + '/pack/region/' + region + '/app/fmp/scripts/config';
+        var cfgFile =     iUtil.getFileSync(regPath + '/.cert/cfg.txt', 'utf-8');
 
         if (cfgFile === ('region:' + region)){
             res.send({errorMsg: '该区域中心已创建！', success: false, obj: null });
@@ -770,13 +879,13 @@ app.route("/Region/handle")
 
             iUtil.getDirSync(cfgPath).forEach(function(file){
                 if((/^build$/i).test(file)){ return; }
-                Defs = Defs.concat(iUtil.copyDir(cfgPath + '/' + file, regPath + '/' + file, true));
+                Defs = Defs.concat(iUtil.copyDir(cfgPath + '/' + file, regPath + '/app/' + file, true));
             });
 
             Defs = Defs.concat(iUtil.setFile(regPath + '/.cert/cfg.txt', 'region:' + region, null, true));
-            Defs = Defs.concat(iUtil.setFile(pcDataPath + '/mall_pc.json', setPcJSON, null, true));
-            Defs = Defs.concat(iUtil.setFile(mpDataPath + '/mall_mp.json', setMpJSON, null, true));
-            Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/mall_fmp.json', setFmpJSON, null, true));
+            Defs = Defs.concat(iUtil.setFile(pcDataPath + '/entity/pc.json', setPcJSON, null, true));
+            Defs = Defs.concat(iUtil.setFile(mpDataPath + '/entity/mp.json', setMpJSON, null, true));
+            Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/entity/fmp.json', setFmpJSON, null, true));
             Defs = Defs.concat(iUtil.setFile(pcScript + '/entity.js', pcContent, null, true));
             Defs = Defs.concat(iUtil.setFile(mpScript + '/entity.js', mpContent, null, true));
             Defs = Defs.concat(iUtil.setFile(fmpScript + '/entity.js', fmpContent, null, true));
@@ -794,12 +903,12 @@ app.route("/Region/handle")
         var region =      req.body.region;
         var cfgPath =     rootPath + '/pack/.cfg';
         var regPath =     rootPath + '/pack/region/' + region;
-        var pcDataPath =  rootPath + '/pack/region/' + region + '/pc/data';
-        var mpDataPath =  rootPath + '/pack/region/' + region + '/mp/data';
-        var fmpDataPath = rootPath + '/pack/region/' + region + '/fmp/data';
-        var pcScript =    rootPath + '/pack/region/' + region + '/pc/scripts/config';
-        var mpScript =    rootPath + '/pack/region/' + region + '/mp/scripts/config';
-        var fmpScript =   rootPath + '/pack/region/' + region + '/fmp/scripts/config';
+        var pcDataPath =  rootPath + '/pack/region/' + region + '/data/mall/pc';
+        var mpDataPath =  rootPath + '/pack/region/' + region + '/data/mall/mp';
+        var fmpDataPath = rootPath + '/pack/region/' + region + '/data/mall/fmp';
+        var pcScript =    rootPath + '/pack/region/' + region + '/app/pc/scripts/config';
+        var mpScript =    rootPath + '/pack/region/' + region + '/app/mp/scripts/config';
+        var fmpScript =   rootPath + '/pack/region/' + region + '/app/fmp/scripts/config';
         var cfgFile =     iUtil.getFileSync(regPath + '/.cert/cfg.txt', 'utf-8');
 
         if (cfgFile !== ('region:' + region)){
@@ -808,7 +917,7 @@ app.route("/Region/handle")
         }
 
         if (!iUtil.isArray(malls)) {
-            res.send({errorMsg: '未指定 malls值！', success: false, obj: null });
+            res.send({errorMsg: 'malls值格式有误！', success: false, obj: null });
             return;
         }
 
@@ -825,31 +934,31 @@ app.route("/Region/handle")
             malls.forEach(function(mall){
                 switch (mall) {
                     case 'pcMall':
-                        var getPcJSON = iUtil.getFileSync(pcDataPath + '/mall_pc.json', 'utf-8');
+                        var getPcJSON = iUtil.getFileSync(pcDataPath + '/entity/pc.json', 'utf-8');
                         var pcMustache = iUtil.getFileSync(cfgPath + '/build/mall_pc.mustache', 'utf-8');
                         var pcData = Object.assign(JSON.parse(getPcJSON), req.body||{}, { debug: debug });
                         var pcContent = iUtil.render(pcMustache, { siteInfo: pcData });
                         var setPcJSON = JSON.stringify(pcData, null, 2);
                         Defs = Defs.concat(iUtil.setFile(pcScript + '/entity.js', pcContent, null, true));
-                        Defs = Defs.concat(iUtil.setFile(pcDataPath + '/mall_pc.json', setPcJSON, null, true));
+                        Defs = Defs.concat(iUtil.setFile(pcDataPath + '/entity/pc.json', setPcJSON, null, true));
                         break;
                     case 'mpMall':
-                        var getMpJSON = iUtil.getFileSync(mpDataPath + '/mall_mp.json', 'utf-8');
+                        var getMpJSON = iUtil.getFileSync(mpDataPath + '/entity/mp.json', 'utf-8');
                         var mpMustache = iUtil.getFileSync(cfgPath + '/build/mall_mp.mustache', 'utf-8');
                         var mpData = Object.assign(JSON.parse(getMpJSON), req.body||{}, { debug: debug });
                         var mpContent =  iUtil.render(mpMustache, { siteInfo: mpData });
                         var setMpJSON = JSON.stringify(mpData, null, 2);
                         Defs = Defs.concat(iUtil.setFile(mpScript + '/entity.js', mpContent, null, true));
-                        Defs = Defs.concat(iUtil.setFile(mpDataPath + '/mall_mp.json', setMpJSON, null, true));
+                        Defs = Defs.concat(iUtil.setFile(mpDataPath + '/entity/mp.json', setMpJSON, null, true));
                         break;
                     case 'fmpMall':
-                        var getFmpJSON = iUtil.getFileSync(fmpDataPath + '/mall_fmp.json', 'utf-8');
+                        var getFmpJSON = iUtil.getFileSync(fmpDataPath + '/entity/fmp.json', 'utf-8');
                         var fmpMustache = iUtil.getFileSync(cfgPath + '/build/mall_fmp.mustache', 'utf-8');
                         var fmpData = Object.assign(JSON.parse(getFmpJSON), req.body||{}, { debug: debug });
                         var fmpContent =  iUtil.render(fmpMustache, { siteInfo: fmpData });
                         var setFmpJSON = JSON.stringify(fmpData, null, 2);
                         Defs = Defs.concat(iUtil.setFile(fmpScript + '/entity.js', fmpContent, null, true));
-                        Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/mall_fmp.json', setFmpJSON, null, true));
+                        Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/entity/fmp.json', setFmpJSON, null, true));
                         break;
                 }
             });
@@ -886,29 +995,29 @@ app.route("/Page/handle")
             switch (system) {
                 case "pcMall":
                     route =    'pc';
-                    distDB =   rootPath + '/data/mall/pc';
-                    publicDB = rootPath + '/data/mall/public';
                     distMod =  rootPath + '/app/pc/scripts/module';
-                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/pc/web';
-                    htmlPath = distWeb + "/" + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), '');
+                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/pc/web';
+                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/pc';
+                    publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
+                    htmlPath = distWeb + '/' + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), '');
                     htmlFile = (htmlPath + '/' + file + '.html').replace(/(\.html){2,}$/i, '.html');
                     break;
                 case "mpMall":
                     route =    'mp';
-                    distDB =   rootPath + '/data/mall/mp';
-                    publicDB = rootPath + '/data/mall/public';
                     distMod =  rootPath + '/app/mp/scripts/module';
-                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/mp/web';
-                    htmlPath = distWeb + "/" + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), '');
+                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/mp/web';
+                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/mp';
+                    publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
+                    htmlPath = distWeb + '/' + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), '');
                     htmlFile = (htmlPath + '/' + file + '.html').replace(/(\.html){2,}$/i, '.html');
                     break;
                 case "fmpMall":
                     route =    'fmp';
-                    distDB =   rootPath + '/data/mall/fmp';
-                    publicDB = rootPath + '/data/mall/public';
                     distMod =  rootPath + '/app/fmp/scripts/module';
-                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/fmp/web';
-                    htmlPath = distWeb + "/" + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), '');
+                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/fmp/web';
+                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/fmp';
+                    publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
+                    htmlPath = distWeb + '/' + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), '');
                     htmlFile = (htmlPath + '/' + file + '.html').replace(/(\.html){2,}$/i, '.html');
                     break;
                 default:
@@ -1014,34 +1123,34 @@ app.route("/Page/handle")
                 case "pcMall":
                     route =    'pc';
                     domain =   '';
-                    distDB =   rootPath + '/data/mall/pc';
-                    publicDB = rootPath + '/data/mall/public';
                     distMod =  rootPath + '/app/pc/scripts/module';
                     defHtml =  rootPath + '/pack/.cfg/build/mall_pc.html';
-                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/pc/web';
-                    htmlPath = (distWeb + "/" + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), ''));
+                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/pc/web';
+                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/pc';
+                    publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
+                    htmlPath = (distWeb + '/' + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), ''));
                     htmlFile = (htmlPath + '/' + file + '.html').replace(/(\.html){2,}$/i, '.html');
                     break;
                 case "mpMall":
                     route =    'mp';
                     domain =   '';
-                    distDB =   rootPath + '/data/mall/mp';
-                    publicDB = rootPath + '/data/mall/public';
                     distMod =  rootPath + '/app/mp/scripts/module';
                     defHtml =  rootPath + '/pack/.cfg/build/mall_mp.html';
-                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/mp/web';
-                    htmlPath = (distWeb + "/" + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), ''));
+                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/mp/web';
+                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/mp';
+                    publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
+                    htmlPath = (distWeb + '/' + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), ''));
                     htmlFile = (htmlPath + '/' + file + '.html').replace(/(\.html){2,}$/i, '.html');
                     break;
                 case "fmpMall":
                     route =    'fmp';
                     domain =   '';
-                    distDB =   rootPath + '/data/mall/fmp';
-                    publicDB = rootPath + '/data/mall/public';
                     distMod =  rootPath + '/app/fmp/scripts/module';
                     defHtml =  rootPath + '/pack/.cfg/build/mall_fmp.html';
-                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/fmp/web';
-                    htmlPath = (distWeb + "/" + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), ''));
+                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/fmp/web';
+                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/fmp';
+                    publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
+                    htmlPath = (distWeb + '/' + path.replace(new RegExp( '^\/?' + region + '$|^\/?' + region + '\/+$', 'i'), ''));
                     htmlFile = (htmlPath + '/' + file + '.html').replace(/(\.html){2,}$/i, '.html');
                     break;
                 default:
@@ -1177,10 +1286,11 @@ app.route("/Page/handle")
 
 app.route("/Data/handle/nav")
     .delete(function(req, res){
+        var region = req.body.region;
         var systems = ['pcMall', 'mpMall', 'fmpMall'];
 
         if (rootPath) {
-            iUtil.delFileSync(rootPath + '/data/mall/public/nav/1d.json');
+            iUtil.delFileSync(rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public/nav/1d.json');
         }
 
         iUtil.iPromise.all([])
@@ -1192,8 +1302,9 @@ app.route("/Data/handle/nav")
 
         var defs = [];
         var data = req.body.data;
+        var region = req.body.region;
         var systems = ['pcMall', 'mpMall', 'fmpMall'];
-        var jsonFile = rootPath + '/data/mall/public/nav/1d.json';
+        var jsonFile = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public/nav/1d.json';
 
         if (jsonFile) {
             defs =  iUtil.setFile(jsonFile, JSON.stringify({'data': data}), null, true);
@@ -1214,7 +1325,8 @@ app.route("/Data/handle/distribution")
         var goods = [];
         var systems = ['pcMall', 'mpMall', 'fmpMall'];
         var goodsMap = req.body;
-        var goodsPath = rootPath + '/data/mall/public/goods';
+        var region = req.body.region;
+        var goodsPath = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public/goods';
 
         if (iUtil.isEmpty(goodsMap)) {
             res.send({ errorMsg: '未传数据！', success: false, obj: null });
@@ -1224,6 +1336,10 @@ app.route("/Data/handle/distribution")
         if (!iUtil.isObject(goodsMap)) {
             res.send({ errorMsg: '数据格式有误！', success: false, obj: null });
             return;
+        }
+
+        if (goodsMap.hasOwnProperty('region')) {
+            delete goodsMap.region;
         }
 
         for(var goodsId in goodsMap){
@@ -1255,9 +1371,10 @@ app.route("/Data/handle/distribution")
 
         var defs = [];
         var goods = [];
-        var goodsMap = req.body;
-        var goodsPath = rootPath + '/data/mall/public/goods';
         var systems = ['pcMall', 'mpMall', 'fmpMall'];
+        var goodsMap = req.body;
+        var region = req.body.region;
+        var goodsPath = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public/goods';
 
         if (iUtil.isEmpty(goodsMap)) {
             res.send({ errorMsg: '未传数据！', success: false, obj: null });
@@ -1267,6 +1384,10 @@ app.route("/Data/handle/distribution")
         if (!iUtil.isObject(goodsMap)) {
             res.send({ errorMsg: '数据格式有误！', success: false, obj: null });
             return;
+        }
+
+        if (goodsMap.hasOwnProperty('region')) {
+            delete goodsMap.region;
         }
 
         for(var goodsId in goodsMap){
@@ -1509,14 +1630,14 @@ app.route("/Data/handle/visit/json")
 app.route("/Render/handle/goods")
     .post(function(req, res){
 
-        var defs = [];
-        var page = 'goodsDetail';
-        var publicDB = rootPath + '/data/mall/public';
-
         var seo =  req.body.seo || {};
         var region = req.body.region || '';
         var modules = req.body.modules || {};
         var systems = req.body.systems || [];
+
+        var defs = [];
+        var page = 'goodsDetail';
+        var publicDB = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public';
 
         if (!iUtil.isArray(systems)) {
             res.send({errorMsg: '系统类型格式有误!', success: false, obj: null });
@@ -1572,30 +1693,30 @@ app.route("/Render/handle/goods")
                                     route =    'pc';
                                     domain =   '';
                                     module =   modules[system] || [];
-                                    distDB =   rootPath + '/data/mall/pc';
                                     distMod =  rootPath + '/app/pc/scripts/module';
                                     defHtml =  rootPath + '/pack/.cfg/build/mall_pc.html';
-                                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/pc/web';
+                                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/pc/web';
+                                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/pc';
                                     htmlFile = distWeb + '/' + firstId + '/' + secondId + '/' + thirdId + '/' + goodsId + '.html';
                                     break;
                                 case "mpMall":
                                     route =    'mp';
                                     domain =   '';
                                     module =   modules[system] || [];
-                                    distDB =   rootPath + '/data/mall/mp';
                                     distMod =  rootPath + '/app/mp/scripts/module';
                                     defHtml =  rootPath + '/pack/.cfg/build/mall_mp.html';
-                                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/mp/web';
+                                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/mp/web';
+                                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/mp';
                                     htmlFile = distWeb + '/' + firstId + '/' + secondId + '/' + thirdId + '/' + goodsId + '.html';
                                     break;
                                 case "fmpMall":
                                     route =    'fmp';
                                     domain =   '';
                                     module =   modules[system] || [];
-                                    distDB =   rootPath + '/data/mall/fmp';
                                     distMod =  rootPath + '/app/fmp/scripts/module';
                                     defHtml =  rootPath + '/pack/.cfg/build/mall_fmp.html';
-                                    distWeb =  rootPath + '/' + (region? 'pack/region/' + region: 'app') + '/fmp/web';
+                                    distWeb =  rootPath + (region? '/pack/region/' + region: '') + '/app/fmp/web';
+                                    distDB =   rootPath + (region? '/pack/region/' + region: '') + '/data/mall/fmp';
                                     htmlFile = distWeb + '/' + firstId + '/' + secondId + '/' + thirdId + '/' + goodsId + '.html';
                                     break;
                                 default:
@@ -1694,7 +1815,7 @@ app.route("/Static/handle/copy")
         var defs = [];
         var record = [];
         var isErr = false;
-        var data =  req.body;
+        var data = req.body;
 
         if (!iUtil.isArray(data)) {
             res.send({errorMsg: '数据格式错误!', success: false, obj: null });
@@ -1737,6 +1858,73 @@ app.route("/Static/handle/copy")
             iUtil.iPromise.all(defs)
                 .then(function(){ res.send({ errorMsg: '', success: true, obj: record }) })
                 .catch(function(err){ res.send({ errorMsg:  '文件拷贝失败！', success: false, obj: err }) });
+        }
+
+    });
+
+
+app.route("/Static/handle/rename")
+    .post(function(req, res){
+
+        var defs = [];
+        var record = [];
+        var isErr = false;
+        var data = req.body;
+
+        if (!iUtil.isArray(data)) {
+            res.send({errorMsg: '数据格式错误!', success: false, obj: null });
+            return;
+        }
+
+        if (iUtil.isEmpty(data)) {
+            res.send({errorMsg: '数据内容为空', success: false, obj: null });
+            return;
+        }
+
+        for (var i in data) {
+            var state = [];
+            var oldPath = (data[i] || {}).old || '';
+            var newPath = (data[i] || {}).new || '';
+
+            if (isErr) {
+                break;
+            }
+
+            if (iUtil.isDirSync(oldPath)) {
+                state = iUtil.copyDir(oldPath, newPath, true);
+                defs = defs.concat(state);
+            }
+
+            if (iUtil.isFileSync(oldPath)) {
+                state = iUtil.copyFile(oldPath, newPath, true);
+                defs = defs.concat(state);
+            }
+
+            if (!iUtil.isEmpty(state)){
+                iUtil.iPromise.all(state)
+                    .then(function(){
+                        if (iUtil.isDirSync(oldPath)) {
+                            iUtil.delDirSync(oldPath, true);
+                        }
+                        if (iUtil.isFileSync(oldPath)) {
+                            iUtil.delFileSync(oldPath, true);
+                        }
+                        record.push(data[i] || {});
+                    })
+                    .catch(function(err){
+                        if (!isErr) {
+                            isErr = true;
+                            res.send({ errorMsg:  '文件重命名失败！', success: false, obj: err });
+                        }
+                    });
+            }
+
+        }
+
+        if (!isErr) {
+            iUtil.iPromise.all(defs)
+                .then(function(){ res.send({ errorMsg: '', success: true, obj: record }) })
+                .catch(function(err){ res.send({ errorMsg:  '文件重命名失败！', success: false, obj: err }) });
         }
 
     });
@@ -1797,4 +1985,3 @@ app.route("/Redis/handle/gradeBO")
             }
         });
     });
-

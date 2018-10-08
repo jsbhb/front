@@ -11,22 +11,21 @@ var middleware =   require('http-proxy-middleware');
 var device =       require('device');
 
 
-var edition =       '';
-var defRegion =     '/test';
-var rootPath =      '/opt/front';
-var mDomain =       'http://test.cncoopbuy.com';
-var pDomain =       'http://test2.cncoopbuy.com';
-var fDomain =       'http://test3.cncoopbuy.com';
-var dataPath =      rootPath + '/~Mall' + edition + '/data/mall/fmp';
+var edition =       '/dev';
+var defRegion =     '/native';
+var rootPath =      '/work/cncoopfront/front';
+var pDomain =       'http://localhost:8081';
+var mDomain =       'http://localhost:8082';
+var fDomain =       'http://localhost:8083';
+var dataPath =      rootPath + '/~Mall' + edition + '/data/mall/pc';
 var pDataPath =     rootPath + '/~Mall' + edition + '/data/mall/public';
-var regDataPath =   rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/fmp';
+var regDataPath =   rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/pc';
 var regPDataPath =  rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/public';
-var safePath =      rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/fmp/security';
-var regWebPath =    rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/fmp/web';
-var regPath =       rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/fmp';
-var sysWebPath2 =   rootPath + '/~Mall' + edition + '/app/fmp/web2';
-var sysWebPath =    rootPath + '/~Mall' + edition + '/app/fmp/web';
-var sysPath =       rootPath + '/~Mall' + edition + '/app/fmp';
+var safePath =      rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/pc/security';
+var regWebPath =    rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/pc/web';
+var regPath =       rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/pc';
+var sysWebPath =    rootPath + '/~Mall' + edition + '/app/pc/web';
+var sysPath =       rootPath + '/~Mall' + edition + '/app/pc';
 var pModPath =      rootPath + '/public_modules';
 
 
@@ -40,15 +39,12 @@ var shouldFilter =  function(req, res){
     return !isImage && !isAudio && !isVideo && true;
 };
 var proxyFilter =   function(pathname, req){
-    return (/^\/$|^\/index\.html$/i).test(req.path);
+    return false;
 };
 var proxyOptions =  {
-    target: 'http://106.14.185.13:8083',
+    target: 'http://localhost:8081',
     changeOrigin: true,
-    pathRewrite: {
-        '^/index.html': '/nav.html',
-        '^/':           '/nav.html'
-    },
+    pathRewrite: {},
     router: {}
 };
 
@@ -60,7 +56,7 @@ router.all('*', function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var isOptions =   (/^OPTIONS$/i).test(req.method);
     var isAtWeChat =  device(req.get("User-Agent")).weChat();
-    var isHostname =  (/^106\.14\.185\.13$/).test(req.hostname);
+    var isHostname =  (/^localhost$/).test(req.hostname);
     if (!isHostname) {
         res.redirect(301, "http://" + req.hostname + req.url);
         return;
@@ -94,7 +90,7 @@ router.get('*', function(req, res, next){
     var validate =        null;
     var reqPath =         decodeURI(req.path);
     var iDevice =         device(req.get("User-Agent"));
-    var iRedirect =       !iDevice.mobile() && null;
+    var iRedirect =       !iDevice.mobile() && pDomain && null;
     var isData =          (/^\/?data\/[^\/]+\/?/i).test(reqPath);
     var isError =         (/^\/error(\.htm|\.html)$/i).test(reqPath);
     var isOldUrl =        (/^\/goodsDetail(\.html|\.html)$/i).test(reqPath);
@@ -128,7 +124,6 @@ router.get('*', function(req, res, next){
         iRedirect || filePath || (filePath = iUtil.isFileSync(safePath + '/error.html') && safePath + '/error.html');
         iRedirect || filePath || (filePath = iUtil.isFileSync(regWebPath + '/error.html') && regWebPath + '/error.html');
         iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath + '/error.html') && sysWebPath + '/error.html');
-        iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath2 + '/error.html') && sysWebPath2 + '/error.html');
         //访问文件
         iRedirect || filePath && (appFile = iUtil.getFileSync(filePath, 'utf-8'));
         iRedirect || filePath && (appTags = ['<div id="nav-1-\\d+" v-cloak>', '</div>']);
@@ -182,7 +177,6 @@ router.get('*', function(req, res, next){
         iRedirect || filePath || (filePath = iUtil.isFileSync(safePath + '/' + reqPath) && safePath + '/' + reqPath);
         iRedirect || filePath || (filePath = iUtil.isFileSync(regWebPath + '/' + reqPath) && regWebPath + '/' + reqPath);
         iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath + '/' + reqPath) && sysWebPath + '/' + reqPath);
-        iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath2 + '/' + reqPath) && sysWebPath2 + '/' + reqPath);
         //访问文件
         iRedirect || filePath && (appFile = iUtil.getFileSync(filePath, 'utf-8'));
         iRedirect || filePath && (appTags = ['<div id="nav-1-\\d+" v-cloak>', '</div>']);
@@ -205,7 +199,6 @@ router.get('*', function(req, res, next){
         iRedirect || filePath || (filePath = iUtil.isFileSync(safePath + '/index.html') && safePath + '/index.html');
         iRedirect || filePath || (filePath = iUtil.isFileSync(regWebPath + '/index.html') && regWebPath + '/index.html');
         iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath + '/index.html') && sysWebPath + '/index.html');
-        iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath2 + '/index.html') && sysWebPath2 + '/index.html');
         //访问文件
         iRedirect || filePath && (appFile = iUtil.getFileSync(filePath, 'utf-8'));
         iRedirect || filePath && (appTags = ['<div id="nav-1-\\d+" v-cloak>', '</div>']);
@@ -226,7 +219,6 @@ router.get('*', function(req, res, next){
         iRedirect || filePath || (filePath = iUtil.isFileSync(safePath + '/' + reqPath) && safePath + '/' + reqPath);
         iRedirect || filePath || (filePath = iUtil.isFileSync(regWebPath + '/' + reqPath) && regWebPath + '/' + reqPath);
         iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath + '/' + reqPath) && sysWebPath + '/' + reqPath);
-        iRedirect || filePath || (filePath = iUtil.isFileSync(sysWebPath2 + '/' + reqPath) && sysWebPath2 + '/' + reqPath);
         //访问文件
         iRedirect || filePath && (appFile = iUtil.getFileSync(filePath, 'utf-8'));
         iRedirect || filePath && (appTags = ['<div id="nav-1-\\d+" v-cloak>', '</div>']);
@@ -262,4 +254,4 @@ router.get('*', function(req, res, next){
 app.use(compression({filter: shouldFilter}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(middleware(proxyFilter, proxyOptions), router);
-app.listen(8083);
+app.listen(8081);

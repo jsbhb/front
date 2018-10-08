@@ -2,7 +2,6 @@
 var fs =           require('fs');
 var redis =        require('redis');
 var iUtil =        require('iUtil');
-var https =        require('https');
 var multer =       require('multer');
 var device =       require('device');
 var bodyParser =   require('body-parser');
@@ -10,23 +9,18 @@ var compression =  require('compression');
 var schedule =     require('node-schedule');
 var xlsx =         require('node-xlsx');
 var app =          require('express')();
+var client =       redis.createClient(6379, 'r-uf6ea16669ac6594.redis.rds.aliyuncs.com', {});
 
 
 var visitTimer =      null;
 var VisitOnceTimer =  null;
-var isDebug =         true;
+var isDebug =         false;
 var edition =         '';
-var defRegion =       '/test';
+var defRegion =       '/www';
 var rootPath =        '/opt/front/~Mall' + edition;
-var certPath =        '/opt/front/~Mall' + edition + '/pack/.cert';
-var mDomain =         'https://test.cncoopbuy.com';
-var pDomain =         'https://test2.cncoopbuy.com';
-var fDomain =         'https://test3.cncoopbuy.com';
-
-var privateKey  =     fs.readFileSync(certPath + '/ssl.key', 'utf8');
-var certificate =     fs.readFileSync(certPath + '/ssl.pem', 'utf8');
-var httpsServer =     https.createServer({ key: privateKey, cert: certificate }, app);
-var client =          redis.createClient(6379, '47.100.2.239', {});
+var mDomain =         'http://m.cncoopbuy.com';
+var pDomain =         'http://www.cncoopbuy.com';
+var fDomain =         'http://fl.cncoopbuy.com';
 
 
 var DBHandle = function(opt) {
@@ -165,7 +159,7 @@ var DBHandle = function(opt) {
                     }
                     if (!iUtil.isEmpty(oldPathIsExist)) { goodsPath[pathList[i]] = oldGoodsPath; }
                     if (iUtil.isEmpty(oldPathIsExist)) { goodsPath[pathList[i]] = newGoodsPath; }
-                    if (!iUtil.isEmpty(newGoodsPath)) { iUtil.setFileSync(publicDB + "/map/goods.json", JSON.stringify(newGoodsPath, null, 2), true); }
+                    if (!iUtil.isEmpty(newGoodsPath)) { iUtil.setFileSync(publicDB + "/map/goods.json", JSON.stringify(newGoodsPath, null, 2), null, true); }
                     if (iUtil.isEmpty(newGoodsPath)) { iUtil.delFileSync(publicDB + "/map/goods.json"); iUtil.clrDirSync(publicDB); }
                 }
             }
@@ -205,7 +199,7 @@ var DBHandle = function(opt) {
                         json.forEach(function(v){ v && Object.assign(fileData, JSON.parse(v)) });
                     }
                     iUtil.isEmpty(fileData) || (html = iUtil.finds(iUtil.getFileSync(htmlFile, 'utf-8'), htmlTags));
-                    iUtil.isEmpty(fileData) || iUtil.setFileSync(dataFile, iUtil.clean(iUtil.render(html, fileData)), true);
+                    iUtil.isEmpty(fileData) || iUtil.setFileSync(dataFile, iUtil.clean(iUtil.render(html, fileData)), null, true);
                     iUtil.isEmpty(fileData) && iUtil.delFileSync(dataFile);
                 }
             }
@@ -466,14 +460,14 @@ var DBHandle = function(opt) {
                                 mData.data.push(key);
                                 tData.data[key] = navData.data[key];
                                 tFile = distDB + '/nav/1p_' + key + '.json';
-                                iUtil.setFileSync(tFile, JSON.stringify(tData), true);
+                                iUtil.setFileSync(tFile, JSON.stringify(tData), null, true);
                             }
-                            iUtil.setFileSync(fFile, JSON.stringify(fData), true);
-                            iUtil.setFileSync(mFile, JSON.stringify(mData), true);
-                            iUtil.setFileSync(jsonFile, JSON.stringify(navData), true);
+                            iUtil.setFileSync(fFile, JSON.stringify(fData), null, true);
+                            iUtil.setFileSync(mFile, JSON.stringify(mData), null, true);
+                            iUtil.setFileSync(jsonFile, JSON.stringify(navData), null, true);
                             html = iUtil.finds(iUtil.getFileSync(htmlFile, 'utf-8'), htmlTags);
                             fileData = iUtil.clean(iUtil.render(html, navData));
-                            iUtil.setFileSync(dataFile, fileData, true);
+                            iUtil.setFileSync(dataFile, fileData, null, true);
                         }
                         else {
                             iUtil.delDirSync(distDB +'/nav', true);
@@ -604,11 +598,11 @@ var shouldFilter = function(req, res){
 };
 
 
-client.auth('redis');
+client.auth('Xinhai2017');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(compression({filter: shouldFilter}));
-httpsServer.listen(8888);
+app.listen(8888);
 
 
 app.route("*")
@@ -617,8 +611,8 @@ app.route("*")
         res.header("Content-Type", "application/json;charset=utf-8");
         res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        var isHostname = (/^testfront\.cncoopbuy\.com$/).test(req.hostname);
-        isHostname || res.redirect(301, "https://" + req.hostname + req.url);
+        var isHostname = (/^(139\.196\.74\.68|192\.168\.182\.119)$/).test(req.hostname);
+        isHostname || res.redirect(301, "http://" + req.hostname + req.url);
         isHostname && (/^OPTIONS$/i).test(req.method) && res.send(200);
         isHostname && !(/^OPTIONS$/i).test(req.method) && next();
     });
@@ -809,7 +803,7 @@ app.route("/Sitemap/handle")
         sitemaps.forEach(function(data, code){
             var buildFile = SitemapFile + '/sitemap' + (code+1) + '.xml';
             var buildData = iUtil.clean(iUtil.render(SitemapXml, {sitemaps: data}));
-            defs = defs.concat(iUtil.setFile(buildFile, buildData, true));
+            defs = defs.concat(iUtil.setFile(buildFile, buildData, null, true));
         });
 
         iUtil.iPromise.all(defs)
@@ -888,13 +882,13 @@ app.route("/Region/handle")
                 Defs = Defs.concat(iUtil.copyDir(cfgPath + '/' + file, regPath + '/app/' + file, true));
             });
 
-            Defs = Defs.concat(iUtil.setFile(regPath + '/.cert/cfg.txt', 'region:' + region, true));
-            Defs = Defs.concat(iUtil.setFile(pcDataPath + '/entity/pc.json', setPcJSON, true));
-            Defs = Defs.concat(iUtil.setFile(mpDataPath + '/entity/mp.json', setMpJSON, true));
-            Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/entity/fmp.json', setFmpJSON, true));
-            Defs = Defs.concat(iUtil.setFile(pcScript + '/entity.js', pcContent, true));
-            Defs = Defs.concat(iUtil.setFile(mpScript + '/entity.js', mpContent, true));
-            Defs = Defs.concat(iUtil.setFile(fmpScript + '/entity.js', fmpContent, true));
+            Defs = Defs.concat(iUtil.setFile(regPath + '/.cert/cfg.txt', 'region:' + region, null, true));
+            Defs = Defs.concat(iUtil.setFile(pcDataPath + '/entity/pc.json', setPcJSON, null, true));
+            Defs = Defs.concat(iUtil.setFile(mpDataPath + '/entity/mp.json', setMpJSON, null, true));
+            Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/entity/fmp.json', setFmpJSON, null, true));
+            Defs = Defs.concat(iUtil.setFile(pcScript + '/entity.js', pcContent, null, true));
+            Defs = Defs.concat(iUtil.setFile(mpScript + '/entity.js', mpContent, null, true));
+            Defs = Defs.concat(iUtil.setFile(fmpScript + '/entity.js', fmpContent, null, true));
 
             iUtil.iPromise.all(Defs)
                 .then(function(){ res.send({errorMsg: '', success: true, obj: region + "区域中心配置创建成功!" }); })
@@ -945,8 +939,8 @@ app.route("/Region/handle")
                         var pcData = Object.assign(JSON.parse(getPcJSON), req.body||{}, { debug: debug });
                         var pcContent = iUtil.render(pcMustache, { siteInfo: pcData });
                         var setPcJSON = JSON.stringify(pcData, null, 2);
-                        Defs = Defs.concat(iUtil.setFile(pcScript + '/entity.js', pcContent, true));
-                        Defs = Defs.concat(iUtil.setFile(pcDataPath + '/entity/pc.json', setPcJSON, true));
+                        Defs = Defs.concat(iUtil.setFile(pcScript + '/entity.js', pcContent, null, true));
+                        Defs = Defs.concat(iUtil.setFile(pcDataPath + '/entity/pc.json', setPcJSON, null, true));
                         break;
                     case 'mpMall':
                         var getMpJSON = iUtil.getFileSync(mpDataPath + '/entity/mp.json', 'utf-8');
@@ -954,8 +948,8 @@ app.route("/Region/handle")
                         var mpData = Object.assign(JSON.parse(getMpJSON), req.body||{}, { debug: debug });
                         var mpContent =  iUtil.render(mpMustache, { siteInfo: mpData });
                         var setMpJSON = JSON.stringify(mpData, null, 2);
-                        Defs = Defs.concat(iUtil.setFile(mpScript + '/entity.js', mpContent, true));
-                        Defs = Defs.concat(iUtil.setFile(mpDataPath + '/entity/mp.json', setMpJSON, true));
+                        Defs = Defs.concat(iUtil.setFile(mpScript + '/entity.js', mpContent, null, true));
+                        Defs = Defs.concat(iUtil.setFile(mpDataPath + '/entity/mp.json', setMpJSON, null, true));
                         break;
                     case 'fmpMall':
                         var getFmpJSON = iUtil.getFileSync(fmpDataPath + '/entity/fmp.json', 'utf-8');
@@ -963,8 +957,8 @@ app.route("/Region/handle")
                         var fmpData = Object.assign(JSON.parse(getFmpJSON), req.body||{}, { debug: debug });
                         var fmpContent =  iUtil.render(fmpMustache, { siteInfo: fmpData });
                         var setFmpJSON = JSON.stringify(fmpData, null, 2);
-                        Defs = Defs.concat(iUtil.setFile(fmpScript + '/entity.js', fmpContent, true));
-                        Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/entity/fmp.json', setFmpJSON, true));
+                        Defs = Defs.concat(iUtil.setFile(fmpScript + '/entity.js', fmpContent, null, true));
+                        Defs = Defs.concat(iUtil.setFile(fmpDataPath + '/entity/fmp.json', setFmpJSON, null, true));
                         break;
                 }
             });
@@ -1278,8 +1272,8 @@ app.route("/Page/handle")
             bodyFooter && (html = iUtil.append(html, ["<div id='body-footer'>", "</div>"], bodyFooter));
             script     && (html = iUtil.append(html, ["<script tag='module'>", "</script>"], script));
 
-            defs = defs.concat(iUtil.setFile(jsonFile, iUtil.clean(json), true));
-            defs = defs.concat(iUtil.setFile(htmlFile, iUtil.clean(html), true));
+            defs = defs.concat(iUtil.setFile(jsonFile, iUtil.clean(json), null, true));
+            defs = defs.concat(iUtil.setFile(htmlFile, iUtil.clean(html), null, true));
 
         });
 
@@ -1313,7 +1307,7 @@ app.route("/Data/handle/nav")
         var jsonFile = rootPath + (region? '/pack/region/' + region: '') + '/data/mall/public/nav/1d.json';
 
         if (jsonFile) {
-            defs =  iUtil.setFile(jsonFile, JSON.stringify({'data': data}), true);
+            defs =  iUtil.setFile(jsonFile, JSON.stringify({'data': data}), null, true);
         }
 
         iUtil.iPromise.all(defs)
@@ -1361,7 +1355,7 @@ app.route("/Data/handle/distribution")
                             specs.fx = 0;
                         }
                     }
-                    defs = iUtil.setFile(goodsFile, JSON.stringify(fileData), true);
+                    defs = iUtil.setFile(goodsFile, JSON.stringify(fileData), null, true);
                 }
             }
             if (goods) { iUtil.inArray(goodsId, goods) === -1 && goods.push(goodsId) }
@@ -1409,7 +1403,7 @@ app.route("/Data/handle/distribution")
                             specs.fx = 1;
                         }
                     }
-                    defs = iUtil.setFile(goodsFile, JSON.stringify(fileData), true);
+                    defs = iUtil.setFile(goodsFile, JSON.stringify(fileData), null, true);
                 }
             }
             if (goods) { iUtil.inArray(goodsId, goods) === -1 && goods.push(goodsId) }
@@ -1494,7 +1488,7 @@ app.route("/Data/handle/visit/timer")
                                     ]);
                                 }
                             }
-                            iUtil.setFile(distExcel, xlsx.build([{ name: 'sheet1', data: writeData }]), true);
+                            iUtil.setFile(distExcel, xlsx.build([{ name: 'sheet1', data: writeData }]), null, true);
                         }
                     }
                 });
@@ -1565,7 +1559,7 @@ app.route("/Data/handle/visit/onceTimer")
                                     ]);
                                 }
                             }
-                            iUtil.setFile(distExcel, xlsx.build([{ name: 'sheet1', data: writeData }]), true);
+                            iUtil.setFile(distExcel, xlsx.build([{ name: 'sheet1', data: writeData }]), null, true);
                         }
                     }
                 });
@@ -1623,7 +1617,7 @@ app.route("/Data/handle/visit/json")
 
         if (bodyData) {
             userData.data[timestamp] = bodyData;
-            defs = iUtil.setFile(distJson, JSON.stringify(userData), true);
+            defs = iUtil.setFile(distJson, JSON.stringify(userData), null, true);
         }
 
         iUtil.iPromise.all(defs)
@@ -1801,7 +1795,7 @@ app.route("/Render/handle/goods")
                             bodyFooter && (html = iUtil.append(html, ["<div id='body-footer'>", "</div>"], bodyFooter));
                             script     && (html = iUtil.append(html, ["<script tag='module'>", "</script>"], script));
 
-                            defs = defs.concat(iUtil.setFile(htmlFile, iUtil.clean(html), true));
+                            defs = defs.concat(iUtil.setFile(htmlFile, iUtil.clean(html), null, true));
 
                         });
                     }
@@ -1991,4 +1985,3 @@ app.route("/Redis/handle/gradeBO")
             }
         });
     });
-

@@ -11,36 +11,43 @@ var middleware =   require('http-proxy-middleware');
 var device =       require('device');
 
 
-var shouldFilter = function(req, res){
+var edition =       '';
+var defRegion =     '/test';
+var rootPath =      '/opt/front';
+var mDomain =       'http://test.cncoopbuy.com';
+var pDomain =       'http://test2.cncoopbuy.com';
+var fDomain =       'http://test3.cncoopbuy.com';
+var dataPath =      rootPath + '/~Mall' + edition + '/data/mall/pc';
+var pDataPath =     rootPath + '/~Mall' + edition + '/data/mall/public';
+var regDataPath =   rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/pc';
+var regPDataPath =  rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/public';
+var safePath =      rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/pc/security';
+var regWebPath =    rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/pc/web';
+var regPath =       rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/app/pc';
+var sysWebPath =    rootPath + '/~Mall' + edition + '/app/pc/web';
+var sysPath =       rootPath + '/~Mall' + edition + '/app/pc';
+var pModPath =      rootPath + '/public_modules';
+
+
+var app =           express();
+var router =        express.Router();
+var shouldFilter =  function(req, res){
     var contentType = res.get('Content-Type');
     var isImage = (/image\/.+/gi).test(contentType);
     var isAudio = (/audio\/.+/gi).test(contentType);
     var isVideo = (/video\/.+/gi).test(contentType);
     return !isImage && !isAudio && !isVideo && true;
 };
-var proxyFilter =  function(pathname, req){
+var proxyFilter =   function(pathname, req){
     return false;
 };
-var proxyOptions = {
+var proxyOptions =  {
     target: 'http://106.14.185.13:8081',
     changeOrigin: true,
     pathRewrite: {},
     router: {}
 };
 
-var app =         express();
-var router =      express.Router();
-var mDomain =     'http://test.cncoopbuy.com';
-var pDomain =     'http://test2.cncoopbuy.com';
-var fDomain =     'http://test3.cncoopbuy.com';
-var dataPath =    '/opt/front/~Mall/data/mall/pc';
-var pDataPath =   '/opt/front/~Mall/data/mall/public';
-var safePath =    '/opt/front/~Mall/pack/region/test/pc/security';
-var regWebPath =  '/opt/front/~Mall/pack/region/test/pc/web';
-var regPath =     '/opt/front/~Mall/pack/region/test/pc';
-var sysWebPath =  '/opt/front/~Mall/app/pc/web';
-var sysPath =     '/opt/front/~Mall/app/pc';
-var pModPath =    '/opt/front/public_modules';
 
 router.all('*', function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
@@ -63,29 +70,33 @@ router.all('*', function(req, res, next){
     next();
 });
 router.get('*', function(req, res, next){
-    var appTags =      '';
-    var appFile =      '';
-    var appData =      '';
-    var filePath =     '';
-    var tempPath =     '';
-    var lastModified = '';
-    var goodsId =      '';
-    var startIndex =   '';
-    var pathQuerys =   '';
-    var pathMapUrl =   '';
-    var newPathUrl =   '';
-    var pathMapData =  '';
-    var pathMapJSON =  '';
-    var validate =     null;
-    var reqPath =      decodeURI(req.path);
-    var iDevice =      device(req.get("User-Agent"));
-    var iRedirect =    !iDevice.mobile() && pDomain && null;
-    var isData =       (/^\/?data\/[^\/]+\/?/i).test(reqPath);
-    var isError =      (/^\/error(\.htm|\.html)$/i).test(reqPath);
-    var isOldUrl =     (/^\/goodsDetail(\.html|\.html)$/i).test(reqPath);
-    var isNewUrl =     (/^\/[^\/]+\/[^\/]+\/[^\/]+\/\d+(\.html|\.html)$/i).test(reqPath);
-    var isIndex =      (/^\/$|^\/index(\.htm|\.html)$/i).test(reqPath);
-    var isHtml =       (/\.htm$|\.html$/i).test(reqPath);
+    var appTags =         '';
+    var appFile =         '';
+    var appData =         '';
+    var filePath =        '';
+    var tempPath =        '';
+    var lastModified =    '';
+    var goodsId =         '';
+    var startIndex =      '';
+    var pathQuerys =      '';
+    var pathMapUrl =      '';
+    var pathMapData =     '';
+    var pathMapJSON =     '';
+    var newPathUrl =      '';
+    var regPathMapUrl =   '';
+    var regPathMapData =  '';
+    var regPathMapJSON =  '';
+    var newRegPathUrl =   '';
+    var validate =        null;
+    var reqPath =         decodeURI(req.path);
+    var iDevice =         device(req.get("User-Agent"));
+    var iRedirect =       !iDevice.mobile() && pDomain && null;
+    var isData =          (/^\/?data\/[^\/]+\/?/i).test(reqPath);
+    var isError =         (/^\/error(\.htm|\.html)$/i).test(reqPath);
+    var isOldUrl =        (/^\/goodsDetail(\.html|\.html)$/i).test(reqPath);
+    var isNewUrl =        (/^\/[^\/]+\/[^\/]+\/[^\/]+\/\d+(\.html|\.html)$/i).test(reqPath);
+    var isIndex =         (/^\/$|^\/index(\.htm|\.html)$/i).test(reqPath);
+    var isHtml =          (/\.htm$|\.html$/i).test(reqPath);
     if(isData){
         switch (req.query.dataType){
             case 'navData':
@@ -94,6 +105,8 @@ router.get('*', function(req, res, next){
             default:
                 tempPath = reqPath.replace(/^(\/?data\/)([^\/]+)/i, '$2');
         }
+        filePath || (filePath = iUtil.isFileSync(regDataPath + '/' + tempPath) && regDataPath + '/' + tempPath);
+        filePath || (filePath = iUtil.isFileSync(regPDataPath + '/' + tempPath) && regPDataPath + '/' + tempPath);
         filePath || (filePath = iUtil.isFileSync(dataPath + '/' + tempPath) && dataPath + '/' + tempPath);
         filePath || (filePath = iUtil.isFileSync(pDataPath + '/' + tempPath) && pDataPath + '/' + tempPath);
         filePath && (lastModified = iUtil.inInfoSync(filePath).mtime.toUTCString());
@@ -104,7 +117,7 @@ router.get('*', function(req, res, next){
     }
     else if(isError){
         //域名适配
-        validate = iUtil.isFileSync(safePath + '/error.html');
+        validate || (validate = iUtil.isFileSync(safePath + '/error.html'));
         validate || (iRedirect && res.redirect(302, iRedirect));
         validate && (iRedirect && (iRedirect = null));
         //文件路径
@@ -126,27 +139,38 @@ router.get('*', function(req, res, next){
         goodsId = req.query.goodsId;
         startIndex = req.originalUrl.indexOf("?");
         pathQuerys = startIndex !== -1? req.originalUrl.substring(startIndex): '';
+        regPathMapData = iUtil.getFileSync(regPDataPath + '/map/goods.json');
+        regPathMapJSON = JSON.parse(regPathMapData || '{}') || {};
+        newRegPathUrl = regPathMapJSON && regPathMapJSON[goodsId] && regPathMapJSON[goodsId].href && regPathMapJSON[goodsId].href + pathQuerys;
         pathMapData = iUtil.getFileSync(pDataPath + '/map/goods.json');
         pathMapJSON = JSON.parse(pathMapData || '{}') || {};
         newPathUrl = pathMapJSON && pathMapJSON[goodsId] && pathMapJSON[goodsId].href && pathMapJSON[goodsId].href + pathQuerys;
         //域名适配
-        validate = iUtil.isFileSync(safePath + newPathUrl);
+        validate || (validate = iUtil.isFileSync(safePath + newRegPathUrl));
+        validate || (validate = iUtil.isFileSync(safePath + newPathUrl));
         validate || (iRedirect && res.redirect(302, iRedirect));
         validate && (iRedirect && (iRedirect = null));
         //访问文件
-        iRedirect || newPathUrl && res.redirect(301, newPathUrl);
-        iRedirect || newPathUrl || res.redirect(302, '/error.html');
+        iRedirect || newRegPathUrl && res.redirect(301, newRegPathUrl);
+        iRedirect || newRegPathUrl || newPathUrl && res.redirect(301, newPathUrl);
+        iRedirect || newRegPathUrl || newPathUrl || res.redirect(302, '/error.html');
     }
     else if(isNewUrl){
         goodsId = reqPath.split("/").pop().replace(/(\.html|\.html)$/i, "");
         startIndex = req.originalUrl.indexOf("?");
         pathQuerys = startIndex !== -1? req.originalUrl.substring(startIndex): '';
+        regPathMapData = iUtil.getFileSync(regPDataPath + '/map/goods.json');
+        regPathMapJSON = JSON.parse(regPathMapData || '{}') || {};
+        regPathMapUrl = regPathMapJSON && regPathMapJSON[goodsId] && regPathMapJSON[goodsId].href !== reqPath;
+        newRegPathUrl = regPathMapUrl && regPathMapJSON && regPathMapJSON[goodsId] && regPathMapJSON[goodsId].href && regPathMapJSON[goodsId].href + pathQuerys;
         pathMapData = iUtil.getFileSync(pDataPath + '/map/goods.json');
         pathMapJSON = JSON.parse(pathMapData || '{}') || {};
         pathMapUrl = pathMapJSON && pathMapJSON[goodsId] && pathMapJSON[goodsId].href !== reqPath;
         newPathUrl = pathMapUrl && pathMapJSON && pathMapJSON[goodsId] && pathMapJSON[goodsId].href && pathMapJSON[goodsId].href + pathQuerys;
         //域名适配
-        validate = iUtil.isFileSync(safePath + '/' + reqPath);
+        validate || (validate = iUtil.isFileSync(safePath + newRegPathUrl));
+        validate || (validate = iUtil.isFileSync(safePath + newPathUrl));
+        validate || (validate = iUtil.isFileSync(safePath + '/' + reqPath));
         validate || (iRedirect && res.redirect(302, iRedirect));
         validate && (iRedirect && (iRedirect = null));
         //文件路径
@@ -162,12 +186,13 @@ router.get('*', function(req, res, next){
         iRedirect || filePath && res.setHeader("Last-Modified", lastModified);
         iRedirect || filePath && res.send(iUtil.append(appFile, appTags, appData));
         //下一步
-        iRedirect || filePath || newPathUrl && res.redirect(301, newPathUrl);
-        iRedirect || filePath || newPathUrl || res.redirect(302, '/error.html');
+        iRedirect || filePath || newRegPathUrl && res.redirect(301, newRegPathUrl);
+        iRedirect || filePath || newRegPathUrl || newPathUrl && res.redirect(301, newPathUrl);
+        iRedirect || filePath || newRegPathUrl || newPathUrl || res.redirect(302, '/error.html');
     }
     else if(isIndex){
         //域名适配
-        validate = iUtil.isFileSync(safePath + '/index.html');
+        validate || (validate = iUtil.isFileSync(safePath + '/index.html'));
         validate || (iRedirect && res.redirect(302, iRedirect));
         validate && (iRedirect && (iRedirect = null));
         //文件路径
@@ -187,7 +212,7 @@ router.get('*', function(req, res, next){
     }
     else if(isHtml){
         //域名适配
-        validate = iUtil.isFileSync(safePath + '/' + reqPath);
+        validate || (validate = iUtil.isFileSync(safePath + '/' + reqPath));
         validate || (iRedirect && res.redirect(302, iRedirect));
         validate && (iRedirect && (iRedirect = null));
         //文件路径
@@ -207,7 +232,7 @@ router.get('*', function(req, res, next){
     }
     else {
         //域名适配
-        validate = iUtil.isFileSync(safePath + '/' + reqPath);
+        validate || (validate = iUtil.isFileSync(safePath + '/' + reqPath));
         validate || (iRedirect && res.redirect(302, iRedirect));
         validate && (iRedirect && (iRedirect = null));
         //文件路径
@@ -224,6 +249,7 @@ router.get('*', function(req, res, next){
         iRedirect || filePath || next();
     }
 });
+
 
 app.use(compression({filter: shouldFilter}));
 app.use(bodyParser.urlencoded({extended: false}));

@@ -1873,7 +1873,7 @@
                                 $element.find(".content-bodyer .bodyer-left").on("touchstart", '[secondId]', function(){
                                     if(!$(this).hasClass('active')){
                                         if (!that.allowStop) { that.allowStop = true }
-                                        if (that.roller) { setTimeout(function(){ that.roller.stop(true); }, 20) }
+                                        if (that.roller) { that.roller.stop(true) }
                                     }
                                 });
                                 $element.find(".content-bodyer .bodyer-left").on("touchend",   '[secondId]', function(){

@@ -1,7 +1,8 @@
 
-//"http://front.cncoopbuy.com";
-//"http://testfront.cncoopbuy.com";
-var host = "http://front.cncoopbuy.com";
+//"http://localhost:8888";
+//"https://front.cncoopbuy.com";
+//"https://testfront.cncoopbuy.com";
+var host = "http://localhost:8888";
 
 
 /** 区域中心页面创建 */
@@ -18,7 +19,7 @@ function addPage(region, page) {
             page: "error",
             file: 'error',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -88,7 +89,7 @@ function addPage(region, page) {
             page: "licence",
             file: 'licence',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -158,7 +159,7 @@ function addPage(region, page) {
             page: "login",
             file: 'login',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -228,7 +229,7 @@ function addPage(region, page) {
             page: "orderDetail",
             file: "orderDetail",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -298,7 +299,7 @@ function addPage(region, page) {
             page: "orderSure",
             file: "orderSure",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -368,7 +369,7 @@ function addPage(region, page) {
             page: "pay",
             file: "pay",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -438,7 +439,7 @@ function addPage(region, page) {
             page: "personal",
             file: 'personal.html',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -508,7 +509,7 @@ function addPage(region, page) {
             page: "search",
             file: 'search.html',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -578,7 +579,7 @@ function addPage(region, page) {
             page: "shopCart",
             file: "shopCart",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -648,7 +649,7 @@ function addPage(region, page) {
             page: "shop-show",
             file: 'shop-show',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -718,7 +719,7 @@ function addPage(region, page) {
             page: "amount-access",
             file: 'amount-access',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall",
             module: [
                 {
@@ -807,77 +808,77 @@ function delPage(region, page) {
             page: "error",
             file: 'error',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         licence:       {
             page: "licence",
             file: 'licence',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         login:         {
             page: "login",
             file: 'login',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         orderDetail:   {
             page: "orderDetail",
             file: "orderDetail",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         orderSure:     {
             page: "orderSure",
             file: "orderSure",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         pay:           {
             page: "pay",
             file: "pay",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         personal:      {
             page: "personal",
             file: 'personal.html',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         search:        {
             page: "search",
             file: 'search.html',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         shopCart:      {
             page: "shopCart",
             file: "shopCart",
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         shopShow:      {
             page: "shop-show",
             file: 'shop-show',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         },
         amountAccess:  {
             page: "amount-access",
             file: 'amount-access',
             path: '',
-            region: '',
+            region: region,
             system: "pcMall"
         }
     };

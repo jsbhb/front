@@ -11,12 +11,12 @@ var middleware =   require('http-proxy-middleware');
 var device =       require('device');
 
 
-var edition =       '';
-var defRegion =     '/test';
-var rootPath =      '/opt/front';
-var mDomain =       'http://test.cncoopbuy.com';
-var pDomain =       'http://test2.cncoopbuy.com';
-var fDomain =       'http://test3.cncoopbuy.com';
+var edition =       '/dev';
+var defRegion =     '/native';
+var rootPath =      '/work/cncoopfront/front';
+var pDomain =       'http://localhost:8081';
+var mDomain =       'http://localhost:8082';
+var fDomain =       'http://localhost:8083';
 var dataPath =      rootPath + '/~Mall' + edition + '/data/mall/fmp';
 var pDataPath =     rootPath + '/~Mall' + edition + '/data/mall/public';
 var regDataPath =   rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/fmp';
@@ -32,18 +32,18 @@ var pModPath =      rootPath + '/public_modules';
 
 var app =           express();
 var router =        express.Router();
-var shouldFilter =  function(req, res){
+var shouldFilter = function(req, res){
     var contentType = res.get('Content-Type');
     var isImage = (/image\/.+/gi).test(contentType);
     var isAudio = (/audio\/.+/gi).test(contentType);
     var isVideo = (/video\/.+/gi).test(contentType);
     return !isImage && !isAudio && !isVideo && true;
 };
-var proxyFilter =   function(pathname, req){
+var proxyFilter =  function(pathname, req){
     return (/^\/$|^\/index\.html$/i).test(req.path);
 };
-var proxyOptions =  {
-    target: 'http://106.14.185.13:8083',
+var proxyOptions = {
+    target: 'http://localhost:8083',
     changeOrigin: true,
     pathRewrite: {
         '^/index.html': '/nav.html',
@@ -60,7 +60,7 @@ router.all('*', function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var isOptions =   (/^OPTIONS$/i).test(req.method);
     var isAtWeChat =  device(req.get("User-Agent")).weChat();
-    var isHostname =  (/^106\.14\.185\.13$/).test(req.hostname);
+    var isHostname =  (/^localhost$/).test(req.hostname);
     if (!isHostname) {
         res.redirect(301, "http://" + req.hostname + req.url);
         return;

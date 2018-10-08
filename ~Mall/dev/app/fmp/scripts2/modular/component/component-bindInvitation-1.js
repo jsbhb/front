@@ -15,6 +15,12 @@ define(["text!modular/template/template-bindInvitation-1.mustache"], function(te
         tag: "component-bindinvitation-1",
         template: template,
         helpers: {
+            returnShow: function(options){
+                var gradeId = localStorage.getItem('shopId');
+                if(gradeId == 124){
+                    return options.fn(options.context||this);
+                }
+            }
         },
         scope: {
             bingBtn_state: "",

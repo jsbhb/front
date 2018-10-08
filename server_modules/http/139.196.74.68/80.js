@@ -11,17 +11,17 @@ var device =       require('device');
 
 var app =           express();
 var proxyFilter =   function(pathname, req){
-    return req.hostname !== "106.14.185.13";
+    return req.hostname !== "139.196.74.68";
 };
 var proxyOptions =  {
-    target: 'http://106.14.185.13:80',
+    target: 'http://139.196.74.68:80',
     changeOrigin: true,
     pathRewrite: {},
     router: {
-        "test2.cncoopbuy.com":      "http://106.14.185.13:8081",
-        "test.cncoopbuy.com":       "http://106.14.185.13:8082",
-        "test3.cncoopbuy.com":      "http://106.14.185.13:8083",
-        "testfront.cncoopbuy.com":  "http://106.14.185.13:8888"
+        "m.cncoopbuy.com":          "http://139.196.74.68:8081",
+        "www.cncoopbuy.com":        "http://139.196.74.68:8082",
+        "fl.cncoopbuy.com":         "http://139.196.74.68:8083",
+        "front.cncoopbuy.com":      "http://139.196.74.68:8888"
     }
 };
 

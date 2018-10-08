@@ -22,7 +22,6 @@ require([
     var gradeId = api.jsData.userInfo.gradeId;
     var isLogin = api.jsData.userInfo.isLogin;
     var centerId = api.jsData.userInfo.centerId;
-    var welfareVip = api.jsData.userInfo.welfareVip;
     var mDomainName = api.jsData.siteInfo.mDomainName;
     var fDomainName = api.jsData.siteInfo.fDomainName;
     var pathUrl = api.jsData.location.pathUrl;
@@ -30,38 +29,32 @@ require([
     var jumpUrl = api.jsUtil.url.getParam("jumpUrl", 1);
     var unionId = api.jsUtil.url.getParam("unionId");
 
+    localStorage.removeItem('welfareVip');
 
     //页面控制
     if(!isLogin){
         setTimeout(function(){ window.location.href = '/login.html?jumpUrl=' + pathUrl; }, 200);
         return;
     }
-    if (!welfareVip) {
-        api.jsModel.send("USER_INVITERINFO_CHECK", {
-            shopId: shopId || gradeId,
-            id: userId
-        }).done(function(response){
-            if (response && response.success && response.obj === true) {
-                api.jsData.userInfo.welfareVip = true;
-                window.localStorage.setItem("welfareVip", 'v:' + shopId + '-' + userId);
-                window.location.href = "/index.html";
-                toRender.reject();
-            }
-            else {
-                api.jsData.userInfo.welfareVip = false;
-                window.localStorage.removeItem("welfareVip");
-                toRender.resolve();
-            }
-        }).fail(function(){
-            setTimeout(function(){ window.location.href = '/login.html?jumpUrl=' + pathUrl; }, 200);
+    api.jsModel.send("USER_INVITERINFO_CHECK", {
+        shopId: shopId || gradeId,
+        id: userId
+    }).done(function(response){
+        if (response && response.success && response.obj === true) {
+            api.jsData.userInfo.welfareVip = true;
+            window.localStorage.setItem("welfareVip", 'v:' + shopId + '-' + userId);
+            window.location.href = "/index.html";
             toRender.reject();
-        })
-    } else {
-        jumpUrl
-            ? window.location.href = jumpUrl
-            : window.location.href = "/index.html";
+        }
+        else {
+            api.jsData.userInfo.welfareVip = false;
+            window.localStorage.removeItem("welfareVip");
+            toRender.resolve();
+        }
+    }).fail(function(){
+        setTimeout(function(){ window.location.href = '/login.html?jumpUrl=' + pathUrl; }, 200);
         toRender.reject();
-    }
+    })
 
 
     /* 加载页面模块 */

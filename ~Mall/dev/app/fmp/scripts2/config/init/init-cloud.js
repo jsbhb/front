@@ -1628,6 +1628,18 @@
                     errFunc:      {},
                     data:         { centerId: DB.centerId }
                 },
+                USER_INVITERCODE_APPLY:    {
+                    host:         "",
+                    path:         "/usercenter/1.0/welfare/inviter/apply/code/{gradeId}/{phone}",
+                    method:       "GET",
+                    context:      "",
+                    contType:     "application/x-www-form-urlencoded;charset=UTF-8",
+                    reqDataType:  "",
+                    reqHeader:    {},
+                    dataType:     "",
+                    errFunc:      {},
+                    data:         {}
+                },
                 USER_INVITERINFO_CHECK:     {
                     host:         "",
                     path:         "/usercenter/1.0/user/checkInviterInfo",
@@ -2845,6 +2857,7 @@
         var getAuthId =  newAuthId  || oldAuthId  || '';
         var getOpenId =  newOpenId  || oldOpenId  || '';
         var getWelfare = newWelfare || oldWelfare || '';
+
 
         return {
             shopId: getShopId,

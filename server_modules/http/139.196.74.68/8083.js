@@ -12,11 +12,11 @@ var device =       require('device');
 
 
 var edition =       '';
-var defRegion =     '/test';
+var defRegion =     '/www';
 var rootPath =      '/opt/front';
-var mDomain =       'http://test.cncoopbuy.com';
-var pDomain =       'http://test2.cncoopbuy.com';
-var fDomain =       'http://test3.cncoopbuy.com';
+var mDomain =       'http://m.cncoopbuy.com';
+var pDomain =       'http://www.cncoopbuy.com';
+var fDomain =       'http://fl.cncoopbuy.com';
 var dataPath =      rootPath + '/~Mall' + edition + '/data/mall/fmp';
 var pDataPath =     rootPath + '/~Mall' + edition + '/data/mall/public';
 var regDataPath =   rootPath + '/~Mall' + edition + '/pack/region' + defRegion + '/data/mall/fmp';
@@ -43,7 +43,7 @@ var proxyFilter =   function(pathname, req){
     return (/^\/$|^\/index\.html$/i).test(req.path);
 };
 var proxyOptions =  {
-    target: 'http://106.14.185.13:8083',
+    target: 'http://139.196.74.68:8083',
     changeOrigin: true,
     pathRewrite: {
         '^/index.html': '/nav.html',
@@ -60,7 +60,7 @@ router.all('*', function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var isOptions =   (/^OPTIONS$/i).test(req.method);
     var isAtWeChat =  device(req.get("User-Agent")).weChat();
-    var isHostname =  (/^106\.14\.185\.13$/).test(req.hostname);
+    var isHostname =  (/^139\.196\.74\.68$/).test(req.hostname);
     if (!isHostname) {
         res.redirect(301, "http://" + req.hostname + req.url);
         return;

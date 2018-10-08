@@ -124,6 +124,48 @@ define(["config.page.render"], function(Render) {
                     content: "请在微信端进行操作！"
                 });
             }
+        },
+        ".component-bindInvitation-content .getCode span touchend":function(){
+            var that = this;
+            var phone = that.response.global.userInfo.phone;
+            var gradeId = localStorage.getItem('shopId');
+            var message = that.modules.message;
+            if(gradeId == 124){
+                that.sendRequest('USER_INVITERCODE_APPLY',{
+                    gradeId: gradeId,
+                    phone: phone
+                }).done(function(res){
+                    if(res && res.success){
+                        message.refresh({
+                            type:    "success",
+                            content:  "邀请码已发送！",
+                            cancelBtn:  false,
+                            confirmBtn:  false
+                        });
+                    }else{
+                        message.refresh({
+                            type:    "error",
+                            content:  "抱歉，邀请码发送失败，请重试！",
+                            cancelBtn:  false,
+                            confirmBtn:  false
+                        });
+                    }
+                }).fail(function(){
+                    message.refresh({
+                        type:    "error",
+                        content:  "网络故障，请确认网络是否正常！",
+                        cancelBtn:  false,
+                        confirmBtn:  false
+                    });
+                });
+            }else{
+                message.refresh({
+                    type:    "error",
+                    content:  "",
+                    cancelBtn:  false,
+                    confirmBtn:  false
+                });
+            }
         }
     });
 

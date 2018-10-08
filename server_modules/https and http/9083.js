@@ -43,7 +43,7 @@ var proxyFilter =   function(pathname, req){
     return (/^\/$|^\/index\.html$/i).test(req.path);
 };
 var proxyOptions =  {
-    target: 'http://106.14.185.13:8083',
+    target: 'http://106.14.185.13:9083',
     changeOrigin: true,
     pathRewrite: {
         '^/index.html': '/nav.html',
@@ -262,4 +262,4 @@ router.get('*', function(req, res, next){
 app.use(compression({filter: shouldFilter}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(middleware(proxyFilter, proxyOptions), router);
-app.listen(8083);
+app.listen(9083);

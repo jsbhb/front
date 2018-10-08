@@ -2,7 +2,6 @@
 var fs =           require('fs');
 var redis =        require('redis');
 var iUtil =        require('iUtil');
-var https =        require('https');
 var multer =       require('multer');
 var device =       require('device');
 var bodyParser =   require('body-parser');
@@ -10,6 +9,7 @@ var compression =  require('compression');
 var schedule =     require('node-schedule');
 var xlsx =         require('node-xlsx');
 var app =          require('express')();
+var client =       redis.createClient(6379, '47.100.2.239', {});
 
 
 var visitTimer =      null;
@@ -18,15 +18,9 @@ var isDebug =         true;
 var edition =         '';
 var defRegion =       '/test';
 var rootPath =        '/opt/front/~Mall' + edition;
-var certPath =        '/opt/front/~Mall' + edition + '/pack/.cert';
-var mDomain =         'https://test.cncoopbuy.com';
-var pDomain =         'https://test2.cncoopbuy.com';
-var fDomain =         'https://test3.cncoopbuy.com';
-
-var privateKey  =     fs.readFileSync(certPath + '/ssl.key', 'utf8');
-var certificate =     fs.readFileSync(certPath + '/ssl.pem', 'utf8');
-var httpsServer =     https.createServer({ key: privateKey, cert: certificate }, app);
-var client =          redis.createClient(6379, '47.100.2.239', {});
+var mDomain =         'http://test.cncoopbuy.com';
+var pDomain =         'http://test2.cncoopbuy.com';
+var fDomain =         'http://test3.cncoopbuy.com';
 
 
 var DBHandle = function(opt) {
@@ -608,7 +602,7 @@ client.auth('redis');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(compression({filter: shouldFilter}));
-httpsServer.listen(8888);
+app.listen(9888);
 
 
 app.route("*")
@@ -617,8 +611,8 @@ app.route("*")
         res.header("Content-Type", "application/json;charset=utf-8");
         res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        var isHostname = (/^testfront\.cncoopbuy\.com$/).test(req.hostname);
-        isHostname || res.redirect(301, "https://" + req.hostname + req.url);
+        var isHostname = (/^(106\.14\.185\.13|192\.168\.70\.122)$/).test(req.hostname);
+        isHostname || res.redirect(301, "http://" + req.hostname + req.url);
         isHostname && (/^OPTIONS$/i).test(req.method) && res.send(200);
         isHostname && !(/^OPTIONS$/i).test(req.method) && next();
     });
@@ -1991,4 +1985,3 @@ app.route("/Redis/handle/gradeBO")
             }
         });
     });
-

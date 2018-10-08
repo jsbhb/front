@@ -1,11 +1,13 @@
 
-//"http://front.cncoopbuy.com";
-//"http://testfront.cncoopbuy.com";
-var host = "http://front.cncoopbuy.com";
+//"http://localhost:8888";
+//"https://front.cncoopbuy.com";
+//"https://testfront.cncoopbuy.com";
+var host = "http://localhost:8888";
 
 /** 区域中心商详页面渲染 */
 function renderGoods(region) {
     var data = {
+        region: region,
         modules: {
             'pcMall':  [
                 {
@@ -198,6 +200,6 @@ function renderGoods(region) {
         contentType: "application/json;charset=utf-8",
         data: JSON.stringify(data),
         success:function(response){ console.log(response); },
-        error:function(response){   console.log(response); }
+        error:function(response){ console.log(response); }
     });
 }
