@@ -7,17 +7,16 @@ body{
   background: #eee;
 }
 div[id^="amount-access-1-"]{
-  padding-top: 155px;
-  background: url('/images/platform/joinUs/join_bgImg01.png') no-repeat 0 0;
-  &>.amount-access-1-title{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 155px;
-    text-align: center;
-    margin-top: 80px;
-    opacity: 0.5;
+  &>.amount-access-1-showImg{
+    overflow: hidden;
+    &>img{
+      float: left;
+    }
+  }
+  &>.amount-access-1-content{
+    background: rgba(255,255,255,0.5);
+    padding-bottom: 50px;
+    margin-top: -210px;
   }
   & .list-item{
     margin-bottom: 20px;

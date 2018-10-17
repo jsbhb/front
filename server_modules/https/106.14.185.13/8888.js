@@ -1815,6 +1815,7 @@ app.route("/Render/handle/goods")
     });
 
 
+//静态服务器拷贝
 app.route("/Static/handle/copy")
     .post(function(req, res){
 
@@ -1835,6 +1836,7 @@ app.route("/Static/handle/copy")
 
         for (var i in data) {
             var state = [];
+            var dataObj = data[i];
             var oldPath = (data[i] || {}).old || '';
             var newPath = (data[i] || {}).new || '';
 
@@ -1853,9 +1855,11 @@ app.route("/Static/handle/copy")
             }
 
             if (!iUtil.isEmpty(state)){
-                iUtil.iPromise.all(state)
-                    .then(function(){ record.push(data[i] || {}) })
-                    .catch(function(err){ if (!isErr) { isErr = true; res.send({ errorMsg:  '文件拷贝失败！', success: false, obj: err }) } });
+                (function(dataObj){
+                    iUtil.iPromise.all(defs)
+                        .then(function(){ record.push(dataObj || {}) })
+                        .catch(function(err){ if (!isErr) { isErr = true; res.send({ errorMsg:  '文件拷贝失败！', success: false, obj: err }) } });
+                }(dataObj))
             }
 
         }
@@ -1869,6 +1873,7 @@ app.route("/Static/handle/copy")
     });
 
 
+//静态服务器重命名
 app.route("/Static/handle/rename")
     .post(function(req, res){
 
@@ -1889,6 +1894,7 @@ app.route("/Static/handle/rename")
 
         for (var i in data) {
             var state = [];
+            var dataObj = data[i];
             var oldPath = (data[i] || {}).old || '';
             var newPath = (data[i] || {}).new || '';
 
@@ -1907,22 +1913,24 @@ app.route("/Static/handle/rename")
             }
 
             if (!iUtil.isEmpty(state)){
-                iUtil.iPromise.all(state)
-                    .then(function(){
-                        if (iUtil.isDirSync(oldPath)) {
-                            iUtil.delDirSync(oldPath, true);
-                        }
-                        if (iUtil.isFileSync(oldPath)) {
-                            iUtil.delFileSync(oldPath, true);
-                        }
-                        record.push(data[i] || {});
-                    })
-                    .catch(function(err){
-                        if (!isErr) {
-                            isErr = true;
-                            res.send({ errorMsg:  '文件重命名失败！', success: false, obj: err });
-                        }
-                    });
+                (function(dataObj){
+                    iUtil.iPromise.all(defs)
+                        .then(function(){
+                            if (iUtil.isDirSync(oldPath)) {
+                                iUtil.delDirSync(oldPath, true);
+                            }
+                            if (iUtil.isFileSync(oldPath)) {
+                                iUtil.delFileSync(oldPath, true);
+                            }
+                            record.push(dataObj || {});
+                        })
+                        .catch(function(err){
+                            if (!isErr) {
+                                isErr = true;
+                                res.send({ errorMsg:  '文件重命名失败！', success: false, obj: err });
+                            }
+                        });
+                }(dataObj))
             }
 
         }

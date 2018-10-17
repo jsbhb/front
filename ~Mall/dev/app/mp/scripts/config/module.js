@@ -2108,7 +2108,27 @@
                     }
                 },
                 created: function(){
+                    wx.ready(function () {
+                        var shopId = localStorage.getItem('shopId') || 2;
+                        jsUtil.path.setParam(window.location.href,{'shopId':shopId});
+                        wx.onMenuShareAppMessage({
+                            title: '中国供销海外购-全国加盟', // 分享标题
+                            desc: '优质的产品、完善的服务，中国供销海外购诚邀您的加盟！', // 分享描述
+                            link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg', // 分享图标
+                            success: function (res) {
 
+                            }
+                        });
+                        wx.onMenuShareTimeline({
+                            title: '中国供销海外购-全国加盟', // 分享标题
+                            link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg', // 分享图标
+                            success: function(res){
+
+                            }
+                        });
+                    });
                 },
                 mounted: function(){
                     $('.userAddress').picker();

@@ -108,15 +108,6 @@ function addPage(region, page) {
                     cont: null
                 },
                 {
-                    code: "header-1",
-                    sort: 3,
-                    area: "bodyHeader",
-                    own:  null,
-                    cont: [{
-                        title: 'Swisse'
-                    }]
-                },
-                {
                     code: "prompt-1",
                     sort: 4,
                     area: "bodyCenter",
