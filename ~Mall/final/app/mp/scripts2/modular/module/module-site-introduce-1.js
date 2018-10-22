@@ -1,0 +1,1 @@
+define(["config.page.render"],function(e){"use strict";return window.capi.get(),e.extend({tags:{global:"<component-site-introduce-1></component-site-introduce-1>"},region:{},config:{},request:{},response:{},sendArr:[],reload:!1})});

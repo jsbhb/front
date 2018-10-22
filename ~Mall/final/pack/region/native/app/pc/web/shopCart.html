@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="zh-CN" class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if lt IE 8]> <html lang="zh-CN" class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if lt IE 9]> <html lang="zh-CN" class="ie lt-ie9"> <![endif]-->
+<!--[if gte IE 9]><html lang="zh-CN" class="ie gte-ie9"><![endif]-->
+<html lang="zh-CN">
+<head>
+<title>中国供销海外购--购物车页面</title>
+<meta charset="UTF-8">
+<meta name="keywords" content="中国供销海外购,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易">
+<meta name="description" content="中国供销海外购, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" id="viewport" content="width=1240, user-scalable=no">
+<link rel="shortcut icon" href="/images/platform/ico_pc.ico" id="ico">
+<link rel="stylesheet" href="/frames/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/fonts/iconFont/css/iconFont.css">
+<link rel="stylesheet" href="/css/page/page-mall-pc.min.css">
+</head>
+<body>
+<div id='body-header'>
+<div id="header-1-1" v-cloak>
+    <div class="header-1-top-title">
+        <p>
+            欢迎来到 {{shopName}}!
+            <span v-if="isLogin" style="margin-left:10px">{{showName}}</span>
+            <a v-if="isLogin" href="/personal.html?childType=change">修改密码</a>
+            <a v-if="isLogin" class="cancel_out">退出</a>
+            <a v-if="!isLogin" href="/login.html">请登录</a>
+        </p>
+    </div>
+    <div class="header-1-content">
+        <div class="header-logo">
+            <a href="/">
+                <img src="/images/platform/logo_pc.png" alt="中国供销海外购">
+            </a>
+        </div>
+        <div class="header-input">
+            <input type="text" :placeholder="title" class="input_search" v-model="searchCont" autocomplete="off">
+            <a class="btn btn_search"><img src="/images/platform/icon_search.png" style="margin-top:9px;" alt="中国供销海外购"></a>
+        </div>
+        <div class="header-iconGroup">
+            <ul>
+                <li>
+                    <a href="/shopCart.html">
+                        <img class="shopCart" src="/images/platform/icon_shopCart.png" style="margin-top:10px" alt="中国供销海外购-购物车">
+                        <span v-if="isLogin">{{cartCount}}</span>
+                        <span v-if="!isLogin">0</span>
+                    </a>
+                </li>
+                <li class="hasList">
+                    <a href="/personal.html"><img class="myself" src="/images/platform/icon_myself.png" alt="中国供销海外购-用户中心"></a>
+                    <div class="list list_login">
+                        <div class="btn_login">
+                            <a v-if="isLogin" class="btn_clear" style="margin:10px 0 20px 0;">帐号退出</a>
+                            <a v-if="!isLogin" href="/login.html">立即登录</a>
+                            <p v-if="!isLogin" >没有账号？ <a href="/login.html?type=register">注册</a></p>
+                        </div>
+                        <div class="login-list-content">
+                            <ul>
+                                <li><a href="/personal.html?childType=order">我的订单</a></li>
+                                <li><a href="/personal.html?childType=userInfo">个人信息</a></li>
+                                <li><a href="/personal.html?childType=address">收货地址</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="/personal.html?childType=help&childId=11">
+                        <img class="help" src="/images/platform/icon_help.png" alt="中国供销海外购-帮助中心">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="header-2-1" v-cloak>
+    <div class="header-2-content">
+        <div class="header-logo">
+            <a href="/">
+                <img src="/images/platform/logo_pc.png">
+            </a>
+        </div>
+        <div class="header-input">
+            <input type="text" :placeholder="title" class="input_search" v-model="searchCont" autocomplete="off">
+            <a class="btn btn_search"><img src="/images/platform/icon_search.png" style="margin-top:9px;" alt="中国供销海外购"></a>
+        </div>
+        <div class="header-iconGroup">
+            <ul>
+                <li>
+                    <a href="/shopCart.html">
+                        <img class="shopCart" src="/images/platform/icon_shopCart.png" style="margin-top:10px" alt="中国供销海外购-购物车">
+                        <span v-if="isLogin">{{cartCount}}</span>
+                        <span v-if="!isLogin">0</span>
+                    </a>
+                </li>
+                <li class="hasList">
+                    <a href="/personal.html"><img class="myself" src="/images/platform/icon_myself.png" alt="中国供销海外购-用户中心"></a>
+                    <div class="list list_login">
+                        <div class="btn_login">
+                            <a v-if="isLogin" class="btn_clear" style="margin:10px 0 20px 0;">帐号退出</a>
+                            <a v-if="!isLogin" href="/login.html">立即登录</a>
+                            <p v-if="!isLogin" >没有账号？ <a href="/login.html?type=register">注册</a></p>
+                        </div>
+                        <div class="login-list-content">
+                            <ul>
+                                <li><a href="/personal.html?childType=order">我的订单</a></li>
+                                <li><a href="/personal.html?childType=userInfo">个人信息</a></li>
+                                <li><a href="/personal.html?childType=address">收货地址</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="/personal.html?childType=help&childId=11">
+                        <img class="help" src="/images/platform/icon_help.png" alt="中国供销海外购-帮助中心">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="nav-1-1" v-cloak></div>
+</div>
+<div id='body-center'>
+<div id="shopCart-1-1" v-cloak>
+    <div class="shopCart-1-content">
+        <div class="shopCart-list">
+            <template v-if="orders.quantity">
+                <h1>全部购物车 (<span>{{orders.quantity}}</span>)
+                    <span class="volume">
+                        <i class="fa fa-volume-up fa-fw"></i>
+                        <em class="text">温馨提示：跨境商品单笔订单不得超过{{crossOrderMaxPrice}}元，一般贸易仓商品订单需满足{{normalOrderMinPrice}}元。</em>
+                    </span>
+                </h1>
+                <div class="list-header">
+                    <ul>
+                        <li class="btn_selectAll" @click="selectAllClick">
+                            <span class="fa fa-fw" :class="orders.selected? 'fa-check-circle': 'fa-circle-thin'">
+                            </span>全选
+                        </li>
+                        <li>商品</li>
+                        <li>商品编号</li>
+                        <li>仓库</li>
+                        <li>单价</li>
+                        <li>数量</li>
+                        <li>金额</li>
+                        <li>操作</li>
+                    </ul>
+                </div>
+                <div class="list-body">
+                    <template v-for="item1 in orders.typeObj">
+                        <template v-for="item2 in item1">
+                            <template v-for="item3 in item2.itemObj">
+                                <div class="list-body-item" :class="item3.status && item3.stock  && item3.stock >= item3.minQuantity> 0? '': 'item-lose'" :type="item3.type" :supplierId="item3.supplierId" :goodsId="item3.goodsId" :itemId="item3.itemId" :shopCartId="item3.ids">
+                                    <ul>
+                                        <li>
+                                            <span v-if="item3.status && item3.stock > 0 && item3.stock >= item3.minQuantity" class="fa fa-fw" :class="item3.selected? 'fa-check-circle': 'fa-circle-thin'" @click="selectClick"></span>
+                                            <b v-else-if="!item3.status">失效</b>
+                                            <b v-else>库存不足</b>
+                                        </li>
+                                        <li>
+                                            <ul class="item-commodity">
+                                                <li>
+                                                    <img v-if="item3.itemImg" :src="item3.itemImg" :goodsId="item3.goodsId" :itemId="item3.itemId" :shopCartId="item3.ids" :alt="item3.itemName">
+                                                    <img v-else src="/images/platform/default_img.jpg" :goodsId="item3.goodsId" :itemId="item3.itemId" :shopCartId="item3.ids" :alt="item3.itemName">
+                                                    <img v-if="item3.type == 0" class="corner_mark" src="/images/platform/tag/icon_cross.png" :alt="item3.itemName">
+                                                    <img v-else-if="item3.type == 2" class="corner_mark" src="/images/platform/tag/icon_normal.png" :alt="item3.itemName">
+                                                </li>
+                                                <li><a :href="item3.href">{{item3.itemName}}</a></li>
+                                                <li>
+                                                    <template v-for="item in returnInfoList(item3.itemSpecs.info)">
+                                                        <span>{{item}}</span>
+                                                    </template>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>{{item3.itemId}}</li>
+                                        <li>{{returnSupplierName(item3.supplierName)}}</li>
+                                        <li>￥<span>{{item3.realPrice*1 < item3.price*1?  (item3.realPrice*1).toFixed(2): (item3.price*1).toFixed(2)}}</span></li>
+                                        <li>
+                                            <span class="minus btn" @click="quantityChange"></span>
+                                            <input type="text" v-model="item3.quantity" @input="quantityInput" @blur="quantityBlur">
+                                            <span class="add btn" @click="quantityChange"></span>
+                                        </li>
+                                        <li>￥<span>{{item3.realPrice*1 < item3.price*1?  (item3.realPrice*item3.quantity).toFixed(2): (item3.price*item3.quantity).toFixed(2)}}</span></li>
+                                        <li>
+                                            <span class="btn_select_del" @click="selectDelClick">删除</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </template>
+                        </template>
+                    </template>
+                </div>
+                <div class="list-footer">
+                    <div class="list-footer-btn">
+                        <ul>
+                            <li class="btn_selectAll" @click="selectAllClick">
+                                <span class="fa fa-fw" :class="orders.selected? 'fa-check-circle': 'fa-circle-thin'"></span>全选
+                            </li>
+                            <li class="btn_selectAll_del" @click="selectMoreDelClick">删除选中商品</li>
+                            <li class="btn_lose_del" @click="loseDelClick">清除失效商品</li>
+                        </ul>
+                    </div>
+                    <div class="list-footer-msg">
+                        <ul>
+                            <li>已选商品<span> {{selectedCount}} </span>件</li>
+                            <li>
+                                <p v-if="orderCrossTotalPrice>0 && orderNormalTotalPrice>0">一般贸易总价:<b>￥<span> {{(orderNormalTotalPrice*1).toFixed(2)}} </span></b></p>
+                                <p v-if="orderCrossTotalPrice>0 && orderNormalTotalPrice>0">跨境商品总价:<b>￥<span> {{(orderCrossTotalPrice*1).toFixed(2)}} </span></b></p>
+                                <template v-if="orderNormalTotalPrice > 0 && orderCrossTotalPrice <= 0"> 一般贸易总价:<b>￥<span> {{(orderNormalTotalPrice*1).toFixed(2)}} </span></b></template>
+                                <template v-if="orderNormalTotalPrice <= 0 && orderCrossTotalPrice > 0"> 跨境商品总价:<b>￥<span> {{(orderCrossTotalPrice*1).toFixed(2)}} </span></b></template>
+                                <template v-if="orderNormalTotalPrice <= 0 && orderCrossTotalPrice <= 0">总价:<b> ￥<span> 0.00 </span></b></template>
+                            </li>
+                            <li><span class="btn_settlement" :class="!orders.oneSelected? 'noSelect': ''" @click="settlementClick">结算</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <div class="emptyCart">
+                    <img src="/images/platform/icon_emptyCart.png" alt="中国供销海外购">
+                    <p>您的购物车还是空的，马上去 <a href="/">挑选商品</a> 吧！</p>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+</div>
+<div id='body-footer'>
+<div id="footer-1-1" v-cloak>
+    <div class="footer-1-content">
+        <div class="footer-main" v-if="!mainHide">
+            <div class="footer-link">
+                <ul class="link-content">
+                    <li>
+                        <h1>购物指南</h1>
+                        <ul>
+                            <li><a href="/personal.html?childType=help&childId=11">注册流程</a></li>
+                            <li><a href="/personal.html?childType=help&childId=12">购买流程</a></li>
+                            <li><a href="/personal.html?childType=help&childId=13">常见问题</a></li>
+                            <li><a href="/personal.html?childType=help&childId=14">商品组成</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h1>支付与配送</h1>
+                        <ul>
+                            <li><a href="/personal.html?childType=help&childId=21">通关税费</a></li>
+                            <li><a href="/personal.html?childType=help&childId=22">配送方式</a></li>
+                            <li><a href="/personal.html?childType=help&childId=23">支付方式</a></li>
+                            <li><a href="/personal.html?childType=help&childId=24">物流跟踪</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h1>服务体系</h1>
+                        <ul>
+                            <li><a href="/personal.html?childType=help&childId=31">会员介绍</a></li>
+                            <li><a href="/personal.html?childType=help&childId=32">意见反馈</a></li>
+                            <li><a href="/personal.html?childType=help&childId=33">服务承诺</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h1>关于我们</h1>
+                        <ul>
+                            <li><a href="/personal.html?childType=help&childId=41">公司简介</a></li>
+                            <li><a href="/personal.html?childType=help&childId=42">联系我们</a></li>
+                            <li><a href="/amount-access.html">商务合作</a></li>
+                            <li><a href="/personal.html?childType=help&childId=43">消费者告知书</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-phone">
+                <ul>
+                    <li v-if="siteInfo.telephone">客服热线</li>
+                    <li v-if="siteInfo.telephone">{{siteInfo.telephone}}</li>
+                    <li v-if="siteInfo.telephone">周一至周五 9:00 - 18:00</li>
+                </ul>
+            </div>
+            <div class="footer-qrcode">
+                <img src="/images/platform/qr_shop.png" alt="中国供销海外购-微信公众号">
+                <p>关注微信公众号</p>
+            </div>
+        </div>
+        <div class="footer-cpy">
+            <p>
+                {{siteInfo.title}} {{siteInfo.ICP}}
+            </p>
+            <p>
+                {{siteInfo.name? '公司名称：'+siteInfo.name: ''}}
+                {{siteInfo.address? '公司地址：'+siteInfo.address: ''}}
+                {{siteInfo.telephone? '联系电话：'+siteInfo.telephone: ''}}
+                {{siteInfo.emailBox? '联系邮箱：'+siteInfo.emailBox: ''}}
+            </p>
+            <p>
+                Copyright(C)2017-2022 {{siteInfo.title}}版权所有
+                <a href="/licence.html" style="color:#333;">自营经营者信息</a>
+            </p>
+        </div>
+        <div class="myKf">
+            <a :href="qqHref" class="kf"></a>
+            <p class="top"></p>
+        </div>
+    </div>
+</div>
+</div>
+<div id="message-1-1" v-cloak>
+    <div class="message-1-content" v-if="content">
+        <div class="message-header">
+            <span class="message-text">
+                {{title}}
+            </span>
+        </div>
+        <div class="message-body">
+            <span>{{content}}</span>
+        </div>
+        <div class="message-footer">
+            <span class="message-btnGroup">
+                <a class="btn btn_cancel" v-if="cancelBtn" @click="cancelClick">
+                    {{returnCancelText}}
+                </a>
+                <a class="btn btn_confirm" v-if="confirmBtn" @click="confirmClick">
+                    {{returnConfirmText}}
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+<div id="alertDefault-1-1" v-cloak>
+    <div class="alertDefault-1-content">
+        <span v-if="content">
+            <span>温馨提示</span>
+           <br>
+            <span>{{content}}</span>
+        </span>
+    </div>
+</div>
+<div id="alertDiscount-1-1" v-cloak>
+    <div class="alertDiscount-1-content" v-if="isShow">
+        <div class="alertDiscount-msg">
+            <div class="msg-btn" :couponId="couponId" @click="msgBtnClick"></div>
+            <div class="cancel-btn" @click="cancelBtnClick"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/frames/vue/dist/vue.min.js"></script>
+<script src="/frames/jquery/dist/jquery.min.js"></script>
+<script src="/frames/jquery.scrollMonitor/jquery.scrollMonitor.min.js"></script>
+<script src="/frames/jquery-qrcode/dist/jquery-qrcode.min.js"></script>
+<script src="/frames/jquery.roller/dist/jquery.roller.min.js"></script>
+<script src="/frames/jquery.picker/dist/jquery.picker.min.js"></script>
+<script src="/scripts/config/entity.js"></script>
+<script src="/scripts/config/app.js"></script>
+<script src="/scripts/config/event.js"></script>
+<script src="/scripts/config/module.js"></script>
+<script src="/scripts/page/shopCart.js"></script>
+<script tag='module'>
+window.app.setModule("message-1-1", "#message-1-1");
+window.app.setModule("alertDefault-1-1", "#alertDefault-1-1");
+window.app.setModule("alertDiscount-1-1", "#alertDiscount-1-1");
+window.app.setModule("header-1-1", "#header-1-1");
+window.app.setModule("header-2-1", "#header-2-1");
+window.app.setModule("nav-1-1", "#nav-1-1");
+window.app.setModule("shopCart-1-1", "#shopCart-1-1");
+window.app.setModule("footer-1-1", "#footer-1-1");
+</script>
+</html>

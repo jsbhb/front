@@ -1,0 +1,1 @@
+define(["text!modular/template/template-site-introduce-1.mustache"],function(e){"use strict";return window.capi.get(),can.Component.extend({tag:"component-site-introduce-1",template:e,helpers:{},scope:{},events:{inserted:function(e){},removed:function(){}}})});

@@ -1,0 +1,1 @@
+define(["config.page.render"],function(e){"use strict";var n=window.capi.get(),o=n.jsData.userInfo.isLogin,r=o?["ORDER_SHOPPINGCART_COUNT/global/count"]:[];return e.extend({tags:{global:"<component-footer-1></component-footer-1>"},region:{global:{cfgDynamic:!0,reqDynamic:!0,resDynamic:!0}},config:{},request:{},response:{},sendArr:r,reload:!1})});

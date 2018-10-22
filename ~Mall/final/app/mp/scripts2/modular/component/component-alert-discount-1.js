@@ -1,0 +1,1 @@
+define(["text!modular/template/template-alert-discount-1.mustache"],function(e){"use strict";return window.capi.get(),can.Component.extend({tag:"component-alert-discount-1",template:e,helpers:{},scope:{},events:{inserted:function(){}}})});

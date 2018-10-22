@@ -1,0 +1,1 @@
+define(["config.page.render"],function(e){"use strict";return window.capi.get(),e.extend({tags:{global:"<component-scroll-top-1></component-scroll-top-1>"},region:{global:{cfgDynamic:!1,reqDynamic:!1,resDynamic:!1}},config:{},request:{},response:{},sendArr:[],reload:!1})});

@@ -1,0 +1,1 @@
+define(["config.page.render"],function(e){"use strict";return window.capi.get(),e.extend({tags:{global:"<component-share-1></component-share-1>"},region:{global:{}},config:{global:{}},request:{global:{}},response:{global:{}},sendArr:[],reload:!1})});
