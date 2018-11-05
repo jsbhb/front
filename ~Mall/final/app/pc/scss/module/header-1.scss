@@ -30,6 +30,15 @@
     }
   }
 }
+.header-1-advImg{
+  width: 100%;
+  overflow: hidden;
+  &>a img{
+    float: left;
+    width: 100%;
+    height: auto;
+  }
+}
 .header-1-content {
   width: 1240px;
   height: 90px;

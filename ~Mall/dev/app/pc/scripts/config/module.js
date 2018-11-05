@@ -624,7 +624,8 @@
                 data: {
                     list: list,
                     active_offset: 0,
-                    position_offset: 108
+                    position_offset: 108,
+                    isShow: false
                 },
                 methods: {
                     setElementCSS: function($element){
@@ -651,6 +652,12 @@
                 },
                 mounted: function(){
                     var that = this;
+                    var allFloor = $('.floor-1-content');
+                    var firstFloor = $('.floor-1-content')[0];
+                    var lastFloor = $('.floor-1-content')[allFloor.length-1];
+                    var floorHeight = $(firstFloor).innerHeight();
+                    var firstFloor_offset = $(firstFloor).offset().top - 100;
+                    var lastFloor_offset = $(lastFloor).offset().top + floorHeight - 100;
                     that.setElementCSS($(that.$el));
                     window.onresize = function temp() {
                         that.setElementCSS($(that.$el));
@@ -658,6 +665,15 @@
                     $('body').scrollMonitor({
                         active_offset: that.active_offset,
                         position_offset: that.position_offset
+                    });
+                    $(window).scroll(function(){
+                        var scrollHeight = $(window).scrollTop();
+                        if(scrollHeight >= firstFloor_offset && scrollHeight <= lastFloor_offset){
+                            that.isShow = true;
+
+                        }else{
+                            that.isShow = false;
+                        }
                     });
                 }
             });

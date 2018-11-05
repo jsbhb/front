@@ -2108,8 +2108,13 @@
                     }
                 },
                 created: function(){
+                    var that = this;
+                    var shopId = localStorage.getItem('shopId') || 2;
+                    that.shopId = shopId;
+                    if(shopId == 287){
+                        $(document).attr("title","俄速通海外购--加入我们");
+                    }
                     wx.ready(function () {
-                        var shopId = localStorage.getItem('shopId') || 2;
                         jsUtil.path.setParam(window.location.href,{'shopId':shopId});
                         wx.onMenuShareAppMessage({
                             title: '中国供销海外购-全国加盟', // 分享标题

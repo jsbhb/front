@@ -1,9 +1,17 @@
 <div id="amount-access-1-{{sign}}" v-cloak>
     <div class="amount-access-1-showImg">
-        <img src="/images/platform/joinUs/showImg_01.jpg" alt="中国供销海外购">
-        <img src="/images/platform/joinUs/showImg_02.jpg" alt="中国供销海外购">
-        <img src="/images/platform/joinUs/showImg_03.jpg" alt="中国供销海外购">
-        <img src="/images/platform/joinUs/showImg_04.jpg" alt="中国供销海外购">
+        <template v-if="shopId && shopId != 287">
+            <img src="/images/platform/joinUs/showImg_01_2.jpg" alt="中国供销海外购">
+            <img src="/images/platform/joinUs/showImg_02.jpg" alt="中国供销海外购">
+            <img src="/images/platform/joinUs/showImg_03_2.jpg" alt="中国供销海外购">
+            <img src="/images/platform/joinUs/showImg_04.jpg" alt="中国供销海外购">
+        </template>
+        <template v-else-if="shopId && shopId == 287">
+            <img src="/images/platform/joinUs/showImg_01_287.jpg" alt="中国供销海外购">
+            <img src="/images/platform/joinUs/showImg_02.jpg" alt="中国供销海外购">
+            <img src="/images/platform/joinUs/showImg_03_287.jpg" alt="中国供销海外购">
+            <img src="/images/platform/joinUs/showImg_04.jpg" alt="中国供销海外购">
+        </template>
     </div>
     <div class="amount-access-1-content">
         <div class="list-item userName">

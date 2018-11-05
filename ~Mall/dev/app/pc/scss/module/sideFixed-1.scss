@@ -13,6 +13,12 @@
   height: auto;
   display: block;
   -webkit-transform: translateZ(0);
+  &.show{
+    opacity: 1;
+  }
+  &.hide{
+    opacity: 0;
+  }
   .ScrollMonitor{
     width: 35px;
     background-color: #acacac;
