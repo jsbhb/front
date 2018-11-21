@@ -4,6 +4,7 @@
         <ul>
             {{#returnShow "btn_wx"}}<li class="btn_wx">微信支付</li>{{/returnShow}}
             {{#returnShow "btn_zfb"}}<li class="btn_zfb">支付宝支付</li>{{/returnShow}}
+            {{#returnShowYb region.config.orderFlag}}<li class="btn_yb">易宝支付</li>{{/returnShow}}
             {{#notShow}}
                 {{#returnShow "btn_yl"}}<li class="btn_yl">银联支付</li>{{/returnShow}}
             {{/notShow}}

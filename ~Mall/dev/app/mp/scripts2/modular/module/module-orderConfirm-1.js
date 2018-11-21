@@ -268,6 +268,7 @@ define(["config.page.render"], function(Render) {
             var noStockName = false;
 
             that.renderData.payChoose.config.attr("payChooseShow", true);
+            that.renderData.payChoose.config.attr("orderFlag", orderFlag);
             that.renderData.payChoose.config.attr("payState", $.Deferred());
 
             var tdq = 0;
@@ -390,6 +391,15 @@ define(["config.page.render"], function(Render) {
                                 var theObj = typeof response.obj === "string"? response.obj: JSON.stringify(response.obj);
                                 window.localStorage.setItem('sendToAliPay', theObj);
                                 window.location.href = '/pay-transfer.html';
+                            }
+                        }
+                    }
+                    if(payState === "ybPay"){
+                        options.type = "";
+                        options.payType = options.orderDetail.payType = 5;
+                        toPayFunc = function(response){
+                            if(response.obj){
+                                window.location.href = response.obj.url;
                             }
                         }
                     }

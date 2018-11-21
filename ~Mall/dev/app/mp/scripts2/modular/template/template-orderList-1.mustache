@@ -80,7 +80,7 @@
                             </span>
                         {{/each}}
                         {{#orderDetail}}
-                            <span class="commodity-totalPrice">
+                        <span class="commodity-totalPrice">
                             <span class="commodity-totalAmount {{^returnDeliverCls ../status}}isMiddle{{/returnDeliverCls}}">
                                 <span class="logistics">配送费:￥{{returnPrice postFee}}</span>
                                 <span class="taxFee">综合税:￥{{returnPrice taxFee}}</span>
@@ -99,7 +99,7 @@
                                 <a href="javascript:void(0)" orderId="{{orderId}}" class="btn btn_confirmDelivery">确认收货</a>
                             {{/returnBtnDelivery}}
                             {{#returnBtnToPay status}}
-                                <a href="javascript:void(0)" orderId="{{orderId}}" class="btn btn_toPay">立即付款</a>
+                                <a href="javascript:void(0)" orderId="{{orderId}}" orderFlag="{{orderFlag}}" class="btn btn_toPay">立即付款</a>
                             {{/returnBtnToPay}}
                             {{#returnBtnRefund status}}
                                 <a href="javascript:void(0)" orderId="{{orderId}}" class="btn btn_refund">申请退款</a>

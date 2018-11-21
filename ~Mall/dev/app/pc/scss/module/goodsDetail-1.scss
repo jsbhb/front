@@ -214,6 +214,36 @@
       .goodsDetail-mainMsg-middle li.description{
         margin-bottom:15px;
       }
+      .goodsDetail-mainMsg-middle li.productinfo{
+        overflow: hidden;
+        background: blue;
+        height: 40px;
+        padding: 8px 20px;
+        margin: 0;
+        background: url('/images/platform/productinfoheadbar_01.jpg') no-repeat center;
+        &>.productinfo-left{
+          float: left;
+          &>span{
+            display: inline-block;
+            vertical-align: middle;
+            height: 24px;
+            line-height: 25px;
+            color: #2385c7;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 0 10px;
+          }
+        }
+        &>.productinfo-right{
+          float: left;
+          margin-left: 20px;
+          color: #fff;
+          font-size: 13px;
+          font-weight: bold;
+          height: 24px;
+          line-height: 25px;
+        }
+      }
       .goodsDetail-mainMsg-middle li.tagInfo{
         margin-bottom:0;
         padding-top: 7px;

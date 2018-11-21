@@ -1,0 +1,139 @@
+<div id="floor-2-{{sign}}" v-cloak>
+    <div class="floor-2-content">
+        <div class="floor-title">
+            <img src="/images/platform/floor_title_01.png" alt="中国供销海外购">
+        </div>
+        <!--<div class="floor-tab">-->
+            <!--<p class="cc-infor">距离下场</p>-->
+            <!--<p class="time">-->
+                <!--<span class="hour-node">{{!nextHour}}</span>-->
+                <!--<i>:</i>-->
+                <!--<span class="minute-node">{{!nextMinute}}</span>-->
+                <!--<i>:</i>-->
+                <!--<span class="second-node">{{!nextSecond}}</span>-->
+            <!--</p>-->
+            <!--<div class="tab-list">-->
+                <!--<div class="t-list">-->
+                    <!--<ul>-->
+                        <!--<li data-type="0" v-if="activeType == 0" class="active"><i>08:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="0" v-else-if="activeType > 0"><i>08:00-</i>活动结束</li>-->
+                        <!--<li data-type="0" v-else-if="activeType == null" class="active"><i>08:00-</i>即将开抢</li>-->
+                        <!--<li data-type="1" v-if="activeType == 1" class="active"><i>10:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="1" v-else-if="activeType > 1"><i>10:00-</i>活动结束</li>-->
+                        <!--<li data-type="1" v-else-if="activeType < 1"><i>10:00-</i>即将开抢</li>-->
+                        <!--<li data-type="2" v-if="activeType == 2" class="active"><i>12:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="2" v-else-if="activeType > 2"><i>12:00-</i>活动结束</li>-->
+                        <!--<li data-type="2" v-else-if="activeType < 2"><i>12:00-</i>即将开抢</li>-->
+                        <!--<li data-type="3" v-if="activeType == 3" class="active"><i>14:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="3" v-else-if="activeType > 3"><i>14:00-</i>活动结束</li>-->
+                        <!--<li data-type="3" v-else-if="activeType < 3"><i>14:00-</i>即将开抢</li>-->
+                        <!--<li data-type="4" v-if="activeType == 4" class="active"><i>16:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="4" v-else-if="activeType > 4"><i>16:00-</i>活动结束</li>-->
+                        <!--<li data-type="4" v-else-if="activeType < 4"><i>16:00-</i>即将开抢</li>-->
+                        <!--<li data-type="5" v-if="activeType == 5" class="active"><i>18:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="5" v-else-if="activeType > 5"><i>18:00-</i>活动结束</li>-->
+                        <!--<li data-type="5" v-else-if="activeType < 5"><i>18:00-</i>即将开抢</li>-->
+                        <!--<li data-type="6" v-if="activeType == 6" class="active"><i>20:00-</i>正在疯抢</li>-->
+                        <!--<li data-type="6" v-else-if="activeType > 6"><i>20:00-</i>活动结束</li>-->
+                        <!--<li data-type="6" v-else-if="activeType < 6"><i>20:00-</i>即将开抢</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        {{#each cont}}
+            {{#toRange @index 0 1}}
+                <div class="floor-content active" id="content-{{@index}}">
+                    <div class="products_img">
+                        <a href="{{href}}">
+                            <img src="{{picPath}}" alt="中国供销海外购">
+                        </a>
+                    </div>
+                    <div class="products_detail">
+                        <div class="products_have_time">
+                            <span class="today_end_time" v-if="activeType == {{@index}}">
+                                <span class="icon">距特卖结束 </span>
+                                <span class="today_time">
+                                    {{!EndHour}}<em>:</em>{{!EndMinute}}<em>:</em>{{!EndSecond}}
+                                </span>
+                            </span>
+                            <!--<span class="today_end_time" v-if="activeType == {{@index}}">-->
+                                <!--<span class="icon">距特卖结束 </span>-->
+                                <!--<span class="today_time">-->
+                                    <!--{{!EndHour}}<em>:</em>{{!EndMinute}}<em>:</em>{{!EndSecond}}-->
+                                <!--</span>-->
+                            <!--</span>-->
+                            <!--<span class="today_end_time" v-else-if="activeType == null">-->
+                                <!--<span class="icon">活动未开始 </span>-->
+                                <!--<span class="today_time">-->
+                                    <!--00<em>:</em>00<em>:</em>00-->
+                                <!--</span>-->
+                            <!--</span>-->
+                            <span class="today_end_time" v-else>
+                                <span class="icon">活动已结束 </span>
+                                <span class="today_time">
+                                    00<em>:</em>00<em>:</em>00
+                                </span>
+                            </span>
+                        </div>
+                        <div class="product_short_title">{{description}}</div>
+                        <div class="product_price">
+                            <a v-if="activeType == {{@index}}" href="{{href}}?type={{@index}}">立即购买</a>
+                            <a v-else class="lose">立即购买</a>
+                            <span class="now_price">￥{{price}}</span>
+                            <span class="pass_price"><s>￥{{enname}}</s></span>
+                        </div>
+                        <div class="global_sure_tag">
+                            <span class="g_tag">
+                                限量100件
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {{/toRange}}
+            <!--{{#toRange @index 1 6}}-->
+                <!--<div class="floor-content" id="content-{{@index}}">-->
+                    <!--<div class="products_img">-->
+                        <!--<a href="{{href}}">-->
+                            <!--<img src="{{picPath}}" alt="中国供销海外购">-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <!--<div class="products_detail">-->
+                        <!--<div class="products_have_time">-->
+                            <!--<span class="today_end_time" v-if="activeType == {{@index}}">-->
+                                <!--<span class="icon">距特卖结束 </span>-->
+                                <!--<span class="today_time">-->
+                                    <!--{{!EndHour}}<em>:</em>{{!EndMinute}}<em>:</em>{{!EndSecond}}-->
+                                <!--</span>-->
+                            <!--</span>-->
+                            <!--<span class="today_end_time" v-else-if="activeType < {{@index}}">-->
+                                <!--<span class="icon">活动未开始 </span>-->
+                                <!--<span class="today_time">-->
+                                    <!--00<em>:</em>00<em>:</em>00-->
+                                <!--</span>-->
+                            <!--</span>-->
+                            <!--<span class="today_end_time"  v-else-if="activeType > {{@index}}">-->
+                                <!--<span class="icon">活动已结束 </span>-->
+                                <!--<span class="today_time">-->
+                                    <!--00<em>:</em>00<em>:</em>00-->
+                                <!--</span>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="product_short_title">{{description}}</div>-->
+                        <!--<div class="product_price">-->
+                            <!--<a v-if="activeType == {{@index}}" href="{{href}}?type={{@index}}">立即购买</a>-->
+                            <!--<a v-else class="lose">立即购买</a>-->
+                            <!--<span class="now_price">￥{{price}}</span>-->
+                            <!--<span class="pass_price"><s>￥{{enname}}</s></span>-->
+                        <!--</div>-->
+                        <!--<div class="global_sure_tag">-->
+                            <!--<span class="g_tag">-->
+                                <!--限量100件-->
+                            <!--</span>-->
+                            <!---->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--{{/toRange}}-->
+        {{/each}}
+    </div>
+</div>

@@ -756,6 +756,209 @@
                 }
             });
         }
+        if ((/^goodsList-4-\d+$/).test(role)) {
+            Module[role] =  new Vue({
+                el: element,
+                data: {
+                    nextHour: '00',
+                    nextMinute: '00',
+                    nextSecond: '00',
+                    EndHour: '00',
+                    EndMinute: '00',
+                    EndSecond: '00',
+                    activeType: null
+                },
+                methods: {},
+                created: function(){
+                },
+                mounted: function(){
+                    var that = this;
+                    formatSeconds(that);
+                    // var id = '#content-';
+                    // if(that.activeType != null){
+                    //     id += that.activeType;
+                    // } else {
+                    //     id += 0;
+                    // }
+                    setInterval(function(){
+                        formatSeconds(that);
+                    },1000);
+                    // $('.content-product').removeClass('active');
+                    // $('.content-time').removeClass('active');
+                    // $(id).addClass('active');
+                    // $(id).prev().addClass('active');
+                    // $('.content-tab').on('click','.tab-item',function(){
+                    //     var type = $(this).attr('data-type');
+                    //     $(this).addClass('active').siblings('.active').removeClass('active');
+                    //     var id = '#content-' + type;
+                    //     $('.content-product').removeClass('active');
+                    //     $('.content-time').removeClass('active');
+                    //     $(id).addClass('active');
+                    //     $(id).prev().addClass('active');
+                    // });
+                    function dateTimeFormate(date){
+                        if(!date){
+                            return;
+                        }else{
+                            var d = new Date(date);
+                            var year = d.getFullYear();
+                            var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                            var day = ('0' + (d.getDate())).slice(-2);
+                            var hour = ('0' + (d.getHours())).slice(-2);
+                            var minutes = ('0' + (d.getMinutes())).slice(-2);
+                            var seconds = ('0' + (d.getSeconds())).slice(-2);
+                            var data = {
+                                year: year,
+                                month: month,
+                                day: day,
+                                hour: hour,
+                                minutes: minutes,
+                                seconds: seconds
+                            };
+                            return data;
+                        }
+                    }
+                    function formatSeconds(obj) {
+                        var nowDateTime = new Date($.ajax({async:false}).getResponseHeader("Date")).getTime();
+                        var nowDate = dateTimeFormate(nowDateTime);
+                        var date = nowDate.year + '/' + nowDate.month + '/' + nowDate.day;
+                        var time = new Date(date + ' 10:00:00').getTime();
+                        var time_next = time*1 + 86400000;
+                        var dTime = time_next - nowDateTime;
+                        if(dTime > 0){
+                            obj.activeType = 0;
+                        }else{
+                            obj.activeType = null;
+                        }
+                        var secondTime = parseInt(dTime)/1000;// 秒
+                        var minuteTime = 0;// 分
+                        var hourTime = 0;// 小时
+                        if(secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
+                            //获取分钟，除以60取整数，得到整数分钟
+                            minuteTime = parseInt(secondTime / 60);
+                            //获取秒数，秒数取佘，得到整数秒数
+                            secondTime = parseInt(secondTime % 60);
+                            //如果分钟大于60，将分钟转换成小时
+                            if(minuteTime >= 60) {
+                                //获取小时，获取分钟除以60，得到整数小时
+                                hourTime = parseInt(minuteTime / 60);
+                                //获取小时后取佘的分，获取分钟除以60取佘的分
+                                minuteTime = parseInt(minuteTime % 60);
+                            }
+                        }
+                        if(parseInt(secondTime) < 10){
+                            obj.EndSecond = '0' + parseInt(secondTime);
+                        }else{
+                            obj.EndSecond = parseInt(secondTime);
+                        }
+                        if(minuteTime < 10) {
+                            obj.EndMinute = '0' + parseInt(minuteTime);
+                        }else{
+                            obj.EndMinute = parseInt(minuteTime);
+                        }
+                        if(hourTime < 10) {
+                            obj.EndHour = '0' + parseInt(hourTime);
+                        }else{
+                            obj.EndHour = parseInt(hourTime);
+                        }
+
+                    }
+                    // function formatSeconds(obj) {
+                    //     var nowDateTime = new Date($.ajax({async:false}).getResponseHeader("Date")).getTime();
+                    //     var nowDate = dateTimeFormate(nowDateTime);
+                    //     var date = nowDate.year + '/' + nowDate.month + '/' + nowDate.day;
+                    //     var time_0 = new Date(date + ' 08:00:00').getTime();
+                    //     var time_1 = new Date(date + ' 10:00:00').getTime();
+                    //     var time_2 = new Date(date + ' 12:00:00').getTime();
+                    //     var time_3 = new Date(date + ' 14:00:00').getTime();
+                    //     var time_4 = new Date(date + ' 16:00:00').getTime();
+                    //     var time_5 = new Date(date + ' 18:00:00').getTime();
+                    //     var time_6 = new Date(date + ' 20:00:00').getTime();
+                    //     var time_7 = new Date(date + ' 22:00:00').getTime();
+                    //     var time_next = time_0*1 + 86400000;
+                    //     var dTime = 0;
+                    //     if(nowDateTime <= time_0){
+                    //         dTime = time_0 - nowDateTime;
+                    //         obj.activeType = null;
+                    //     }else if(nowDateTime > time_0 && nowDateTime <= time_1){
+                    //         dTime = time_1 - nowDateTime;
+                    //         obj.activeType = 0;
+                    //     }else if(nowDateTime > time_1 && nowDateTime <= time_2){
+                    //         dTime = time_2 - nowDateTime;
+                    //         obj.activeType = 1;
+                    //     }else if(nowDateTime > time_2 && nowDateTime <= time_3){
+                    //         dTime = time_3 - nowDateTime;
+                    //         obj.activeType = 2;
+                    //     }else if(nowDateTime > time_3 && nowDateTime <= time_4){
+                    //         dTime = time_4 - nowDateTime;
+                    //         obj.activeType = 3;
+                    //     }else if(nowDateTime > time_4 && nowDateTime <= time_5){
+                    //         dTime = time_5 - nowDateTime;
+                    //         obj.activeType = 4;
+                    //     }else if(nowDateTime > time_5 && nowDateTime <= time_6){
+                    //         dTime = time_6 - nowDateTime;
+                    //         obj.activeType = 5;
+                    //     }else if(nowDateTime > time_6 && nowDateTime <= time_7){
+                    //         dTime = time_next - nowDateTime;
+                    //         obj.activeType = 6;
+                    //     }else if(nowDateTime > time_7){
+                    //         dTime = time_next - nowDateTime;
+                    //         obj.activeType = null;
+                    //     }
+                    //     var secondTime = parseInt(dTime)/1000;// 秒
+                    //     var minuteTime = 0;// 分
+                    //     var hourTime = 0;// 小时
+                    //     if(secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
+                    //         //获取分钟，除以60取整数，得到整数分钟
+                    //         minuteTime = parseInt(secondTime / 60);
+                    //         //获取秒数，秒数取佘，得到整数秒数
+                    //         secondTime = parseInt(secondTime % 60);
+                    //         //如果分钟大于60，将分钟转换成小时
+                    //         if(minuteTime >= 60) {
+                    //             //获取小时，获取分钟除以60，得到整数小时
+                    //             hourTime = parseInt(minuteTime / 60);
+                    //             //获取小时后取佘的分，获取分钟除以60取佘的分
+                    //             minuteTime = parseInt(minuteTime % 60);
+                    //         }
+                    //     }
+                    //     if(parseInt(secondTime) < 10){
+                    //         obj.nextSecond = '0' + parseInt(secondTime);
+                    //         obj.EndSecond = '0' + parseInt(secondTime);
+                    //     }else{
+                    //         obj.nextSecond = parseInt(secondTime);
+                    //         obj.EndSecond = parseInt(secondTime);
+                    //     }
+                    //     if(minuteTime < 10) {
+                    //         obj.nextMinute = '0' + parseInt(minuteTime);
+                    //         obj.EndMinute = '0' + parseInt(minuteTime);
+                    //     }else{
+                    //         obj.nextMinute = parseInt(minuteTime);
+                    //         obj.EndMinute = parseInt(minuteTime);
+                    //     }
+                    //     if(obj.activeType != 6){
+                    //         if(hourTime < 10) {
+                    //             obj.nextHour = '0' + parseInt(hourTime);
+                    //             obj.EndHour = '0' + parseInt(hourTime);
+                    //         }else{
+                    //             obj.nextHour = parseInt(hourTime);
+                    //             obj.EndHour = parseInt(hourTime);
+                    //         }
+                    //     }else{
+                    //         if(hourTime < 10) {
+                    //             obj.nextHour = '0' + parseInt(hourTime);
+                    //         }else{
+                    //             obj.nextHour = parseInt(hourTime);
+                    //         }
+                    //         if(hourTime - 10 < 10){
+                    //             obj.EndHour = '0' + parseInt(hourTime - 10);
+                    //         }else{
+                    //             obj.EndHour = parseInt(hourTime - 10);
+                    //         }
+                    //     }
+                    // }
+                }
+            });
+        }
         if ((/^footer-1-\d+$/).test(role)) {
             var message = Module['message-1-1'];
             Module[role] =  new Vue({
@@ -1188,6 +1391,9 @@
                             spcRealPrice: "0.00",
                             spcRealVipPrice: "0.00",
                             itemContCode: "itemHide",
+                            nextHour: '00',
+                            nextMinute: '00',
+                            nextSecond: '00',
                             quantityTimer: null,
                             quantityDes: "",
                             couponList: [],
@@ -1891,6 +2097,114 @@
                                     });
                                 }
                             });
+
+                            setInterval(function(){
+                                formatSeconds(that);
+                            },1000);
+
+                            function dateTimeFormate(date){
+                                if(!date){
+                                    return;
+                                }else{
+                                    var d = new Date(date);
+                                    var year = d.getFullYear();
+                                    var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                                    var day = ('0' + (d.getDate())).slice(-2);
+                                    var hour = ('0' + (d.getHours())).slice(-2);
+                                    var minutes = ('0' + (d.getMinutes())).slice(-2);
+                                    var seconds = ('0' + (d.getSeconds())).slice(-2);
+                                    var data = {
+                                        year: year,
+                                        month: month,
+                                        day: day,
+                                        hour: hour,
+                                        minutes: minutes,
+                                        seconds: seconds
+                                    };
+                                    return data;
+                                }
+                            }
+
+                            function formatSeconds(obj) {
+                                var _type = $('.productinfo .productinfo-left').attr('data-type');
+                                var nowDateTime = new Date($.ajax({async:false}).getResponseHeader("Date")).getTime();
+                                var nowDate = dateTimeFormate(nowDateTime);
+                                var date = nowDate.year + '/' + nowDate.month + '/' + nowDate.day;
+                                // var time;
+                                // var dTime = 0;
+                                // var type;
+                                var time = new Date(date + ' 10:00:00').getTime() + 86400000;
+                                var dTime = 0;
+                                if(_type){
+                                    dTime = time - nowDateTime;
+                                }
+                                // if(_type == 8){
+                                //     type = 0;
+                                // }else if(_type == 10){
+                                //     type = 1;
+                                // }else if(_type == 12){
+                                //     type = 2;
+                                // }else if(_type == 14){
+                                //     type = 3;
+                                // }else if(_type == 16){
+                                //     type = 4;
+                                // }else if(_type == 18){
+                                //     type = 5;
+                                // }else if(_type == 20){
+                                //     type = 6;
+                                // }
+                                // if(type == 0){
+                                //     time = new Date(date + ' 10:00:00').getTime();
+                                // }else if(type == 1){
+                                //     time = new Date(date + ' 12:00:00').getTime();
+                                // }else if(type == 2){
+                                //     time = new Date(date + ' 14:00:00').getTime();
+                                // }else if(type == 3){
+                                //     time = new Date(date + ' 16:00:00').getTime();
+                                // }else if(type == 4){
+                                //     time = new Date(date + ' 18:00:00').getTime();
+                                // }else if(type == 5){
+                                //     time = new Date(date + ' 20:00:00').getTime();
+                                // }else if(type == 6){
+                                //     time = new Date(date + ' 22:00:00').getTime();
+                                // }
+                                //
+                                // if(time > nowDateTime){
+                                //     dTime = time*1 - nowDateTime*1;
+                                // }
+                                var secondTime = parseInt(dTime)/1000;// 秒
+                                var minuteTime = 0;// 分
+                                var hourTime = 0;// 小时
+                                if(secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
+                                    //获取分钟，除以60取整数，得到整数分钟
+                                    minuteTime = parseInt(secondTime / 60);
+                                    //获取秒数，秒数取佘，得到整数秒数
+                                    secondTime = parseInt(secondTime % 60);
+                                    //如果分钟大于60，将分钟转换成小时
+                                    if(minuteTime >= 60) {
+                                        //获取小时，获取分钟除以60，得到整数小时
+                                        hourTime = parseInt(minuteTime / 60);
+                                        //获取小时后取佘的分，获取分钟除以60取佘的分
+                                        minuteTime = parseInt(minuteTime % 60);
+                                    }
+                                }
+                                if(parseInt(secondTime) < 10){
+                                    obj.nextSecond = '0' + parseInt(secondTime);
+                                }else{
+                                    obj.nextSecond = parseInt(secondTime);
+                                }
+                                if(minuteTime < 10) {
+                                    obj.nextMinute = '0' + parseInt(minuteTime);
+                                }else{
+                                    obj.nextMinute = parseInt(minuteTime);
+                                }
+                                if(hourTime < 10) {
+                                    obj.nextHour = '0' + parseInt(hourTime);
+                                }else{
+                                    obj.nextHour = parseInt(hourTime);
+                                }
+                            }
+
                         }
                     });
                 });
@@ -2112,28 +2426,8 @@
                     var shopId = localStorage.getItem('shopId') || 2;
                     that.shopId = shopId;
                     if(shopId == 287){
-                        $(document).attr("title","俄速通海外购--加入我们");
+                        $(document).attr("title","俄速通全球购--加入我们");
                     }
-                    wx.ready(function () {
-                        jsUtil.path.setParam(window.location.href,{'shopId':shopId});
-                        wx.onMenuShareAppMessage({
-                            title: '中国供销海外购-全国加盟', // 分享标题
-                            desc: '优质的产品、完善的服务，中国供销海外购诚邀您的加盟！', // 分享描述
-                            link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                            imgUrl: 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg', // 分享图标
-                            success: function (res) {
-
-                            }
-                        });
-                        wx.onMenuShareTimeline({
-                            title: '中国供销海外购-全国加盟', // 分享标题
-                            link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                            imgUrl: 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg', // 分享图标
-                            success: function(res){
-
-                            }
-                        });
-                    });
                 },
                 mounted: function(){
                     $('.userAddress').picker();

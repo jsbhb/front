@@ -593,6 +593,204 @@
                 methods: {}
             });
         }
+        if ((/^floor-2-\d+$/).test(role)) {
+            Module[role] =  new Vue({
+                el: element,
+                data: {
+                    nextHour: '00',
+                    nextMinute: '00',
+                    nextSecond: '00',
+                    EndHour: '00',
+                    EndMinute: '00',
+                    EndSecond: '00',
+                    activeType: null
+                },
+                methods: {},
+                mounted: function(){
+                    var that = this;
+                    formatSeconds(that);
+                    // var id = '#content-';
+                    // if(that.activeType != null){
+                    //     id += that.activeType;
+                    // } else {
+                    //     id += 0;
+                    // }
+                    setInterval(function(){
+                        formatSeconds(that);
+                    },1000);
+                    // $('.floor-content').removeClass('active');
+                    // $(id).addClass('active');
+                    // $('.tab-list').on('click','li',function(){
+                    //     var type = $(this).attr('data-type');
+                    //     $(this).addClass('active').siblings('.active').removeClass('active');
+                    //     var id = '#content-' + type;
+                    //     $('.floor-content').removeClass('active');
+                    //     $(id).addClass('active');
+                    // });
+                    function dateTimeFormate(date){
+                        if(!date){
+                            return;
+                        }else{
+                            var d = new Date(date);
+                            var year = d.getFullYear();
+                            var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                            var day = ('0' + (d.getDate())).slice(-2);
+                            var hour = ('0' + (d.getHours())).slice(-2);
+                            var minutes = ('0' + (d.getMinutes())).slice(-2);
+                            var seconds = ('0' + (d.getSeconds())).slice(-2);
+                            var data = {
+                                year: year,
+                                month: month,
+                                day: day,
+                                hour: hour,
+                                minutes: minutes,
+                                seconds: seconds
+                            };
+                            return data;
+                        }
+                    }
+                    function formatSeconds(obj) {
+                        var nowDateTime = new Date($.ajax({async:false}).getResponseHeader("Date")).getTime();
+                        var nowDate = dateTimeFormate(nowDateTime);
+                        var date = nowDate.year + '/' + nowDate.month + '/' + nowDate.day;
+                        var time = new Date(date + ' 10:00:00').getTime();
+                        var time_next = time*1 + 86400000;
+                        var dTime = time_next - nowDateTime;
+                        if(dTime > 0){
+                            obj.activeType = 0;
+                        }else{
+                            obj.activeType = null;
+                        }
+                        var secondTime = parseInt(dTime)/1000;// 秒
+                        var minuteTime = 0;// 分
+                        var hourTime = 0;// 小时
+                        if(secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
+                            //获取分钟，除以60取整数，得到整数分钟
+                            minuteTime = parseInt(secondTime / 60);
+                            //获取秒数，秒数取佘，得到整数秒数
+                            secondTime = parseInt(secondTime % 60);
+                            //如果分钟大于60，将分钟转换成小时
+                            if(minuteTime >= 60) {
+                                //获取小时，获取分钟除以60，得到整数小时
+                                hourTime = parseInt(minuteTime / 60);
+                                //获取小时后取佘的分，获取分钟除以60取佘的分
+                                minuteTime = parseInt(minuteTime % 60);
+                            }
+                        }
+                        if(parseInt(secondTime) < 10){
+                            obj.EndSecond = '0' + parseInt(secondTime);
+                        }else{
+                            obj.EndSecond = parseInt(secondTime);
+                        }
+                        if(minuteTime < 10) {
+                            obj.EndMinute = '0' + parseInt(minuteTime);
+                        }else{
+                            obj.EndMinute = parseInt(minuteTime);
+                        }
+                        if(hourTime < 10) {
+                            obj.EndHour = '0' + parseInt(hourTime);
+                        }else{
+                            obj.EndHour = parseInt(hourTime);
+                        }
+
+                    }
+                    // function formatSeconds(obj) {
+                    //     var nowDateTime = new Date($.ajax({async:false}).getResponseHeader("Date")).getTime();
+                    //     var nowDate = dateTimeFormate(nowDateTime);
+                    //     var date = nowDate.year + '/' + nowDate.month + '/' + nowDate.day;
+                    //     var time_0 = new Date(date + ' 08:00:00').getTime();
+                    //     var time_1 = new Date(date + ' 10:00:00').getTime();
+                    //     var time_2 = new Date(date + ' 12:00:00').getTime();
+                    //     var time_3 = new Date(date + ' 14:00:00').getTime();
+                    //     var time_4 = new Date(date + ' 16:00:00').getTime();
+                    //     var time_5 = new Date(date + ' 18:00:00').getTime();
+                    //     var time_6 = new Date(date + ' 20:00:00').getTime();
+                    //     var time_7 = new Date(date + ' 22:00:00').getTime();
+                    //     var time_next = time_0*1 + 86400000;
+                    //     var dTime = 0;
+                    //     if(nowDateTime <= time_0){
+                    //         dTime = time_0 - nowDateTime;
+                    //         obj.activeType = null;
+                    //     }else if(nowDateTime > time_0 && nowDateTime <= time_1){
+                    //         dTime = time_1 - nowDateTime;
+                    //         obj.activeType = 0;
+                    //     }else if(nowDateTime > time_1 && nowDateTime <= time_2){
+                    //         dTime = time_2 - nowDateTime;
+                    //         obj.activeType = 1;
+                    //     }else if(nowDateTime > time_2 && nowDateTime <= time_3){
+                    //         dTime = time_3 - nowDateTime;
+                    //         obj.activeType = 2;
+                    //     }else if(nowDateTime > time_3 && nowDateTime <= time_4){
+                    //         dTime = time_4 - nowDateTime;
+                    //         obj.activeType = 3;
+                    //     }else if(nowDateTime > time_4 && nowDateTime <= time_5){
+                    //         dTime = time_5 - nowDateTime;
+                    //         obj.activeType = 4;
+                    //     }else if(nowDateTime > time_5 && nowDateTime <= time_6){
+                    //         dTime = time_6 - nowDateTime;
+                    //         obj.activeType = 5;
+                    //     }else if(nowDateTime > time_6 && nowDateTime <= time_7){
+                    //         dTime = time_next - nowDateTime;
+                    //         obj.activeType = 6;
+                    //     }else if(nowDateTime > time_7){
+                    //         dTime = time_next - nowDateTime;
+                    //         obj.activeType = null;
+                    //     }
+                    //     var secondTime = parseInt(dTime)/1000;// 秒
+                    //     var minuteTime = 0;// 分
+                    //     var hourTime = 0;// 小时
+                    //     if(secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
+                    //         //获取分钟，除以60取整数，得到整数分钟
+                    //         minuteTime = parseInt(secondTime / 60);
+                    //         //获取秒数，秒数取佘，得到整数秒数
+                    //         secondTime = parseInt(secondTime % 60);
+                    //         //如果分钟大于60，将分钟转换成小时
+                    //         if(minuteTime >= 60) {
+                    //             //获取小时，获取分钟除以60，得到整数小时
+                    //             hourTime = parseInt(minuteTime / 60);
+                    //             //获取小时后取佘的分，获取分钟除以60取佘的分
+                    //             minuteTime = parseInt(minuteTime % 60);
+                    //         }
+                    //     }
+                    //     if(parseInt(secondTime) < 10){
+                    //         obj.nextSecond = '0' + parseInt(secondTime);
+                    //         obj.EndSecond = '0' + parseInt(secondTime);
+                    //     }else{
+                    //         obj.nextSecond = parseInt(secondTime);
+                    //         obj.EndSecond = parseInt(secondTime);
+                    //     }
+                    //     if(minuteTime < 10) {
+                    //         obj.nextMinute = '0' + parseInt(minuteTime);
+                    //         obj.EndMinute = '0' + parseInt(minuteTime);
+                    //     }else{
+                    //         obj.nextMinute = parseInt(minuteTime);
+                    //         obj.EndMinute = parseInt(minuteTime);
+                    //     }
+                    //     if(obj.activeType != 6){
+                    //         if(hourTime < 10) {
+                    //             obj.nextHour = '0' + parseInt(hourTime);
+                    //             obj.EndHour = '0' + parseInt(hourTime);
+                    //         }else{
+                    //             obj.nextHour = parseInt(hourTime);
+                    //             obj.EndHour = parseInt(hourTime);
+                    //         }
+                    //     }else{
+                    //         if(hourTime < 10) {
+                    //             obj.nextHour = '0' + parseInt(hourTime);
+                    //         }else{
+                    //             obj.nextHour = parseInt(hourTime);
+                    //         }
+                    //         if(hourTime - 10 < 10){
+                    //             obj.EndHour = '0' + parseInt(hourTime - 10);
+                    //         }else{
+                    //             obj.EndHour = parseInt(hourTime - 10);
+                    //         }
+                    //     }
+                    //
+                    // }
+                }
+            });
+        }
         if ((/^footer-img-1-\d+$/).test(role)) {
             Module[role] =  new Vue({
                 el: element,
@@ -703,6 +901,9 @@
                             spcRealPrice: "0.00",
                             spcRealVipPrice: "0.00",
                             itemContCode: "itemHide",
+                            nextHour: '00',
+                            nextMinute: '00',
+                            nextSecond: '00',
                             quantityTimer: null,
                             quantityDes: "",
                             couponList: [],
@@ -1668,6 +1869,114 @@
                             $.each(itemId && that.itemIdMap[itemId] || [], function(name, val){
                                 $groups.find("[data-name='"+name+"'][data-val='"+val+"']").addClass("active");
                             });
+
+                            setInterval(function(){
+                                formatSeconds(that);
+                            },1000);
+
+                            function dateTimeFormate(date){
+                                if(!date){
+                                    return;
+                                }else{
+                                    var d = new Date(date);
+                                    var year = d.getFullYear();
+                                    var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                                    var day = ('0' + (d.getDate())).slice(-2);
+                                    var hour = ('0' + (d.getHours())).slice(-2);
+                                    var minutes = ('0' + (d.getMinutes())).slice(-2);
+                                    var seconds = ('0' + (d.getSeconds())).slice(-2);
+                                    var data = {
+                                        year: year,
+                                        month: month,
+                                        day: day,
+                                        hour: hour,
+                                        minutes: minutes,
+                                        seconds: seconds
+                                    };
+                                    return data;
+                                }
+                            }
+
+                            function formatSeconds(obj) {
+                                var _type = $('.productinfo .productinfo-left').attr('data-type');
+                                var nowDateTime = new Date($.ajax({async:false}).getResponseHeader("Date")).getTime();
+                                var nowDate = dateTimeFormate(nowDateTime);
+                                var date = nowDate.year + '/' + nowDate.month + '/' + nowDate.day;
+                                // var time;
+                                // var dTime = 0;
+                                // var type;
+                                var time = new Date(date + ' 10:00:00').getTime() + 86400000;
+                                var dTime = 0;
+                                if(_type){
+                                    dTime = time - nowDateTime;
+                                }
+                                // var type;
+                                // if(_type == 8){
+                                //     type = 0;
+                                // }else if(_type == 10){
+                                //     type = 1;
+                                // }else if(_type == 12){
+                                //     type = 2;
+                                // }else if(_type == 14){
+                                //     type = 3;
+                                // }else if(_type == 16){
+                                //     type = 4;
+                                // }else if(_type == 18){
+                                //     type = 5;
+                                // }else if(_type == 20) {
+                                //     type = 6;
+                                // }
+                                // if(type == 0){
+                                //     time = new Date(date + ' 10:00:00').getTime();
+                                // }else if(type == 1){
+                                //     time = new Date(date + ' 12:00:00').getTime();
+                                // }else if(type == 2){
+                                //     time = new Date(date + ' 14:00:00').getTime();
+                                // }else if(type == 3){
+                                //     time = new Date(date + ' 16:00:00').getTime();
+                                // }else if(type == 4){
+                                //     time = new Date(date + ' 18:00:00').getTime();
+                                // }else if(type == 5){
+                                //     time = new Date(date + ' 20:00:00').getTime();
+                                // }else if(type == 6){
+                                //     time = new Date(date + ' 22:00:00').getTime();
+                                // }
+
+                                // if(time > nowDateTime){
+                                //     dTime = time*1 - nowDateTime*1;
+                                // }
+                                var secondTime = parseInt(dTime)/1000;// 秒
+                                var minuteTime = 0;// 分
+                                var hourTime = 0;// 小时
+                                if(secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
+                                    //获取分钟，除以60取整数，得到整数分钟
+                                    minuteTime = parseInt(secondTime / 60);
+                                    //获取秒数，秒数取佘，得到整数秒数
+                                    secondTime = parseInt(secondTime % 60);
+                                    //如果分钟大于60，将分钟转换成小时
+                                    if(minuteTime >= 60) {
+                                        //获取小时，获取分钟除以60，得到整数小时
+                                        hourTime = parseInt(minuteTime / 60);
+                                        //获取小时后取佘的分，获取分钟除以60取佘的分
+                                        minuteTime = parseInt(minuteTime % 60);
+                                    }
+                                }
+                                if(parseInt(secondTime) < 10){
+                                    obj.nextSecond = '0' + parseInt(secondTime);
+                                }else{
+                                    obj.nextSecond = parseInt(secondTime);
+                                }
+                                if(minuteTime < 10) {
+                                    obj.nextMinute = '0' + parseInt(minuteTime);
+                                }else{
+                                    obj.nextMinute = parseInt(minuteTime);
+                                }
+                                if(hourTime < 10) {
+                                    obj.nextHour = '0' + parseInt(hourTime);
+                                }else{
+                                    obj.nextHour = parseInt(hourTime);
+                                }
+                            }
                         }
                     });
                 });
@@ -2249,9 +2558,10 @@
                         var that = this;
                         var isYL = pType === 'yl';
                         var isZFB = pType === 'zfb';
+                        var isYB = pType === 'yb';
                         var message = Module['message-1-1'];
-                        var payType = isYL? 3: (isZFB? 2: 1);
-                        var type = payType === 3? "07": (payType === 1? "NATIVE": "scanCode");
+                        var payType = isYL? 3: (isZFB? 2: isYB? 5: 1);
+                        var type = payType === 3? "07": (payType === 1? "NATIVE": (payType === 5? "": "scanCode"));
                         var sendToPay = { orderId: orderId, orderPrice: orderPrice };
                         var tmp = window.open("about:blank");
                         jsModel.send("PAY_ORDER", { payType:payType, type:type, orderId:orderId, redirect: redirect })
@@ -2300,6 +2610,19 @@
                                         });
                                         tmp.focus();
                                         tmp.location='/pay.html';
+                                    }
+                                    else if(payType === 5){
+                                        window.localStorage.removeItem('sendToYinLian');
+                                        window.localStorage.removeItem('sendToAliPay');
+                                        window.localStorage.removeItem('sendToPay');
+                                        message.refresh({
+                                            title:'温馨提示',
+                                            content:'支付申请已提交，请确认！',
+                                            DOMClick: false,
+                                            confirmFun: function(){ window.location.reload(); }
+                                        });
+                                        tmp.focus();
+                                        tmp.location = response.obj;
                                     }
                                 }
                                 else if(response && response.errorMsg){
@@ -4712,7 +5035,7 @@
                                                 var orderGoodsList = [];
                                                 var tdq = 0;
                                                 var payType = $element.find("li[payType].active").attr("payType") || 1;
-                                                var type = payType == 3? "07" : (payType == 1? "NATIVE" : "scanCode");
+                                                var type = payType == 3? "07" : (payType == 1? "NATIVE" : (payType == 5? "" : "scanCode"));
                                                 var noStockState = false;
                                                 var noStockName = false;
 
@@ -5062,6 +5385,87 @@
                                                                         window.localStorage.removeItem('sendToPay');
                                                                         tmp.focus();
                                                                         tmp.location.href = '/pay.html';
+                                                                        message.refresh({
+                                                                            title: '温馨提示',
+                                                                            content: '支付申请已提交，请确认！',
+                                                                            DOMClick: false,
+                                                                            confirmFun: function () {
+                                                                                if (rOrders.orderCount <= 0) {
+                                                                                    Vue.delete(rOrders, "orderCount");
+                                                                                    window.location.replace('/personal.html?childType=order');
+                                                                                }
+                                                                                else {
+                                                                                    Vue.delete(rOrders.typeObj[typeId], supplierId);
+                                                                                    if ($.isEmptyObject(rOrders.typeObj[typeId])) {
+                                                                                        Vue.delete(rOrders.typeObj, typeId);
+                                                                                    }
+                                                                                    if ($.isEmptyObject(rOrders.typeObj)) {
+                                                                                        Vue.delete(rOrders, "typeObj");
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                } else {
+                                                                    tmp.focus();
+                                                                    tmp.close();
+                                                                    if (response.errorMsg) {
+                                                                        message.refresh({
+                                                                            title: '温馨提示',
+                                                                            content: response.errorMsg,
+                                                                            DOMClick: false,
+                                                                            confirmFun: function () {}
+                                                                        });
+                                                                    }
+                                                                    else {
+                                                                        alertDefault.content = '生成订单失败！';
+                                                                    }
+                                                                    rOrders.typeObj[typeId][supplierId].submitState = true;
+                                                                    rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
+                                                                }
+                                                            }
+                                                            else if (payType == 5) {
+                                                                if (response && response.success) {
+                                                                    rOrders.orderCount--;
+                                                                    rOrders.typeObj[typeId][supplierId].submitState = false;
+                                                                    rOrders.typeObj[typeId][supplierId].submitText = "已提交订单";
+                                                                    window.localStorage.setItem('ordersInfo', JSON.stringify(rOrders));
+                                                                    if (idsArr.join(",")) {
+                                                                        jsModel.send("ORDER_SHOPPINGCART_DELETE", {
+                                                                            ids: idsArr.join(",")
+                                                                        }).done(function () {
+                                                                            window.localStorage.removeItem('sendToYinLian');
+                                                                            window.localStorage.removeItem('sendToAliPay');
+                                                                            window.localStorage.removeItem('sendToPay');
+                                                                            tmp.focus();
+                                                                            tmp.location.href = response.obj.url;
+                                                                            message.refresh({
+                                                                                title: '温馨提示',
+                                                                                content: '支付申请已提交，请确认！',
+                                                                                DOMClick: false,
+                                                                                confirmFun: function () {
+                                                                                    if (rOrders.orderCount <= 0) {
+                                                                                        Vue.delete(rOrders, "orderCount");
+                                                                                        window.location.replace('/personal.html?childType=order');
+                                                                                    }
+                                                                                    else {
+                                                                                        Vue.delete(rOrders.typeObj[typeId], supplierId);
+                                                                                        if ($.isEmptyObject(rOrders.typeObj[typeId])) {
+                                                                                            Vue.delete(rOrders.typeObj, typeId);
+                                                                                        }
+                                                                                        if ($.isEmptyObject(rOrders.typeObj)) {
+                                                                                            Vue.delete(rOrders, "typeObj");
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        })
+                                                                    } else {
+                                                                        window.localStorage.removeItem('sendToYinLian');
+                                                                        window.localStorage.removeItem('sendToAliPay');
+                                                                        window.localStorage.removeItem('sendToPay');
+                                                                        tmp.focus();
+                                                                        tmp.location.href = response.obj.url;
                                                                         message.refresh({
                                                                             title: '温馨提示',
                                                                             content: '支付申请已提交，请确认！',
@@ -6388,8 +6792,9 @@
                                 var that = this;
                                 var isYL = pType === 'yl';
                                 var isZFB = pType === 'zfb';
-                                var payType = isYL? 3: (isZFB? 2: 1);
-                                var type = payType === 3? "07": (payType === 1? "NATIVE": "scanCode");
+                                var isYB = pType === 'yb';
+                                var payType = isYL? 3: (isZFB? 2: isYB? 5: 1);
+                                var type = payType === 3? "07": (payType === 1? "NATIVE": (payType === 5? "": "scanCode"));
                                 var sendToPay = { orderId: orderId, orderPrice: orderPrice };
                                 var tmp = window.open("about:blank");
                                 jsModel.send("PAY_ORDER", { payType:payType, type:type, orderId:orderId, redirect: redirect })
@@ -6474,6 +6879,31 @@
                                                 });
                                                 tmp.focus();
                                                 tmp.location='/pay.html';
+                                            }
+                                            else if(payType === 5){
+                                                window.localStorage.removeItem('sendToYinLian');
+                                                window.localStorage.removeItem('sendToAliPay');
+                                                window.localStorage.removeItem('sendToPay');
+                                                message.refresh({
+                                                    title:'温馨提示',
+                                                    content:'支付申请已提交，请确认！',
+                                                    DOMClick: false,
+                                                    confirmFun: function(){
+                                                        that.request.order.numPerPage = 5;
+                                                        that.request.order.currentPage = 1;
+                                                        jsModel.send(['ORDER_USER_QUERY'], that.request.order)
+                                                            .done(function(response){
+                                                                if(response && response.success){
+                                                                    var data = response.obj || {};
+                                                                    that.orderList =  data && data.orderList || {};
+                                                                    that.pagination =  data && data.pagination || {};
+                                                                    $("html,body").animate({scrollTop: 0});
+                                                                }
+                                                            });
+                                                    }
+                                                });
+                                                tmp.focus();
+                                                tmp.location = response.obj;
                                             }
                                         }
                                         else if(response && response.errorMsg){
@@ -6745,6 +7175,12 @@
             });
         }
         if ((/^amount-access-1-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {}
+            });
+        }
+        if ((/^advertising-header-1-\d+$/).test(role)) {
             Module[role] = new Vue({
                 el: element,
                 data: {}

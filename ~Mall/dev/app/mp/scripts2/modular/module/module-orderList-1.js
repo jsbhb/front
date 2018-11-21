@@ -319,11 +319,13 @@ define(["config.page.render"], function(Render) {
             var message = that.modules.message;
             var redirect = that.config.global.redirect;
             var orderId = $node.attr("orderId");
+            var orderFlag = $node.attr("orderFlag");
             var openId = localStorage.getItem("openId");
             if(api.jsEvent.touch.focusTime<=300){
                 return null;
             }
             that.renderData.payChoose.config.attr("payChooseShow", true);
+            that.renderData.payChoose.config.attr("orderFlag", orderFlag);
             that.renderData.payChoose.config.attr("payState", $.Deferred());
 
             $.when(that.renderData.payChoose.config.attr().payState)
@@ -347,6 +349,15 @@ define(["config.page.render"], function(Render) {
                                 var theObj = typeof response.obj === "string"? response.obj: JSON.stringify(response.obj);
                                 window.localStorage.setItem('sendToAliPay', theObj);
                                 window.location.href = '/pay-transfer.html';
+                            }
+                        }
+                    }
+                    if(payState === "ybPay"){
+                        type = "";
+                        payType = 5;
+                        toPayFunc = function(response){
+                            if(response.obj){
+                                window.location.href = response.obj;
                             }
                         }
                     }

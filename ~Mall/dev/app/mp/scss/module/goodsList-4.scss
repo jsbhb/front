@@ -1,0 +1,135 @@
+@charset "utf-8";
+
+/*
+ * goodsList-4部分样式
+ */
+[id^='goodsList-4-']{
+  width: 750px;
+  display: block;
+  position: relative;
+  background-color: #ffffff;
+  margin: 20px 0;
+}
+.goodsList-4-content{
+    width: 750px;
+    overflow: hidden;
+    position: relative;
+  .header-tab{
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  .header-tab .content-tab{
+    width: -webkit-max-content;
+    width: -moz-max-content;
+    width: max-content;
+    height: 120px;
+    text-align: center;
+    overflow: hidden;
+    background: -webkit-linear-gradient(#e60076, #8b03bf); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#e60076, #8b03bf); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#e60076, #8b03bf); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#e60076, #8b03bf); /* 标准的语法 */
+    color: #fff;
+  }
+  .header-tab .content-tab .tab-item{
+    float: left;
+    width: 150px;
+    height: 100%;
+  }
+  .header-tab .content-tab .tab-item.active{
+    background: #ff3d31;
+  }
+  .header-tab .content-tab .tab-item span{
+    font-size: 44px;
+    display: block;
+    margin-top: 10px;
+  }
+  .header-tab .content-tab .tab-item span:last-child{
+    font-size: 29px;
+    margin-top: 0;
+  }
+  .content-time{
+    font-size: 32px;
+    height: 80px;
+    line-height: 80px;
+    padding-left: 20px;
+    color: #333;
+    border-bottom: 1px solid #c7c7c7;
+    display: none;
+    &.active{
+      display: block;
+    }
+  }
+  .content-time i{
+    font-style: italic;
+    margin: 0 20px 0 10px;
+    font-weight: 600;
+    color: #666;
+  }
+  .content-product{
+    overflow: hidden;
+    height: 300px;
+    border-bottom: 1px solid #c7c7c7;
+    display: none;
+    &.active{
+      display: block;
+    }
+  }
+  .content-product .content-product-left{
+    float: left;
+    width: 300px;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .content-product .content-product-left img{
+    width: 260px;
+    height: 260px;
+  }
+  .content-product .content-product-right{
+    float: left;
+    width: calc(100% - 300px);
+    height: 100%;
+    color: #333;
+  }
+  .content-product .content-product-right .productName{
+    font-size: 32px;
+    height: 85px;
+    overflow: hidden;
+    padding-right: 20px;
+    margin-top: 30px;
+  }
+  .content-product .content-product-right .number{
+    font-size: 28px;
+    color: #f34431;
+    margin-top: 50px;
+    font-weight: 600;
+  }
+  .content-product .content-product-right .price{
+    margin-top: 15px;
+  }
+  .content-product .content-product-right .price .now_price{
+    font-size: 34px;
+    color: #f34431;
+    font-weight: 600;
+  }
+  .content-product .content-product-right .price .pass_price{
+    font-size: 24px;
+  }
+  .content-product .content-product-right .price .toBuy{
+    float: right;
+    font-size: 32px;
+    padding: 10px 25px;
+    margin-top: -20px;
+    background: #f34431;
+    color: #fff;
+    border-radius: 10px;
+    margin-right: 20px;
+    cursor: pointer;
+    &.lose{
+      background: #eee;
+      cursor: default;
+    }
+  }
+}

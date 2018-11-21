@@ -1,0 +1,208 @@
+@charset "utf-8";
+
+/*
+ * floor-2样式
+ */
+[id^="floor-2-"] {
+  width: 100%;
+  min-width: 1240px;
+  display: block;
+  margin-bottom: 30px;
+}
+.floor-2-content {
+  width:1240px;
+  display:block;
+  margin:0 auto 40px auto;
+  & .floor-title{
+    background: #ff4848;
+    text-align: center;
+  }
+  & .floor-title img{
+    display: block;
+    margin: auto;
+  }
+  & .floor-tab{
+    width: 100%;
+    height: 46px;
+    margin-bottom: 5px;
+  }
+  & .floor-tab .cc-infor{
+    float: left;
+    height: 16px;
+    margin: 15px 0 0 20px;
+    line-height: 16px;
+    font-size: 12px;
+  }
+  & .floor-tab .time{
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    margin: 14px 0 0 8px;
+  }
+  & .floor-tab .time span{
+    float: left;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    vertical-align: middle;
+    background: #333;
+    border-radius: 3px;
+  }
+  & .floor-tab .time i{
+    float: left;
+    font-size: 14px;
+    padding: 0 6px;
+    font-style: normal;
+  }
+  & .floor-tab .tab-list{
+    float: left;
+    height: 46px;
+    margin-left: 62px;
+  }
+  & .floor-tab .tab-list .t-list {
+    float: left;
+    font-size: 14px;
+  }
+  & .floor-tab .tab-list .t-list ul{
+    overflow: hidden;
+  }
+  & .floor-tab .tab-list .t-list li {
+    margin: 12px 20px 0 0;
+    padding: 2px 10px;
+    float: left;
+    background: #fff;
+    color: #333;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  & .floor-tab .tab-list .t-list li.active{
+    background: -webkit-linear-gradient(left, #ff453d, #ff8864); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #ff453d, #ff8864); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #ff453d, #ff8864); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #ff453d, #ff8864); /* 标准的语法 */
+    color: #fff;
+  }
+  & .floor-tab .tab-list .t-list li i{
+    font-style: normal;
+  }
+  & .floor-content{
+    display: none;
+    width: 100%;
+    height: 340px;
+    position: relative;
+    border: 1px solid #e7e7e7;
+    &.active{
+      display: block;
+    }
+  }
+  & .floor-content .products_img{
+    position: relative;
+    margin-left: 30px;
+  }
+  & .floor-content .products_img img{
+    width: 700px;
+    height: 320px;
+    margin-top: 10px;
+  }
+  & .floor-content .products_img .img_tag{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 37px;
+    background: #8b35a0;
+    color: #fff;
+    font-size: 12px;
+    padding-top: 3px;
+  }
+  & .floor-content .products_detail{
+    position: absolute;
+    height: 340px;
+    width: 420px;
+    padding: 0 40px;
+    background: #fff;
+    top: 18px;
+    right: 18px;
+    box-shadow: 0 1px 4px #c5c5c5;
+    zoom: 1;
+    line-height: 1;
+  }
+  & .products_detail .products_have_time {
+    color: #fff;
+    font-weight: 400;
+    text-indent: 0;
+    font-size: 14px;
+    margin-top: -1px;
+    text-align: center;
+  }
+  & .products_have_time .today_end_time {
+    background: #333;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 10px;
+    display: inline-block;
+  }
+  & .today_end_time .icon {
+    margin-right: 3px;
+  }
+  & .today_end_time em {
+    margin: 0 3px;
+    font-style: normal;
+  }
+  & .product_short_title {
+    color: #767676;
+    line-height: 24px;
+    height: 142px;
+    display: block;
+    font-size: 16px;
+    margin-top: 36px;
+    overflow: hidden;
+  }
+  & .product_price {
+    margin-top: 30px;
+    font-family: arial;
+    height: 45px;
+    position: relative;
+  }
+  & .product_price a{
+    height: 36px;
+    width: 106px;
+    line-height: 37px;
+    color: #fff;
+    background: #e81a62;
+    text-align: center;
+    font-size: 14px;
+    float: right;
+    text-decoration: none;
+    cursor: pointer;
+    &.lose{
+      background: #eee;
+      cursor: default;
+    }
+  }
+  & .product_price .pass_price{
+    color: #727272;
+    font-size: 14px;
+    margin-top: 18px;
+    margin-left: 5px;
+    display: inline-block;
+  }
+  & .product_price .now_price{
+    font-size: 32px;
+    color: #de2911;
+    float: left;
+    margin-top: 5px;
+  }
+  & .products_detail .global_sure_tag{
+    margin-top: 10px;
+  }
+  & .global_sure_tag .g_tag{
+    font-size: 14px;
+    line-height: 30px;
+    color: #000;
+    font-weight: 600;
+  }
+}

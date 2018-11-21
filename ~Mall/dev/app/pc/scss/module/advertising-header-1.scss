@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+/*
+ * advertising-header-1样式
+ */
+[id^="advertising-header-1-"] {
+  width: 100%;
+  min-width: 1240px;
+  display: block;
+}
+.advertising-header-1-content{
+  width: 100%;
+  &>a{
+    width: 100%;
+    &>img{
+      width: 100%;
+      display: block;
+    }
+  }
+}

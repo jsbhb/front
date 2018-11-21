@@ -1,0 +1,157 @@
+<div id="goodsList-4-{{sign}}" v-cloak>
+    <div class="goodsList-4-content">
+        <!--<div class="header-tab">-->
+            <!--<div class="content-tab">-->
+                <!--<div data-type="0" v-if="activeType == 0" class="tab-item active">-->
+                    <!--<span>08:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="0" v-else-if="activeType > 0" class="tab-item">-->
+                    <!--<span>08:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="0" v-if="activeType == null" class="tab-item active">-->
+                    <!--<span>08:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+                <!--<div data-type="1" v-if="activeType == 1" class="tab-item active">-->
+                    <!--<span>10:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="1" v-else-if="activeType > 1" class="tab-item">-->
+                    <!--<span>10:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="1" v-if="activeType < 1" class="tab-item">-->
+                    <!--<span>10:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+                <!--<div data-type="2" v-if="activeType == 2" class="tab-item active">-->
+                    <!--<span>12:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="2" v-else-if="activeType > 2" class="tab-item">-->
+                    <!--<span>12:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="2" v-if="activeType < 2" class="tab-item">-->
+                    <!--<span>12:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+                <!--<div data-type="3" v-if="activeType == 3" class="tab-item active">-->
+                    <!--<span>14:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="3" v-else-if="activeType > 3" class="tab-item">-->
+                    <!--<span>14:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="3" v-if="activeType < 3" class="tab-item">-->
+                    <!--<span>14:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+                <!--<div data-type="4" v-if="activeType == 4" class="tab-item active">-->
+                    <!--<span>16:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="4" v-else-if="activeType > 4" class="tab-item">-->
+                    <!--<span>16:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="4" v-if="activeType < 4" class="tab-item">-->
+                    <!--<span>16:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+                <!--<div data-type="5" v-if="activeType == 5" class="tab-item active">-->
+                    <!--<span>18:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="5" v-else-if="activeType > 5" class="tab-item">-->
+                    <!--<span>18:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="5" v-if="activeType < 5" class="tab-item">-->
+                    <!--<span>18:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+                <!--<div data-type="6" v-if="activeType == 6" class="tab-item active">-->
+                    <!--<span>20:00</span>-->
+                    <!--<span>已开抢</span>-->
+                <!--</div>-->
+                <!--<div data-type="6" v-else-if="activeType > 6" class="tab-item">-->
+                    <!--<span>20:00</span>-->
+                    <!--<span>已结束</span>-->
+                <!--</div>-->
+                <!--<div data-type="6" v-if="activeType < 6" class="tab-item">-->
+                    <!--<span>20:00</span>-->
+                    <!--<span>未开始</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        {{#each cont}}
+            {{#toRange @index 0 1}}
+                <div class="content-time active"  v-if="activeType == {{@index}}">
+                    <b>距特卖结束</b>
+                    <i>仅剩</i>
+                    <span>{{!EndHour}} : {{!EndMinute}} : {{!EndSecond}}</span>
+                </div>
+                <div class="content-time"  v-else>
+                    <b>活动已结束</b>
+                </div>
+                <!--<div class="content-time"  v-else-if="activeType > {{@index}}">-->
+                    <!--<b>活动已结束</b>-->
+                <!--</div>-->
+                <!--<div class="content-time active"  v-if="activeType == null">-->
+                    <!--<b>活动未开始</b>-->
+                <!--</div>-->
+                <div class="content-product active" id="content-{{@index}}">
+                    <div class="content-product-left">
+                        <a href="{{href}}">
+                            <img src="{{picPath}}" alt="中国供销海外购">
+                        </a>
+                    </div>
+                    <div class="content-product-right">
+                        <div class="productName">{{title}}</div>
+                        <div class="number">限量100件</div>
+                        <div class="price">
+                            <span class="now_price">￥{{price}}</span>
+                            <s class="pass_price">￥{{enname}}</s>
+                            <a class="toBuy" v-if="activeType == {{@index}}" href="{{href}}">马上抢</a>
+                            <a v-else class="toBuy lose">马上抢</a>
+                        </div>
+                    </div>
+                </div>
+            {{/toRange}}
+            <!--{{#toRange @index 1 6}}-->
+                <!--<div class="content-time"  v-if="activeType == {{@index}}">-->
+                    <!--<b>距特卖结束</b>-->
+                    <!--<i>仅剩</i>-->
+                    <!--<span>{{!EndHour}} : {{!EndMinute}} : {{!EndSecond}}</span>-->
+                <!--</div>-->
+                <!--<div class="content-time"  v-else-if="activeType > {{@index}}">-->
+                    <!--<b>活动已结束</b>-->
+                <!--</div>-->
+                <!--<div class="content-time"  v-if="activeType < {{@index}}">-->
+                    <!--<b>活动未开始</b>-->
+                <!--</div>-->
+                <!--<div class="content-product" id="content-{{@index}}">-->
+                    <!--<div class="content-product-left">-->
+                        <!--<a href="{{href}}">-->
+                            <!--<img src="{{picPath}}" alt="中国供销海外购">-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <!--<div class="content-product-right">-->
+                        <!--<div class="productName">{{title}}</div>-->
+                        <!--<div class="number">限量100件</div>-->
+                        <!--<div class="price">-->
+                            <!--<span class="now_price">￥{{price}}</span>-->
+                            <!--<s class="pass_price">￥{{enname}}</s>-->
+                            <!--<a class="toBuy" v-if="activeType == {{@index}}" href="{{href}}">马上抢</a>-->
+                            <!--<a v-else class="toBuy lose">马上抢</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--{{/toRange}}-->
+        {{/each}}
+    </div>
+</div>

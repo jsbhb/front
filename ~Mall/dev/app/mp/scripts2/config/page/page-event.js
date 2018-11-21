@@ -36,7 +36,12 @@ define(function(){
                     nonceStr:  response.obj.nonceStr,
                     timestamp: response.obj.timestamp,
                     signature: response.obj.signature,
-                    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode']
+                    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode','hideMenuItems']
+                });
+                wx.ready(function () {
+                    wx.hideMenuItems({
+                        menuList: ['menuItem:share:qq','menuItem:share:QZone','menuItem:share:weiboApp','menuItem:share:facebook']
+                    });
                 });
             });
     }

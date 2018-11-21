@@ -211,6 +211,9 @@
                                                         <a href="javascript:void(0)" class="btn btn_toPay btn_zfb" style="width:78px;height:30px;padding:0;"  @click="toPayClick('zfb', item.orderId, item.orderDetail.payment)">
                                                             <img src="/images/platform/zfb.png" style="height:30px;width:72px" alt="中国供销海外购">
                                                         </a>
+                                                        <a v-if="item.orderFlag == 2" href="javascript:void(0)" class="btn btn_toPay btn_zfb" style="width:78px;height:30px;padding:0;"  @click="toPayClick('yb', item.orderId, item.orderDetail.payment)">
+                                                            <img src="/images/platform/yb.png" style="height:30px;width:72px" alt="中国供销海外购">
+                                                        </a>
                                                     </template>
                                                     <template v-if="item.status !== 0 && item.status !== 7 && item.status !== 8 && item.status !== 9 && item.status !== 21">
                                                         <a href="javascript:void(0)" class="btn btn_refund" @click="refundClick">申请退款</a>

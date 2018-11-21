@@ -24,6 +24,11 @@ define(["text!modular/template/template-pay-choose-1.mustache"], function(templa
                 if(tType === "btn_wx"){ return isWeChat? options.fn(this): options.inverse(this); }
                 if(tType === "btn_zfb"){ return isWeChat? options.inverse(this): options.fn(this); }
                 if(tType === "btn_yl"){ return options.fn(this); }
+            },
+            returnShowYb: function(orderFlag, options){
+                var tOrderFlag = api.jsUtil.mustache.getContent(orderFlag, 'string');
+                if(tOrderFlag == 0){return options.inverse(this);}
+                if(tOrderFlag == 2){return options.fn(this);}
             }
         },
         scope: {
@@ -62,6 +67,12 @@ define(["text!modular/template/template-pay-choose-1.mustache"], function(templa
                 var that = this;
                 if(api.jsEvent.touch.touchIsMoved){ return null; }
                 that.scope.spcConfig.attr().payState.resolve("unionPay");
+                return false;
+            },
+            ".component-pay-choose-btnGroup .btn_yb touchend": function(){
+                var that = this;
+                if(api.jsEvent.touch.touchIsMoved){ return null; }
+                that.scope.spcConfig.attr().payState.resolve("ybPay");
                 return false;
             }
         }

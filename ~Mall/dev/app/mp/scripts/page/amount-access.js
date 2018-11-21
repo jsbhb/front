@@ -68,4 +68,47 @@
         return typeof name === "string" && name.trim()? Page[name]: Page;
     };
 
+    wx.ready(function (){
+        shopId = localStorage.getItem('shopId') || 2;
+        var data = {
+            title : '中国供销海外购-全国加盟',
+            desc : '优质的产品、完善的服务，中国供销海外购诚邀您的加盟！'
+        };
+        if(window.location.href.indexOf("?") == -1){
+            data.link = window.location.href + '?shopId=' + shopId;
+        }else{
+            data.link = window.location.href + '&shopId=' + shopId;
+        }
+        if(shopId == 287){
+            data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/esutong.jpg';
+        }else{
+            data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg';
+            // data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/activity.jpg';
+        }
+        $.when(jsModel.send("USER_SHOPINFO_QUERY"))
+            .done(function(response){
+                if(response && response.success && response.obj){
+                    data.title = response.obj.name + '-全国加盟';
+                    data.desc = '优质的产品、完善的服务，' + response.obj.name + '诚邀您的加盟！';
+                }
+                wx.onMenuShareAppMessage({
+                    title: data.title, // 分享标题
+                    desc: data.desc, // 分享描述
+                    link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.imgUrl, // 分享图标
+                    success: function (res) {
+
+                    }
+                });
+                wx.onMenuShareTimeline({
+                    title: data.title, // 分享标题
+                    link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.imgUrl, // 分享图标
+                    success: function(res){
+
+                    }
+                });
+            });
+    });
+
 }());

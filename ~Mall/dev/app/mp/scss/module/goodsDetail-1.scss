@@ -154,6 +154,34 @@
       }
     }
   }
+  .productinfo {
+    overflow: hidden;
+    height: 70px;
+    padding: 8px 20px;
+    line-height: 64px;
+    margin: 0;
+    background: url('/images/platform/product/productinfoheadbar_01.jpg') no-repeat center;
+    background-size: cover;
+    font-size: 30px;
+    & > .productinfo-left {
+      float: left;
+      & > span {
+        vertical-align: middle;
+        height: 40px;
+        line-height: 41px;
+        color: #2385c7;
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 0 15px;
+        float: left;
+        margin-top: 8px;
+        margin-right: 20px;
+      }
+    }
+    &>.productinfo-right{
+      color: #fff;
+    }
+  }
   .goodsDetail-goodsMsg{
     padding: 25px 0 25px 28px;
     margin: 2px 0 20px 0;

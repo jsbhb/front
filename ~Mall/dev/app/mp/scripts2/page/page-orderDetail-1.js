@@ -27,6 +27,7 @@ require([
     var backUrl = "";
     var jumpUrl = api.jsUtil.url.getParam("jumpUrl", 1)||"/orderList.html";
     var orderId = api.jsUtil.url.getParam("orderId");
+    var header_title = "订单详情";
 
     if(!isLogin){
         setTimeout(function(){ window.location.href="/login.html?jumpUrl=" + pathUrl;}, 300);
@@ -112,4 +113,55 @@ require([
             })
 
         });
+
+    wx.ready(function () {
+        shopId = localStorage.getItem('shopId') || 2;
+        var data = {
+            title: '中国供销海外购' + ' - ' + header_title
+        };
+        if(window.location.href.indexOf("?") == -1){
+            data.link = window.location.href + '?shopId=' + shopId;
+        }else{
+            data.link = window.location.href + '&shopId=' + shopId;
+        }
+        if(shopId == 287){
+            data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/esutong.jpg';
+            data.desc = '优质的产品、完善的服务，俄速通全球购诚邀您的加盟！';
+        }else{
+            // data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg';
+            data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/activity.jpg';
+            data.desc = '双十一疯狂抢购：11月11日-12日每天8:00开始不容错过';
+        }
+        $.when(api.jsModel.send("USER_SHOPINFO_QUERY"))
+            .done(function(response){
+                if(response && response.success && response.obj){
+                    if(shopId == 287){
+                        data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/esutong.jpg';
+                        data.desc = '优质的产品、完善的服务，' + response.obj.name + '诚邀您的加盟！';
+                    }else{
+                        data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg';
+                        // data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/activity.jpg';
+                        data.desc = '中国供销海外购是供销系统中唯一专业从事跨境电商行业的企业';
+                    }
+                    data.title = response.obj.name + ' - ' + header_title;
+                }
+                wx.onMenuShareAppMessage({
+                    title: data.title, // 分享标题
+                    desc: data.desc, // 分享描述
+                    link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.imgUrl, // 分享图标
+                    success: function (res) {
+
+                    }
+                });
+                wx.onMenuShareTimeline({
+                    title: data.title, // 分享标题
+                    link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.imgUrl, // 分享图标
+                    success: function(res){
+
+                    }
+                });
+            });
+    });
 });

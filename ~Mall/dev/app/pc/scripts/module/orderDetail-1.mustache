@@ -13,6 +13,9 @@
                     <!--<span class="btn btn_pay btn_yl" orderId="{{!orderInfo.orderId}}" @click="toPayClick('yl', orderInfo.orderId, orderInfo.orderDetail.payment)" style="width:96px;height:38px;padding:0;">-->
                     <!--<img src="/images/platform/yl.png" style="height:36px;width:86px">-->
                     <!--</span>-->
+                    <span v-if="orderInfo.orderFlag == 2" class="btn btn_pay btn_yb" orderId="{{!orderInfo.orderId}}" @click="toPayClick('yb', orderInfo.orderId, orderInfo.orderDetail.payment)" style="width:96px;height:38px;padding:0;">
+                        <img src="/images/platform/yb.png" style="height:36px;width:86px" alt="中国供销海外购">
+                    </span>
                     <span class="btn btn_pay btn_zfb" orderId="{{!orderInfo.orderId}}" @click="toPayClick('zfb', orderInfo.orderId, orderInfo.orderDetail.payment)" style="width:96px;height:38px;padding:0;">
                         <img src="/images/platform/zfb.png" style="height:36px;width:86px" alt="中国供销海外购">
                     </span>
