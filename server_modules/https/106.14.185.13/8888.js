@@ -302,10 +302,11 @@ var DBHandle = function(opt) {
                                     if (contObj) {
                                         var specsList = contObj.goodsSpecsList;
                                         if (iUtil.isArray(specsList)) {
-                                            for (var n in specsList) {
+                                            for (var n = 0; n < specsList.length; n++) {
                                                 var itemObj = specsList[n];
                                                 if (itemObj.fx === 0 || itemObj.fx === '0') {
                                                     specsList.splice(n, 1);
+                                                    n--;
                                                 }
                                             }
                                         }
@@ -383,10 +384,11 @@ var DBHandle = function(opt) {
                                         var specsList = contObj.goodsSpecsList;
                                         var isArray = iUtil.isArray(specsList);
                                         if (isArray) {
-                                            for (var n in specsList) {
+                                            for (var n = 0; n < specsList.length; n++) {
                                                 var itemObj = specsList[n];
                                                 if (itemObj.fx === 0 || itemObj.fx === '0') {
                                                     specsList.splice(n, 1);
+                                                    n--;
                                                 }
                                             }
                                         }

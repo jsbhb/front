@@ -1,0 +1,82 @@
+@charset "utf-8";
+
+/*
+ * advertising-1部分样式
+ */
+[id^='bargainRule-1-']{
+  width: 100%;
+  min-width: 1240px;
+  display: block;
+  position: relative;
+  background-color: #ffffff;
+}
+.bargainRule-content{
+  padding: 0 40px 20px 40px;
+  background: #fff;
+  color: #333;
+}
+.bargainRule-content h1{
+  text-align: center;
+  color: #ff1104;
+  font-size: 40px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+.bargainRule-content .title-desc{
+  font-size: 26px;
+  word-break: break-all;
+  color: #666;
+  max-height: 999999px;
+}
+.bargainRule-content .step-content{
+  margin-top: 40px
+}
+.bargainRule-content .step-content .step-title{
+  text-align: center;
+  position: relative;
+  font-size: 30px;
+  max-height: 999999px;
+}
+.bargainRule-content .step-content .step-title::before{
+  content: '';
+  position: absolute;
+  left: 18%;
+  top: 20px;
+  width: 100px;
+  height: 1px;
+  background: #333;
+}
+.bargainRule-content .step-content .step-title::after{
+  content: '';
+  position: absolute;
+  right: 18%;
+  top: 20px;
+  width: 100px;
+  height: 1px;
+  background: #333;
+}
+.bargainRule-content .step-content .step-desc-item{
+  margin-top: 15px;
+}
+.bargainRule-content .step-content .step-desc-item .text{
+  font-size: 26px;
+  max-height: 9999999px;
+  text-align: center;
+}
+.bargainRule-content .step-content .step-desc-item .imgBox{
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+.bargainRule-content .step-content .step-desc-item .imgBox img{
+  width: 640px;
+  margin: 30px 0;
+  border: 1px solid #fff;
+}
+.bargainRule-content .step-content .step-desc-item .imgBox .imgDesc{
+  font-size: 26px;
+  max-height: 9999999px;
+  text-align: left;
+  margin: 5px auto 0 auto;
+  width: 640px;
+}

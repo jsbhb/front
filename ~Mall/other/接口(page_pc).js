@@ -780,6 +780,76 @@ function addPage(region, page) {
                 }
             ]
         },
+        bargainRule:  {
+            seo: {
+                title: "中国供销海外购--活动规则",
+                keywords: "母婴加盟,进口商品加盟,海外购加盟,o2o加盟,新零售加盟,连锁加盟,区域加盟,美妆加盟,合伙人加盟,旗舰店加盟,跨境电商,母婴用品,县域加盟,供销e家进口商品,中国供销海外购加盟,整店输出",
+                description: "母婴加盟,进口商品加盟,海外购加盟,o2o加盟,新零售加盟,连锁加盟,区域加盟,美妆加盟,合伙人加盟,旗舰店加盟,跨境电商,母婴用品,县域加盟,供销e家进口商品,中国供销海外购加盟,整店输出"
+            },
+            page: "bargainRule",
+            file: 'bargainRule',
+            path: '',
+            region: region,
+            system: "pcMall",
+            module: [
+                {
+                    code: "message-1",
+                    sort: 1,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "alertDefault-1",
+                    sort: 2,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "alertDiscount-1",
+                    sort: 3,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "header-1",
+                    sort: 4,
+                    area: "bodyHeader",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "header-2",
+                    sort: 5,
+                    area: "bodyHeader",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "nav-1",
+                    sort: 6,
+                    area: "bodyHeader",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "bargainRule-1",
+                    sort: 7,
+                    area: "bodyCenter",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "footer-1",
+                    sort: 14,
+                    area: "bodyFooter",
+                    own:  null,
+                    cont: null
+                }
+            ]
+        }
     };
     page?
         pages = [].concat(page):

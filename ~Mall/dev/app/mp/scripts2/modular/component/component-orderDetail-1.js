@@ -82,7 +82,7 @@ define(["text!modular/template/template-orderDetail-1.mustache"], function(templ
             returnPaymentMethod: function(status, payType, options){
                 var tStatus = api.jsUtil.mustache.getContent(status, "number");
                 var tPayType = api.jsUtil.mustache.getContent(payType, "number");
-                var paymentMethod = tPayType === 1? "微信支付": (tPayType === 2? "支付宝": (tPayType === 3? "银联支付": ""));
+                var paymentMethod = tPayType === 1? "微信支付": (tPayType === 2? "支付宝": (tPayType === 3? "银联支付": (tPayType === 5? "易宝支付":"")));
                 return tStatus!==0 && tStatus!==8?
                     options.fn({paymentMethod: paymentMethod}):
                     options.inverse({paymentMethod: paymentMethod});

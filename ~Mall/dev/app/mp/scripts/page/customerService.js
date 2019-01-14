@@ -95,8 +95,8 @@
                         data.desc = '优质的产品、完善的服务，' + response.obj.name + '诚邀您的加盟！';
                     }else{
                         // data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg';
-                        data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/activity.jpg';
-                        data.desc = '双十一疯狂抢购：11月11日-12日每天8:00开始不容错过';
+                        data.imgUrl = 'https://' + window.location.host + '/images/platform/weixinShare/ico_mp.jpg';
+                        data.desc = '中国供销海外购是供销系统中唯一专业从事跨境电商行业的企业';
                     }
                     data.title = response.obj.name + ' - 客服中心';
                 }

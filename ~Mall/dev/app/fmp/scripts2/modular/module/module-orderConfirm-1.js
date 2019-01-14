@@ -266,6 +266,7 @@ define(["config.page.render"], function(Render) {
             var remark = $element.find('.commodity-remark input').val() || '';
             var noStockState = false;
             var noStockName = false;
+            var gradeId = localStorage.getItem('shopId');
 
             that.renderData.payChoose.config.attr("payChooseShow", true);
             that.renderData.payChoose.config.attr("payState", $.Deferred());
@@ -280,9 +281,16 @@ define(["config.page.render"], function(Render) {
             orderDetail.receiveCity = address.city;
             orderDetail.receiveArea = address.area;
             orderDetail.receiveAddress = address.address;
-            orderDetail.payment = orders.orderPrice*1 - orders.discountPrice*1;
             orderDetail.postFee = orders.postFee;
             orderDetail.taxFee = orders.taxFee;
+            if(gradeId == 124){
+                orderDetail.payment = orders.orderPrice*1 - orders.discountPrice*1 - 0;
+                orderDetail.disAmount = 0;
+            }else{
+                orderDetail.payment = orders.orderPrice*1 - orders.discountPrice*1;
+                orderDetail.disAmount = 0;
+            }
+
 
             $.each(orders.itemObj, function (n3, o3) {
                 o3.ids && idsArr.push(o3.ids);

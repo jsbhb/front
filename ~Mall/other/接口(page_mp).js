@@ -81,6 +81,62 @@ function addPage(region, page) {
                 }
             ]
         },
+        bargainRule:     {
+            seo: {
+                title: "中国供销海外购--",
+                keywords: "中国供销海外购,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
+                description: "中国供销海外购, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
+            },
+            page:   "bargainRule",
+            file:   'bargainRule',
+            path:   '',
+            region: region,
+            system: "mpMall",
+            module: [
+                {
+                    code: "message-1",
+                    sort: 1,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "alertDiscount-1",
+                    sort: 2,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "prompt-1",
+                    sort: 4,
+                    area: "bodyCenter",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "bargainRule-1",
+                    sort: 5,
+                    area: "bodyCenter",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "scrollTop-1",
+                    sort: 6,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                },
+                {
+                    code: "searchHistory-1",
+                    sort: 7,
+                    area: "body",
+                    own:  null,
+                    cont: null
+                }
+            ]
+        },
         amountAccess:     {
             seo: {
                 title: "中国供销海外购--加入我们",

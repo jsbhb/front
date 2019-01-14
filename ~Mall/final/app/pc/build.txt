@@ -1,4 +1,8 @@
 
+css/page/page-mall-mp.min.css
+----------------
+css/page/page-mall-mp.min.css
+
 css/page/page-mall-pc.min.css
 ----------------
 css/page/page-mall-pc.min.css

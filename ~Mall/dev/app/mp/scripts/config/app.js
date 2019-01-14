@@ -1982,6 +1982,21 @@
                     dataType:     "",
                     errFunc:      {},
                     data:         {}
+                },
+                /** 生成/获取图片接口
+                 *    小程序二维码： MINI_QUERY --- shopId/gradeId
+                 */
+                MINI_QUERY:    {
+                    host:         "https://zserp.cncoopbuy.com/cardmanager",
+                    path:         "/wechat/applet/getCodeUrlByWechat.shtml",
+                    method:       "GET",
+                    context:      "",
+                    contType:     "application/x-www-form-urlencoded;charset=UTF-8",
+                    reqDataType:  "",
+                    reqHeader:    {},
+                    dataType:     "",
+                    errFunc:      {},
+                    data:         {gradeId: (DB.shopId || 2)}
                 }
             }
         })

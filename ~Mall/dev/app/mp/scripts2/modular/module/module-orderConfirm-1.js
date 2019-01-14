@@ -139,26 +139,24 @@ define(["config.page.render"], function(Render) {
                     var ordersInfo = data.response.global.ordersInfo||{};
                     var province = data.config.global.address.province;
                     $.each(ordersInfo.typeObj, function(n1, o1){
-                        if(n1 === '0'){
-                            $.each(o1, function(n2, o2){
-                                var supplierPrice = o2.supplierPrice;
-                                var supplierWeight = o2.supplierWeight;
-                                $.each(o2.itemObj, function(n3, o3){
-                                    if(o3.freePost == 0){
-                                        typeObj[n2] = n1;
-                                        if(province && supplierPrice && supplierWeight){
-                                            options.push({
-                                                "centerId":   centerId,
-                                                "supplierId": n2,
-                                                "province":   province,
-                                                "weight":     supplierWeight,
-                                                "price":      supplierPrice
-                                            })
-                                        }
+                        $.each(o1, function(n2, o2){
+                            var supplierPrice = o2.supplierPrice;
+                            var supplierWeight = o2.supplierWeight;
+                            $.each(o2.itemObj, function(n3, o3){
+                                if(o3.freePost == 0){
+                                    typeObj[n2] = n1;
+                                    if(province && supplierPrice && supplierWeight){
+                                        options.push({
+                                            "centerId":   centerId,
+                                            "supplierId": n2,
+                                            "province":   province,
+                                            "weight":     supplierWeight,
+                                            "price":      supplierPrice
+                                        })
                                     }
-                                });
+                                }
                             });
-                        }
+                        });
                     });
                     if(options && options.length > 0){
                         that.sendRequest("ORDER_USER_POSTFEE", {data: encodeURI(JSON.stringify(options))}).done(function(response){
@@ -297,7 +295,8 @@ define(["config.page.render"], function(Render) {
                     itemInfo: o3.info,
                     itemQuantity: o3.quantity,
                     itemPrice: o3.price,
-                    actualPrice: o3.realPrice
+                    actualPrice: o3.realPrice,
+                    unit: o3.unit
                 });
                 if (!o3.stock || o3.stock <= 0) {
                     noStockState = true;
@@ -440,10 +439,6 @@ define(["config.page.render"], function(Render) {
                                                 isContinue = 1;
                                             }
                                         }
-                                    }else if(orderFlag == 2){
-                                        if(options.orderDetail.payment < normalOrderMinPrice && options.supplierId * 1 === 6){
-                                            isContinue = 2;
-                                        }
                                     }
                                     if(isContinue == 0){
                                         that.sendRequest("ORDER_USER_CREATE", options)
@@ -489,21 +484,6 @@ define(["config.page.render"], function(Render) {
                                         message.refresh({
                                             title:'温馨提示',
                                             content:'根据海关相关规定，单笔跨境订单金额不得超过' + crossOrderMaxPrice + '元，是否返回上页调整？',
-                                            DOMClick: false,
-                                            cancelBtn: true,
-                                            confirmBtn: true,
-                                            cancelFun: function(){
-                                                ordersInfo.typeObj[orderFlag][supplierId].attr("committed", false);
-                                                ordersInfo.typeObj[orderFlag][supplierId].attr("commitText", "重新提交");
-                                            },
-                                            confirmFun: function(){
-                                                that.jsUtil.url.jumpPage(jumpUrl, null, true);
-                                            }
-                                        });
-                                    }else if(isContinue == 2){
-                                        message.refresh({
-                                            title:'温馨提示',
-                                            content:'该笔一般贸易订单金额未满' + normalOrderMinPrice + '元，是否返回上页调整？',
                                             DOMClick: false,
                                             cancelBtn: true,
                                             confirmBtn: true,

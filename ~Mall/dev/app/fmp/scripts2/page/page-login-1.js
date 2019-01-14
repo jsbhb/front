@@ -28,7 +28,7 @@ require([
     var pathUrl = api.jsData.location.pathUrl;
     var backUrl = "";
     var jumpUrl = api.jsUtil.url.getParam("jumpUrl", 1);
-    var loginType = api.jsUtil.weChat.browser()? 1: 2;
+    var loginType = 2;
     var platUserType = 5;
     var userType = 5;
 

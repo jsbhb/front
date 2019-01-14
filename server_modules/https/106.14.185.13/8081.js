@@ -38,7 +38,7 @@ var shouldFilter =  function(req, res){
     var isImage = (/image\/.+/gi).test(contentType);
     var isAudio = (/audio\/.+/gi).test(contentType);
     var isVideo = (/video\/.+/gi).test(contentType);
-    return !isImage && !isAudio && !isVideo && true;
+    return !isImage && !isAudio && !isVideo && false;
 };
 var proxyFilter =   function(pathname, req){
     return false;

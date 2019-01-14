@@ -57,11 +57,7 @@ define(["text!modular/template/template-orderConfirm-1.mustache"], function(temp
             returnPostFee: function(type, taxFee){
                 var tType = api.jsUtil.mustache.getContent(type, "string");
                 var tTaxFee= api.jsUtil.mustache.getContent(taxFee, "number");
-                if(tType === '2'){
-                    return '<span class="money">物流或快递</span><span class="symbol"></span>';
-                } else{
-                    return '<span class="money">' + tTaxFee.toFixed(2) + '</span><span class="symbol">￥</span>';
-                }
+                return '<span class="money">' + tTaxFee.toFixed(2) + '</span><span class="symbol">￥</span>';
             },
             returnTaxFee:function(taxFee,type){
                 var tTaxFee = api.jsUtil.mustache.getContent(taxFee, "number");

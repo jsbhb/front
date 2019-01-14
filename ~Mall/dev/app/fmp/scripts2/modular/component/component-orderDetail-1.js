@@ -41,6 +41,15 @@ define(["text!modular/template/template-orderDetail-1.mustache"], function(templ
                 });
                 return returnVal.toFixed(2);
             },
+            returnDisAmount: function(orderInfo){
+                var tOrderInfo = api.jsUtil.mustache.getDepContent(orderInfo, "object");
+                var disAmount = tOrderInfo.orderDetail.disAmount;
+                if(disAmount){
+                    return (disAmount*1).toFixed(2);
+                }else{
+                    return '0.00';
+                }
+            },
             returnTaxFee: function(taxFee){
                 var tTaxFee = api.jsUtil.mustache.getContent(taxFee, "number");
                 tTaxFee = tTaxFee>0? tTaxFee: 0;

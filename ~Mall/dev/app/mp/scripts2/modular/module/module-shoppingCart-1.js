@@ -59,6 +59,7 @@ define(["config.page.render"], function(Render) {
                             orders.typeObj[type][supplierId].itemObj[itemId].itemId = o1.itemId;
                             orders.typeObj[type][supplierId].itemObj[itemId].freePost = o1.freePost;
                             orders.typeObj[type][supplierId].itemObj[itemId].freeTax = o1.freeTax;
+                            orders.typeObj[type][supplierId].itemObj[itemId].unit = o1.goodsSpecs.unit;
                             orders.typeObj[type][supplierId].itemObj[itemId].itemImg = o1.picPath;
                             orders.typeObj[type][supplierId].itemObj[itemId].quantity = o1.quantity;
                             orders.typeObj[type][supplierId].itemObj[itemId].itemName = o1.goodsName;
@@ -686,6 +687,7 @@ define(["config.page.render"], function(Render) {
                             ordersInfo.typeObj[n1][n2].itemObj[n3].itemId = o3.itemId;
                             ordersInfo.typeObj[n1][n2].itemObj[n3].freePost = o3.freePost;
                             ordersInfo.typeObj[n1][n2].itemObj[n3].freeTax = o3.freeTax;
+                            ordersInfo.typeObj[n1][n2].itemObj[n3].unit = o3.unit;
                             ordersInfo.typeObj[n1][n2].itemObj[n3].goodsId = o3.goodsId;
                             ordersInfo.typeObj[n1][n2].itemObj[n3].firstCategory = o3.firstCategory;
                             ordersInfo.typeObj[n1][n2].itemObj[n3].secondCategory = o3.secondCategory;
@@ -736,7 +738,6 @@ define(["config.page.render"], function(Render) {
                     $.each(o1,function(k2,o2){
                         var crossPrice = 0;
                         var normalPrice = 0;
-                        var supplierId = o2.supplierId;
                         var supplierName = o2.supplierName;
                         $.each(o2.itemObj,function(k3,o3){
                             if(o3.type === 0){
@@ -753,15 +754,6 @@ define(["config.page.render"], function(Render) {
                                 cancelBtn: false,
                                 confirmBtn: false,
                                 content: supplierName + "商品单笔订单价格超过" + crossOrderMaxPrice + "元，请调整！"
-                            });
-                            return false;
-                        }
-                        if (k1 === '2' && supplierId*1 === 6 && normalPrice < normalOrderMinPrice) {
-                            isContinue = normalPass = false;
-                            message.refresh({
-                                cancelBtn: false,
-                                confirmBtn: false,
-                                content: supplierName + "商品订单未满" + normalOrderMinPrice + "元，请调整！"
                             });
                             return false;
                         }

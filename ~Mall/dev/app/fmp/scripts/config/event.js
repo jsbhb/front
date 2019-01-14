@@ -15,7 +15,6 @@
     var centerId =  jsData.userInfo.centerId;
     var redirect =  jsData.location.redirect;
 
-
     /** 全局事件 */
     $(document).on("click", "[href*='void(0)'],[href='#'],[href='']", function(){
         //注意此处不要阻止默认事件
@@ -34,7 +33,14 @@
                     nonceStr:  response.obj.nonceStr,
                     timestamp: response.obj.timestamp,
                     signature: response.obj.signature,
-                    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode']
+                    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'scanQRCode','hideMenuItems']
+                });
+
+                wx.ready(function () {
+                    wx.hideMenuItems({
+                        menuList: ['menuItem:share:qq','menuItem:share:QZone','menuItem:share:weiboApp','menuItem:share:facebook']
+                    });
+
                 });
             });
     }

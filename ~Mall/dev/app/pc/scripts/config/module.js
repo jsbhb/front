@@ -321,6 +321,22 @@
                             else if(userInfo.userDetail && userInfo.userDetail.name) { that.showName = userInfo.userDetail.name; }
                             else if(userInfo.phone) { that.showName = userInfo.phone; }
                         });
+                },
+                mounted: function(){
+                    var wrap = document.getElementById('wrap'), first = document.getElementById('first');
+                    var timer = window.setInterval(move, 20);
+                    wrap.onmouseover = function () {
+                        window.clearInterval(timer);
+                    };
+                    wrap.onmouseout = function () {
+                        timer = window.setInterval(move, 20);
+                    };
+                    function move() {
+                        wrap.scrollLeft++;
+                        if (wrap.scrollLeft >= first.scrollWidth) {
+                            wrap.scrollLeft = 0;
+                        }
+                    }
                 }
             });
             $(element).on("click", ".header-1-content .btn_search", function(){
@@ -690,7 +706,11 @@
                         if(hourTime < 10) {
                             obj.EndHour = '0' + parseInt(hourTime);
                         }else{
-                            obj.EndHour = parseInt(hourTime);
+                            if(hourTime >= 24){
+                                obj.EndHour = '00';
+                            }else{
+                                obj.EndHour = parseInt(hourTime);
+                            }
                         }
 
                     }
@@ -929,8 +949,19 @@
                                     if(!classify[name]){ classify[name] = "[^;]*"; }
                                 });
                                 $.each(classify||{}, function(name, value){
+                                    var v = value;
+                                    if(v != "[^;]*"){
+                                        v = value.replace(/\//g, "\\/").replace(/\*/g, "\\*")
+                                            .replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+                                            .replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+                                            .replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+                                            .replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+                                            .replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+                                            .replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+                                            .replace(/\./g, "\\.").replace(/\&/g, "\\&");
+                                    }
                                     var k1 = $.inArray(name, codeArr);
-                                    k1 !== -1 && (regexArr[k1] = value);
+                                    k1 !== -1 && (regexArr[k1] = v);
                                 });
                                 regex = new RegExp('^' + regexArr.join(";") + '$', "");
                                 $.each(itemCont, function(name, obj){
@@ -947,9 +978,20 @@
                                         var tempArr = [], tempRegex;
                                         var tempObj = $.extend(true, {}, classify);
                                         $.each(tempObj||{}, function(n2, o2){
+                                            var v = o2;
+                                            if(o2 != "[^;]*"){
+                                                var v = o2.replace(/\//g, "\\/").replace(/\*/g, "\\*")
+                                                    .replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+                                                    .replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+                                                    .replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+                                                    .replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+                                                    .replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+                                                    .replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+                                                    .replace(/\./g, "\\.").replace(/\&/g, "\\&");
+                                            }
                                             var k2 = $.inArray(n2, codeArr);
                                             n1 === n2 && (tempArr[k2] = "[^;]*");
-                                            n1 !== n2 && k2 !== -1 && (tempArr[k2] = o2);
+                                            n1 !== n2 && k2 !== -1 && (tempArr[k2] = v);
                                         });
                                         tempRegex = new RegExp('^' + tempArr.join(";") + '$', "");
                                         if(tempRegex.test(name)) {
@@ -1665,6 +1707,7 @@
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].href = itemObj.href;
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].freePost = itemObj.freePost;
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].freeTax = itemObj.freeTax;
+                                ordersInfo.typeObj[n1][n2].itemObj[n3].unit = itemObj.unit;
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].secondCategory = itemObj.secondCategory;
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].thirdCategory = itemObj.thirdCategory;
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].itemName = itemObj.goodsName;
@@ -1684,9 +1727,7 @@
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].realPrice = itemObj.realPrice;
                                 ordersInfo.typeObj[n1][n2].itemObj[n3].realVipPrice = itemObj.realVipPrice;
                                 if(itemObj.type === 2){
-                                    itemObj.realPrice * quantity < normalOrderMinPrice && itemObj.supplierId*1 === 6?
-                                        alertDefault.refresh({content: "一般贸易商品订单需满" + normalOrderMinPrice + "元才可下单！"}):
-                                        window.location.href = encodeURI("/orderSure.html?jumpUrl=" + that.pathUrl);
+                                    window.location.href = encodeURI("/orderSure.html?jumpUrl=" + that.pathUrl);
                                 }else if(itemObj.type === 0){
                                     (itemObj.realPrice * quantity > crossOrderMaxPrice) && quantity > 1?
                                         alertDefault.refresh({content: "跨境商品单笔订单价格不得超过" + crossOrderMaxPrice + "元！"}):
@@ -1763,6 +1804,7 @@
                                 tObj.href = that.mdData.href;
                                 tObj.freePost = that.mdData.freePost;
                                 tObj.freeTax = that.mdData.freeTax;
+                                tObj.unit = that.mdData.unit;
                                 tObj.goodsId = that.mdData.goodsId;
                                 tObj.goodsName = that.mdData.customGoodsName;
                                 tObj.firstCategory = that.mdData.firstCategory;
@@ -1870,9 +1912,11 @@
                                 $groups.find("[data-name='"+name+"'][data-val='"+val+"']").addClass("active");
                             });
 
-                            setInterval(function(){
-                                formatSeconds(that);
-                            },1000);
+                            if($('.productinfo .productinfo-left').attr('data-type')){
+                                setInterval(function(){
+                                    formatSeconds(that);
+                                },1000);
+                            }
 
                             function dateTimeFormate(date){
                                 if(!date){
@@ -1974,7 +2018,11 @@
                                 if(hourTime < 10) {
                                     obj.nextHour = '0' + parseInt(hourTime);
                                 }else{
-                                    obj.nextHour = parseInt(hourTime);
+                                    if(hourTime >= 24){
+                                        obj.nextHour = '00';
+                                    }else{
+                                        obj.nextHour = parseInt(hourTime);
+                                    }
                                 }
                             }
                         }
@@ -2497,7 +2545,7 @@
                 },
                 methods: {
                     returnPayType: function(type){
-                        var payType = type === 1? "微信支付": (type === 2? "支付宝": (type === 3? "银联支付": ""));
+                        var payType = type === 1? "微信支付": (type === 2? "支付宝": (type === 3? "银联支付": (type === 5? "易宝支付":"")));
                         return payType;
                     },
                     ergodicInfoList: function(info){
@@ -2533,7 +2581,7 @@
                         var hour = timeArr && timeArr[3];
                         var minute = timeArr && timeArr[4];
                         var second = timeArr && timeArr[5];
-                        if(status === 0 && year && month && day && hour && minute && second){
+                        if(status === 0){
                             var date = new Date(year,month,day,hour,minute,second);
                             var nowDate = new Date();
                             var time = date.getTime()+3600000;//期限毫秒数
@@ -2707,6 +2755,7 @@
                                     orders.typeObj[type][supplierId].itemObj[itemId].href = o1.href;
                                     orders.typeObj[type][supplierId].itemObj[itemId].freeTax = o1.freeTax;
                                     orders.typeObj[type][supplierId].itemObj[itemId].freePost = o1.freePost;
+                                    orders.typeObj[type][supplierId].itemObj[itemId].unit = o1.goodsSpecs.unit;
                                     orders.typeObj[type][supplierId].itemObj[itemId].itemId = itemId;
                                     orders.typeObj[type][supplierId].itemObj[itemId].itemImg = o1.picPath;
                                     orders.typeObj[type][supplierId].itemObj[itemId].quantity = o1.quantity;
@@ -3401,6 +3450,7 @@
                                                     ordersInfo.typeObj[n1][n2].itemObj[n3].freeTax = o3.freeTax;
                                                     ordersInfo.typeObj[n1][n2].itemObj[n3].freePost = o3.freePost;
                                                     ordersInfo.typeObj[n1][n2].itemObj[n3].itemId = o3.itemId;
+                                                    ordersInfo.typeObj[n1][n2].itemObj[n3].unit = o3.unit;
                                                     ordersInfo.typeObj[n1][n2].itemObj[n3].itemCode = o3.itemCode;
                                                     ordersInfo.typeObj[n1][n2].itemObj[n3].supplierId = o3.supplierId;
                                                     ordersInfo.typeObj[n1][n2].itemObj[n3].supplierName = o3.supplierName;
@@ -3433,13 +3483,11 @@
                                         var crossCount = 0;
                                         var normalCount = 0;
                                         var crossPass = true;
-                                        var normalPass = true;
                                         var isContinue = true;
                                         $.each(ordersInfo.typeObj, function(k1,o1){
                                             $.each(o1,function(k2,o2){
                                                 var crossPrice = 0;
                                                 var normalPrice = 0;
-                                                var supplierId = o2.supplierId;
                                                 var supplierName = o2.supplierName;
                                                 $.each(o2.itemObj,function(k3,o3){
                                                     if(o3.type === 0){
@@ -3455,11 +3503,6 @@
                                                     alertDefault.refresh({ content: supplierName + "商品单笔订单价格超过" + crossOrderMaxPrice + "元，请调整！" });
                                                     return false;
                                                 }
-                                                if (k1 === '2' && supplierId*1 === 6 && normalPrice < normalOrderMinPrice) {
-                                                    isContinue = normalPass = false;
-                                                    alertDefault.refresh({ content: supplierName + "商品订单未满" + normalOrderMinPrice + "元，请调整！" });
-                                                    return false;
-                                                }
                                                 if(!isContinue){
                                                     return false;
                                                 }
@@ -3468,7 +3511,7 @@
                                                 return false;
                                             }
                                         });
-                                        if (isContinue && (crossPass || normalPass)) {
+                                        if (isContinue && crossPass) {
                                             window.localStorage.setItem("ordersInfo", JSON.stringify(ordersInfo));
                                             window.location.href = encodeURI("/orderSure.html?jumpUrl=" + pathUrl);
                                         }
@@ -4811,26 +4854,24 @@
                         var orders = that.orders || {};
                         var province = select && select.province;
                         $.each(orders.typeObj, function(n1, o1){
-                            if(n1 === '0'){
-                                $.each(o1, function(n2, o2){
-                                    var supplierPrice =  o2.supplierPrice;
-                                    var supplierWeight =  o2.supplierWeight;
-                                    $.each(o2.itemObj,function(n3, o3){
-                                        if(o3.freePost == 0){
-                                            typeObj[n2] = n1;
-                                            if(province && supplierPrice && supplierWeight){
-                                                options.push({
-                                                    "centerId":   centerId,
-                                                    "supplierId": n2,
-                                                    "province":   province,
-                                                    "weight":     supplierWeight,
-                                                    "price":      supplierPrice
-                                                })
-                                            }
+                            $.each(o1, function(n2, o2){
+                                var supplierPrice =  o2.supplierPrice;
+                                var supplierWeight =  o2.supplierWeight;
+                                $.each(o2.itemObj,function(n3, o3){
+                                    if(o3.freePost == 0){
+                                        typeObj[n2] = n1;
+                                        if(province && supplierPrice && supplierWeight){
+                                            options.push({
+                                                "centerId":   centerId,
+                                                "supplierId": n2,
+                                                "province":   province,
+                                                "weight":     supplierWeight,
+                                                "price":      supplierPrice
+                                            })
                                         }
-                                    });
-                                })
-                            }
+                                    }
+                                });
+                            })
                         });
                         if(options && options.length > 0) {
                             jsModel.send("ORDER_USER_POSTFEE", {data: encodeURI(JSON.stringify(options))}).done(function (response) {
@@ -5058,7 +5099,8 @@
                                                         itemQuantity: o3.quantity,
                                                         itemPrice: o3.price,
                                                         actualPrice: o3.realPrice,
-                                                        sku: o3.sku
+                                                        sku: o3.sku,
+                                                        unit: o3.unit
                                                     });
                                                     if (!o3.stock || o3.stock <= 0) {
                                                         noStockState = true;
@@ -5555,26 +5597,8 @@
                                                     }
                                                 }
                                                 if (orderFlag == 2) {
-                                                    if (options.orderDetail.payment < normalOrderMinPrice && options.supplierId * 1 === 6) {
-                                                        tmp.focus();
-                                                        tmp.close();
-                                                        message.refresh({
-                                                            title: '订单金额受限',
-                                                            content:'该笔一般贸易订单金额未满' + normalOrderMinPrice + '元，是否返回上页调整？',
-                                                            DOMClick: false,
-                                                            cancelBtn: true,
-                                                            confirmBtn: true,
-                                                            cancelFun: function(){
-                                                                rOrders.typeObj[typeId][supplierId].submitState = true;
-                                                                rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
-                                                            },
-                                                            confirmFun: function () {
-                                                                jsUtil.url.jumpPage(jumpUrl, null, true);
-                                                            }
-                                                        });
-                                                    } else {
-                                                        sendOrder();
-                                                    }
+                                                    tmp.focus();
+                                                    sendOrder();
                                                 }
                                             }
                                             else {
@@ -5678,11 +5702,7 @@
                         }
                     },
                     returnPostFee: function(type, taxFee){
-                        if(type === '2'){
-                            return '运输(普通配送快递): <span>物流或快递</span>';
-                        } else{
-                            return '运输(普通配送快递): ￥<span>' + taxFee.toFixed(2) + '</span>';
-                        }
+                        return '运输(普通配送快递): ￥<span>' + taxFee.toFixed(2) + '</span>';
                     }
                 },
                 mounted: function () {
@@ -7184,6 +7204,47 @@
             Module[role] = new Vue({
                 el: element,
                 data: {}
+            });
+        }
+        if ((/^bargainRule-1-\d+$/).test(role)){
+            var alertDefault = Module['alertDefault-1-1'];
+            var miniPath = 'https://static.cncoopbuy.com:8080/wechat/appletcode/' + (shopId || 2) + '/' + (shopId || 2) + '.png';
+            Module[role] =  new Vue({
+                el: element,
+                data: {
+                    miniPath: miniPath
+                },
+                methods: {
+
+                },
+                created: function(){
+                    // var that = this;
+                    // if(!isHasImg(miniPath)){
+                    //     jsModel.send('MINI_QUERY', {gradeId: (shopId || 2)})
+                    //         .done(function(res){
+                    //             if(res && res.success){
+                    //                 that.miniPath = res.data;
+                    //             }else{
+                    //                 alertDefault.content = '获取小程序二维码失败！';
+                    //             }
+                    //         });
+                    // }else{
+                    //     that.miniPath = miniPath;
+                    // }
+                    // function isHasImg(pathImg){
+                    //     var ImgObj=new Image();
+                    //     ImgObj.src= pathImg;
+                    //     if(ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0))
+                    //     {
+                    //         return true;
+                    //     } else {
+                    //         return false;
+                    //     }
+                    // }
+                },
+                mounted: function(){
+
+                }
             });
         }
 

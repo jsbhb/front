@@ -581,10 +581,21 @@
 
                 },
                 mounted: function(){
-                    var that = this;
-                    var $content = $(that.$el).find('.body');
-                    var width = parseFloat($content.css('width'));
-                    if(width > 720) $content.addClass('isMove');
+                    var wrap = document.getElementById('wrap'),
+                        first = document.getElementById('first');
+                    var timer = window.setInterval(move, 20);
+                    wrap.onmouseover = function () {
+                        window.clearInterval(timer);
+                    };
+                    wrap.onmouseout = function () {
+                        timer = window.setInterval(move, 20);
+                    };
+                    function move() {
+                        wrap.scrollLeft++;
+                        if (wrap.scrollLeft >= first.scrollWidth) {
+                            wrap.scrollLeft = 0;
+                        }
+                    }
                 }
             });
         }
@@ -859,7 +870,11 @@
                         if(hourTime < 10) {
                             obj.EndHour = '0' + parseInt(hourTime);
                         }else{
-                            obj.EndHour = parseInt(hourTime);
+                            if(hourTime >= 24){
+                                obj.EndHour = '00';
+                            }else{
+                                obj.EndHour = parseInt(hourTime);
+                            }
                         }
 
                     }
@@ -1097,7 +1112,8 @@
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].type = itemObj.type;
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].href = itemObj.href;
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].freePost = itemObj.freePost;
-                            ordersInfo.typeObj[type][supplierId].itemObj[itemId].freeTax = itemObj.freeTax;
+                            ordersInfo.typeObj[type][supplierId].itemObj[itemId].freeTax = itemObj.freeTax;;
+                            ordersInfo.typeObj[type][supplierId].itemObj[itemId].unit = itemObj.unit;
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].sku = itemObj.sku;
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].info = itemObj.info;
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].stock = itemObj.stock>0? itemObj.stock: 0;
@@ -1115,11 +1131,7 @@
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].realVipMinPrice = itemObj.realVipMinPrice;
                             ordersInfo.typeObj[type][supplierId].itemObj[itemId].realVipMaxPrice = itemObj.realVipMaxPrice;
                             if(itemObj.type*1 === 2){
-                                if(itemObj.realPrice * quantity < normalOrderMinPrice && itemObj.supplierId * 1 === 6){
-                                    message.refresh({ confirmBtn: false, content: "一般贸易商品订单需满" + normalOrderMinPrice + "元才可下单！"});
-                                }else{
-                                    window.location.href = encodeURI("/orderConfirm.html?jumpUrl=" + goodsDetail.pathUrl);
-                                }
+                                window.location.href = encodeURI("/orderConfirm.html?jumpUrl=" + goodsDetail.pathUrl);
                             }else if(itemObj.type*1 === 0){
                                 if(itemObj.realPrice * quantity > crossOrderMaxPrice && quantity*1 > 1){
                                     message.refresh({ confirmBtn: false, content: "跨境商品单笔订单价格不得超过" + crossOrderMaxPrice + "元！"});
@@ -1418,8 +1430,19 @@
                                     if(!classify[name]) { classify[name] = "[^;]*"; }
                                 });
                                 $.each(classify||{}, function(name, value){
+                                    var v = value;
+                                    if(v != "[^;]*"){
+                                        v = value.replace(/\//g, "\\/").replace(/\*/g, "\\*")
+                                            .replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+                                            .replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+                                            .replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+                                            .replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+                                            .replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+                                            .replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+                                            .replace(/\./g, "\\.").replace(/\&/g, "\\&");
+                                    }
                                     var k1 = $.inArray(name, codeArr);
-                                    k1 !== -1 && (regexArr[k1] = value);
+                                    k1 !== -1 && (regexArr[k1] = v);
                                 });
                                 regex = new RegExp('^' + regexArr.join(";") + '$', "");
                                 $.each(itemCont, function(name, obj){
@@ -1436,9 +1459,20 @@
                                         var tempArr = [], tempRegex;
                                         var tempObj = $.extend(true, {}, classify);
                                         $.each(tempObj||{}, function(n2, o2){
+                                            var v = o2;
+                                            if(o2 != "[^;]*"){
+                                                var v = o2.replace(/\//g, "\\/").replace(/\*/g, "\\*")
+                                                    .replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+                                                    .replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+                                                    .replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+                                                    .replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+                                                    .replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+                                                    .replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+                                                    .replace(/\./g, "\\.").replace(/\&/g, "\\&");
+                                            }
                                             var k2 = $.inArray(n2, codeArr);
                                             n1 === n2 && (tempArr[k2] = "[^;]*");
-                                            n1 !== n2 && k2 !== -1 && (tempArr[k2] = o2);
+                                            n1 !== n2 && k2 !== -1 && (tempArr[k2] = v);
                                         });
                                         tempRegex = new RegExp('^' + tempArr.join(";") + '$', "");
                                         if(tempRegex.test(name)) {
@@ -1949,6 +1983,7 @@
                                 tObj.href = that.mdData.href;
                                 tObj.freePost = that.mdData.freePost;
                                 tObj.freeTax = that.mdData.freeTax;
+                                tObj.unit = that.mdData.unit;
                                 tObj.info = obj.info;
                                 tObj.carton = obj.carton;
                                 tObj.itemId = obj.itemId;
@@ -2097,10 +2132,11 @@
                                     });
                                 }
                             });
-
-                            setInterval(function(){
-                                formatSeconds(that);
-                            },1000);
+                            if($('.productinfo .productinfo-left').attr('data-type')){
+                                setInterval(function(){
+                                    formatSeconds(that);
+                                },1000);
+                            }
 
                             function dateTimeFormate(date){
                                 if(!date){
@@ -2201,7 +2237,11 @@
                                 if(hourTime < 10) {
                                     obj.nextHour = '0' + parseInt(hourTime);
                                 }else{
-                                    obj.nextHour = parseInt(hourTime);
+                                    if(hourTime >= 24){
+                                        obj.nextHour = '00';
+                                    }else{
+                                        obj.nextHour = parseInt(hourTime);
+                                    }
                                 }
                             }
 
@@ -2431,6 +2471,47 @@
                 },
                 mounted: function(){
                     $('.userAddress').picker();
+                }
+            });
+        }
+        if ((/^bargainRule-1-\d+$/).test(role)){
+            var message = Module['message-1-1'];
+            var miniPath = 'https://static.cncoopbuy.com:8080/wechat/appletcode/' + (shopId || 2) + '/' + (shopId || 2) + '.png';
+            Module[role] =  new Vue({
+                el: element,
+                data: {
+                    miniPath: miniPath
+                },
+                methods: {
+
+                },
+                created: function(){
+                    // var that = this;
+                    // if(!isHasImg(miniPath)) {
+                    //     jsModel.send('MINI_QUERY', {gradeId: (shopId || 2)})
+                    //         .done(function (res) {
+                    //             if (res && res.success) {
+                    //                 that.miniPath = res.data;
+                    //             } else {
+                    //                 message.refresh({confirmBtn: false, content: '获取小程序二维码失败'});
+                    //             }
+                    //         });
+                    // }else{
+                    //     that.miniPath = miniPath;
+                    // }
+                    // function isHasImg(pathImg){
+                    //     var ImgObj=new Image();
+                    //     ImgObj.src= pathImg;
+                    //     if(ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0))
+                    //     {
+                    //         return true;
+                    //     } else {
+                    //         return false;
+                    //     }
+                    // }
+                },
+                mounted: function(){
+
                 }
             });
         }

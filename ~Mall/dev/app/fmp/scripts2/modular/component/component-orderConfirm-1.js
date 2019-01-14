@@ -71,6 +71,14 @@ define(["text!modular/template/template-orderConfirm-1.mustache"], function(temp
                 }else{
                     return '￥' + tTaxFee;
                 }
+            },
+            returnShow: function(){
+                var gradeId = localStorage.getItem('shopId');
+                if(gradeId == 124){
+                    return '0.00 ';
+                }else{
+                    return '0.00';
+                }
             }
         },
         scope: {
@@ -107,6 +115,7 @@ define(["text!modular/template/template-orderConfirm-1.mustache"], function(temp
             setOrderPrice: function(){
                 var that = this;
                 var orders = this.orders.attr();
+                var gradeId = localStorage.getItem('shopId');
                 $.each(orders.typeObj, function(n1, o1){
                     $.each(o1, function(n2, o2){
                         var totalPrice =  o2.rakebackSupplierRealPrice*1;
@@ -114,7 +123,11 @@ define(["text!modular/template/template-orderConfirm-1.mustache"], function(temp
                         var orderVal = o2.taxFee*1 + o2.rakebackSupplierRealPrice*1 + o2.postFee*1;
                         that.orders.typeObj[n1][n2].attr("totalPrice", (totalPrice*1).toFixed(2));
                         that.orders.typeObj[n1][n2].attr("orderPrice", (orderVal*1).toFixed(2));
-                        that.orders.typeObj[n1][n2].attr("orderDiscountPrice", (orderVal*1-discountPrice*1).toFixed(2));
+                        if(gradeId == 124){
+                            that.orders.typeObj[n1][n2].attr("orderDiscountPrice", (orderVal*1-discountPrice*1-0).toFixed(2));
+                        }else{
+                            that.orders.typeObj[n1][n2].attr("orderDiscountPrice", (orderVal*1-discountPrice*1).toFixed(2));
+                        }
                     })
                 });
             }

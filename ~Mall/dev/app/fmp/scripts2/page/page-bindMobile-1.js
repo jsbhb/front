@@ -32,6 +32,7 @@ require([
     var platUserType = 5;
     var loginType = 2;
     var userType = 5;
+    var shopId;
 
 
     /* 加载页面模块 */
@@ -105,7 +106,7 @@ require([
                 USER_REGISTRATION: {
                     userType:  userType,
                     loginType: loginType,
-                    wechat: unionId||openId,
+                    thirdAccount: unionId||openId,
                     reqHeader: { authentication: null }
                 },
                 AUTH_LOGIN: {

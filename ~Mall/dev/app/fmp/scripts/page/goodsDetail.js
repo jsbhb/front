@@ -120,5 +120,40 @@
         return typeof name === "string" && name.trim()? Page[name]: Page;
     };
 
+    wx.ready(function () {
+        shopId = localStorage.getItem('shopId') || 2;
+        var data = {};
+        if(window.location.href.indexOf("?") == -1){
+            data.link = window.location.href + '?shopId=' + shopId;
+        }else{
+            data.link = window.location.href + '&shopId=' + shopId;
+        }
+        jsModel.send('GOODS_ID_QUERY', {goodsId: goodsId})
+            .done(function(response){
+                if(response && response.success && response.obj){
+                    data.title = response.obj[0].customGoodsName;
+                    data.desc = response.obj[0].description || response.obj[0].customGoodsName;
+                    data.imgUrl = response.obj[0].goodsFileList && response.obj[0].goodsFileList[0].path || '';
+                }
+                wx.onMenuShareAppMessage({
+                    title: data.title, // 分享标题
+                    desc: data.desc, // 分享描述
+                    link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.imgUrl, // 分享图标
+                    success: function (res) {
+
+                    }
+                });
+                wx.onMenuShareTimeline({
+                    title: data.title, // 分享标题
+                    link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.imgUrl, // 分享图标
+                    success: function(res){
+
+                    }
+                });
+            });
+    });
+
 }());
 

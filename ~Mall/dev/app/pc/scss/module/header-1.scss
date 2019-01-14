@@ -9,6 +9,18 @@
   background-color: #ffffff;
   display: block;
 }
+#wrap {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 5px 0;
+  color: #333;
+  background: #fff8db;
+}
+#wrap div {
+  display: inline-block;
+  font-size: 14px;
+}
 .header-1-top-title {
   width:100%;
   background:#f2eeea;
