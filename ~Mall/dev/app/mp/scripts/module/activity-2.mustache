@@ -1,0 +1,25 @@
+<div id="activity-2-{{sign}}" v-cloak>
+    <div class="activity-2-content">
+        <div class="title">本周特卖</div>
+        <div class="goodsList-list">
+            <div class="content-list">
+                {{#each cont}}
+                    <div class="list-item">
+                    <a href="{{href}}">
+                        <div class="shopImg">
+                            <img src="{{picPath}}">
+                        </div>
+                        <div class="shopName">{{title}}</div>
+                        <div class="shopPrice">
+                            <span class="text">￥{{price}}</span>
+                            {{#enname}}
+                                <span class="enname">￥{{enname}}</span>
+                            {{/enname}}
+                        </div>
+                    </a>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

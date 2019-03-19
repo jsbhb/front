@@ -1,0 +1,103 @@
+@charset "utf-8";
+
+/*
+ * themeFloor-1样式
+ */
+[id^="themeFloor-1-"] {
+  width: 100%;
+  min-width: 1000px;
+  display: block;
+  margin-bottom: 10px;
+}
+.themeFloor-1-content {
+  width:1000px;
+  display:block;
+  overflow: hidden;
+  margin:0 auto;
+  &>.themeFloor-title{
+    height: 80px;
+    line-height: 60px;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+  }
+  &>.goodsList{
+    overflow: hidden;
+    &>a.goodsItem{
+      float: left;
+      width: calc((100% - 15px) / 4);
+      //height: 360px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #333;
+      box-sizing: border-box;
+      padding-bottom: 10px;
+      vertical-align: top;
+      &:nth-child(4n){
+        margin-right: 0;
+      }
+      &:hover{
+        border-color: #e31436;
+        &>.goodsItem-db{
+          overflow: visible;
+          &>.goodsName{
+            text-decoration: underline;
+          }
+        }
+      }
+      &>.goodsItem-db{
+        overflow: hidden;
+        &>.goodsImg{
+          overflow: hidden;
+          &>img{
+            float: left;
+            width: 90%;
+            height: auto;
+            margin: 0 5%;
+          }
+        }
+        &>.goodsName{
+          position: relative;
+          transition: .5s ease-out;
+          max-height: 22px;
+          line-height: 22px;
+          margin: 3px 15px;
+          color: #333;
+          font-size: 14px;
+          font-weight: 700;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        &>.goodsDesc{
+          height: 20px;
+          margin: 0 15px 5px;
+          color: #666;
+          font-size: 12px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        &>.goodsPrice{
+          height: 22px;
+          overflow: hidden;
+          white-space: normal;
+          line-height: 22px;
+          color: #e31436;
+          margin: 0 15px;
+          &>.price{
+            font-size: 20px;
+            font-weight: 700;
+          }
+          &>.realPrice{
+            text-decoration: line-through;
+            color: #999;
+          }
+        }
+      }
+    }
+  }
+}

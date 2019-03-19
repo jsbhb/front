@@ -1,0 +1,105 @@
+@charset "utf-8";
+
+/*
+ * activity-3部分样式
+ */
+[id^='activity-3-']{
+  width: 750px;
+  display: block;
+  position: relative;
+  background-color: #ffffff;
+}
+.activity-3-content{
+  overflow: hidden;
+  background: #fff;
+  margin: 10px 0;
+}
+.activity-3-content .title{
+  height: 80px;
+  line-height: 80px;
+  margin-left: 30px;
+  font-size: 32px;
+  color: #333;
+}
+.activity-3-content .goodsList-list{
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  padding-bottom: 20px;
+}
+.goodsList-list .content-list{
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  overflow: auto;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+.goodsList-list .content-list .list-item{
+  float: left;
+  width: 220px;
+  height: 257px;
+  background: #fff;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid #efefef;
+  box-sizing: border-box;
+}
+.goodsList-list .content-list .list-item:last-child{
+  margin-right: 0;
+}
+.goodsList-list .content-list .list-item .shopImg{
+  width: 200px;
+  height: 148px;
+  position: relative;
+  text-align: center
+}
+.goodsList-list .content-list .list-item a{
+  width: 100%;
+  height: 100%;
+  color: #333;
+  padding: 10px;
+  font-size: 18px;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+}
+.goodsList-list .content-list .list-item .shopImg img{
+  max-width: 148px;
+  max-height: 148px;
+  display: inline-block;
+  margin: auto;
+}
+.goodsList-list .content-list .list-item .shopName{
+  height: 48px;
+  font-size: 18px;
+  line-height: 25px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+.goodsList-list .content-list .list-item .shopPrice{
+  height: 34px;
+}
+.goodsList-list .content-list .list-item .shopPrice span{
+  float: left;
+  font-size: 20px;
+  font-weight: 600;
+  padding-top: 8px;
+  color: #f00;
+}
+.goodsList-list .content-list .list-item .shopPrice span.enname{
+  font-size: 16px;
+  padding-top: 12px;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 5px;
+}
+.goodsList-list .content-list .list-item.lookMore{
+  text-align: center;
+}
+.goodsList-list .content-list .list-item.lookMore a img{
+  width: 109px;
+  height: 135px;
+  margin-top: 61px;
+}

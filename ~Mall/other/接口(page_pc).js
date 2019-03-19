@@ -2,7 +2,8 @@
 //"http://localhost:8888";
 //"https://front.cncoopbuy.com";
 //"https://testfront.cncoopbuy.com";
-var host = "http://localhost:8888";
+// var host = "http://localhost:8888";
+var host = "https://testfront.cncoopbuy.com";
 
 
 /** 区域中心页面创建 */
@@ -849,7 +850,355 @@ function addPage(region, page) {
                     cont: null
                 }
             ]
-        }
+        },
+        // ghmzIndex:  {
+        //     seo: {
+        //         title: "中国供销海外购--美妆频道页",
+        //         keywords: "母婴加盟,进口商品加盟,海外购加盟,o2o加盟,新零售加盟,连锁加盟,区域加盟,美妆加盟,合伙人加盟,旗舰店加盟,跨境电商,母婴用品,县域加盟,供销e家进口商品,中国供销海外购加盟,整店输出",
+        //         description: "母婴加盟,进口商品加盟,海外购加盟,o2o加盟,新零售加盟,连锁加盟,区域加盟,美妆加盟,合伙人加盟,旗舰店加盟,跨境电商,母婴用品,县域加盟,供销e家进口商品,中国供销海外购加盟,整店输出"
+        //     },
+        //     page: "ghmzIndex",
+        //     file: 'ghmzIndex',
+        //     path: '',
+        //     region: region,
+        //     system: "pcMall",
+        //     module: [
+        //         {
+        //             code: "message-1",
+        //             sort: 1,
+        //             area: "body",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "alertDefault-1",
+        //             sort: 2,
+        //             area: "body",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "alertDiscount-1",
+        //             sort: 3,
+        //             area: "body",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "header-1",
+        //             sort: 4,
+        //             area: "bodyHeader",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "header-2",
+        //             sort: 5,
+        //             area: "bodyHeader",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "nav-1",
+        //             sort: 6,
+        //             area: "bodyHeader",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "themeBanner-1",
+        //             sort: 7,
+        //             area: "bodyCenter",
+        //             own:  null,
+        //             cont: [
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nos.netease.com/zOIZJe6me6UxJ2Qg1cgbglbas78_1920_400T1807061443_1920_400.jpg?imageView&thumbnail=1920x0&quality=95&type=webp'
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             code: "themeNavInlet-1",
+        //             sort: 8,
+        //             area: "bodyCenter",
+        //             own:  null,
+        //             cont: [
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-1.png'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-2.png'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-3.png'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-4.png'
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             code: "themeNavInlet-2",
+        //             sort: 9,
+        //             area: "bodyCenter",
+        //             own:  null,
+        //             cont: [
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-5.png'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-6.png'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: '/images/platform/test/themeNav-7.png'
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             code: "themeFloor-1",
+        //             sort: 10,
+        //             area: "bodyCenter",
+        //             own:  {
+        //                 title: '卸妆1'
+        //             },
+        //             cont: [
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             code: "themeFloor-1",
+        //             sort: 11,
+        //             area: "bodyCenter",
+        //             own:  {
+        //                 title: '卸妆1'
+        //             },
+        //             cont: [
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             code: "themeFloor-1",
+        //             sort: 12,
+        //             area: "bodyCenter",
+        //             own:  {
+        //                 title: '卸妆1'
+        //             },
+        //             cont: [
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 },
+        //                 {
+        //                     href: '/',
+        //                     picPath: 'https://haitao.nosdn1.127.net/cf1e498cdbbb4cd783cf6717569185881530780677794jj8baidm12392.jpg?imageView&thumbnail=244x244&quality=95&type=webp',
+        //                     goodsName: 'JAYJUN 水光悦颜花漾定制礼盒 共15片',
+        //                     price: '129.00',
+        //                     realPrice: '150.00',
+        //                     description: '百元级就能集齐的水光全家'
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             code: "footer-1",
+        //             sort: 14,
+        //             area: "bodyFooter",
+        //             own:  null,
+        //             cont: null
+        //         },
+        //         {
+        //             code: "themeSideFixed-1",
+        //             sort: 20,
+        //             area: "bodyFooter",
+        //             own:  null,
+        //             cont: null
+        //         }
+        //     ]
+        // }
     };
     page?
         pages = [].concat(page):

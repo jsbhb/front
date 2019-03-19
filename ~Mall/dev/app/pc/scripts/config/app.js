@@ -1987,7 +1987,7 @@
                  *    小程序二维码： MINI_QUERY --- shopId/gradeId
                  */
                 MINI_QUERY:    {
-                    host:         "https://zserp.cncoopbuy.com/cardmanager",
+                    host:         /*DB.debug === true? "https://testerp.cncoopbuy.com/cardmanager" : */"https://zserp.cncoopbuy.com/cardmanager",
                     path:         "/wechat/applet/getCodeUrlByWechat.shtml",
                     method:       "GET",
                     context:      "",
@@ -1997,6 +1997,21 @@
                     dataType:     "",
                     errFunc:      {},
                     data:         {gradeId: (DB.shopId || 2)}
+                },
+                /** 日志
+                 *      生成日志： SET_DATA_LOGS
+                 */
+                SET_DATA_LOGS: {
+                    host:         DB.debug === true? "https://testfront.cncoopbuy.com": "https://front.cncoopbuy.com",
+                    path:         "/Data/handle/logs",
+                    method:       "POST",
+                    context:      "",
+                    contType:     "application/x-www-form-urlencoded;charset=UTF-8",
+                    reqDataType:  "",
+                    reqHeader:    { authentication: null },
+                    dataType:     "",
+                    errFunc:      {},
+                    data:         {shopId: DB.shopId || 2, userId: DB.userId}
                 }
             }
         })

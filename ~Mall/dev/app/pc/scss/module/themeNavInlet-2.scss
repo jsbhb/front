@@ -1,0 +1,66 @@
+@charset "utf-8";
+
+/*
+ * themeNavInlet-2样式
+ */
+[id^="themeNavInlet-2-"] {
+  width: 100%;
+  min-width: 1000px;
+  display: block;
+  padding: 20px 0;
+  background: #f6f6f6;
+}
+.themeNavInlet-2-content {
+  width: 1000px;
+  height: auto;
+  display: block;
+  margin: auto;
+  &>h1{
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: normal;
+    position: relative;
+    color: #333;
+    &:before{
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 400px;
+      height: 1px;
+      background: #333;
+    }
+    &:after{
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 400px;
+      height: 1px;
+      background: #333;
+    }
+  }
+  &>ul{
+    overflow: hidden;
+    &>li{
+      float: left;
+      width: calc((100% - 20px) / 3);
+      margin-right: 10px;
+      &:last-child{
+        margin-right: 0;
+      }
+      &>a.imgBox{
+        width: 100%;
+        height: 100%;
+        display: block;
+        overflow: hidden;
+        &>img{
+          float: left;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

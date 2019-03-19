@@ -201,62 +201,60 @@ define(["config.page.render"], function(Render) {
             window.localStorage.removeItem("authId");
             window.localStorage.removeItem("userId");
             window.localStorage.removeItem("openId");
-            if(that.jsUtil.weChat.browser()){
-                that.sendRequest("AUTH_LOGIN", {
-                    phone: request.account,
-                    password: request.password
-                }).done(function(response){
-                    if(response && response.success){
-                        var isRegister = "";
-                        var snsapiBase = false;
-                        var domainName = api.jsData.location.hostUrl;
-                        var url = domainName + "/wechat-transfer.html";
-                        var authId = '"Bearer "' + response.obj.token;
-                        var userId = response.obj.userCenterId;
-                        var info = snsapiBase+"，"+isRegister+"，"+jumpUrl+"，"+shopId+"，"+userId+"，"+authId+"，"+domain;
+            that.sendRequest("AUTH_LOGIN", {
+                phone: request.account,
+                password: request.password
+            }).done(function(response){
+                if(response && response.success){
+                    var isRegister = "";
+                    var snsapiBase = false;
+                    var domainName = api.jsData.location.hostUrl;
+                    var url = domainName + "/wechat-transfer.html";
+                    var authId = '"Bearer "' + response.obj.token;
+                    var userId = response.obj.userCenterId;
+                    var info = snsapiBase+"，"+isRegister+"，"+jumpUrl+"，"+shopId+"，"+userId+"，"+authId+"，"+domain;
+                    if(that.jsUtil.weChat.browser()){
                         that.sendRequest("THIRD_WECHAT", {
                             snsapiBase: snsapiBase,
                             redirectUrl: url + "?info=" + info
                         }).done(function(response){
                             if(typeof response === "string"){
-                                window.location.href = response
+                                window.location.href = response;
                             }
                         });
                         that.jsUtil.url.setParam({ 'domain': domain||'' }, 'cover');
+                    }else{
+                        localStorage.setItem('authId', '"Bearer "' + response.obj.token);
+                        localStorage.setItem('userId', response.obj.userCenterId);
+                        that.jsUtil.url.jumpPage(jumpUrl,null,true);
                     }
-                    else if(response.errorMsg){
-                        message.refresh({
-                            type: "error",
-                            cancelBtn: false,
-                            confirmBtn: false,
-                            content: response.errorMsg
-                        });
-                    }
-                    else{
-                        message.refresh({
-                            type: "error",
-                            cancelBtn: false,
-                            confirmBtn: false,
-                            content: "用户登录失败！"
-                        });
-                    }
-                }).fail(function(){
+
+                }
+                else if(response.errorMsg){
+                    message.refresh({
+                        type: "error",
+                        cancelBtn: false,
+                        confirmBtn: false,
+                        content: response.errorMsg
+                    });
+                }
+                else{
                     message.refresh({
                         type: "error",
                         cancelBtn: false,
                         confirmBtn: false,
                         content: "用户登录失败！"
                     });
-                });
-            }
-            else{
+                }
+            }).fail(function(){
                 message.refresh({
                     type: "error",
                     cancelBtn: false,
                     confirmBtn: false,
-                    content: "请在微信端进行操作！"
+                    content: "用户登录失败！"
                 });
-            }
+            });
+
         },
         ".component-login-third .img_weChat touchend": function(){
             var that = this;

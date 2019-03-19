@@ -1,0 +1,24 @@
+<div id="activity-3-{{sign}}" v-cloak>
+    <div class="activity-3-content">
+        <div class="title">
+            <label>{{own.title}}</label>
+            <span>{{own.enname}}</span>
+        </div>
+        {{#each cont}}
+            <div class="list-item">
+            <a href="{{href}}">
+                <div class="imgBox">
+                    <img src="{{picPath}}" alt="中国供销海外购">
+                    <img class="special" src="/images/platform/icon_new_floor.png" alt="中国供销海外购">
+                </div>
+                <div class="goodsDesc">{{description}}</div>
+                <div class="goodsName">{{title}}</div>
+                <div class="goodsPrice">
+                    <span>￥{{price}}</span>
+                    <s>￥{{enname}}</s>
+                </div>
+            </a>
+        </div>
+        {{/each}}
+    </div>
+</div>

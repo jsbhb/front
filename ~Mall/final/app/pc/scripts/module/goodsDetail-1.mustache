@@ -74,12 +74,12 @@
                                 <s v-if="itemContCode !== 'itemHide'" v-html="spcPrice > spcRealPrice? ('￥原价:' + spcPrice): ''"></s>
                             </li>
                             <li class="tax"><em></em>
-                                {{!returnMsg(spcExciseTax, spcIncrementTax)}}
+                                {{!returnMsg(spcExciseTax, spcIncrementTax, spcRealPrice)}}
                                 <b v-if="{{type}} === '0' || {{type}} === 0">
                                     <span>购买须知</span>
                                     <div class="alert_box">
                                         <h2>★收到物品务必先验货后签收！</h2>
-                                        消费者购买跨境贸易电子商务进口商品，以“个人自用、合理数量”为原则，根据财政部、海关总署及国家税务总局的要求，经国务院批准<strong>每次限值为</strong><font style="font-weight:bold; color:#e60211;">2000元人民币</font>，单笔订单超出2000元系统将予以退单，不管数量、单件、多种商品这些条件；<strong>消费者全国跨境城市范围内，个人年度累计消费金额超2万，自动退单；</strong>对于违反规定，超出个人自用合理数量购买的，系统将予以退单，情节严重的，将追究个人法律责任。
+                                        消费者购买跨境贸易电子商务进口商品，以“个人自用、合理数量”为原则，根据财政部、海关总署及国家税务总局的要求，经国务院批准<strong>每次限值为</strong><font style="font-weight:bold; color:#e60211;">5000元人民币</font>，单笔订单超出5000元系统将予以退单，不管数量、单件、多种商品这些条件；<strong>消费者全国跨境城市范围内，个人年度累计消费金额超2.6万，自动退单；</strong>对于违反规定，超出个人自用合理数量购买的，系统将予以退单，情节严重的，将追究个人法律责任。
                                     </div>
                                 </b>
                             </li>
@@ -159,6 +159,60 @@
                             <img src='http://139.196.74.68:8080/images/orignal/detail/{{.}}' alt="{{customGoodsName}}">
                         {{/isFormat}}
                     {{/toSplit}}
+                </div>
+                <div class="userBook">
+                    <h1 class="center">消费者告知书</h1>
+                    <p>
+                        <span class="nickName">尊敬的客户您好：</span>
+                        <span class="header">
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在您选购境外商品前，请您仔细阅读并完全理解本告知书的全部内容，对自身风险承担做出客观判断。认同本文所告知内容后再进行下单购买：
+                        </span>
+                            <span class="stage stage1">
+                            <span class="path1">
+                                1、
+                            </span>
+                            <span class="path2">
+                                您在<b>中国供销海外购</b>网站上购买的境外商品为产地直销商品，仅限个人自用不得进行销售，商品本身可能无中文标签，您可参考网站翻译或在线联系我司客服。
+                            </span>
+                        </span>
+                            <span class="stage stage2">
+                            <span class="path1">
+                                2、
+                            </span>
+                            <span class="path2">
+                                您所购买的境外商品适用的品质、健康、标识等项目适用标准或与我国标准有所不同，所以在使用过程中由此可能产生的危害或损失以及其他风险，<b>中国供销海外购</b>不予承担任何责任，将由您个人承担。
+                            </span>
+                        </span>
+                            <span class="stage stage3">
+                            <span class="path1">
+                                3、
+                            </span>
+                            <span class="path2">
+                                身份信息问题
+                            </span>
+                            <span class="question">
+                                为什么要上传身份证？
+                            </span>
+                            <span class="answer">
+                                入境的包裹海关要求提供收件人的身份证资料（正反面照片）来确认包裹是否属于个人自用，中国供销海外购保证您的身份证信息仅作清关用途，将被严格保密。
+                            </span>
+                            <span class="question">
+                                身份证每次都上传吗？
+                            </span>
+                            <span class="answer">
+                                首次上传身份证后，只要使用相同的收件人姓名和手机号码，就无需再次上传身份证。如收件人姓名和首次上传不同，则需再次上传。
+                            </span>
+                            <span class="question">
+                                收件人和身份证姓名不一致怎么办？
+                            </span>
+                            <span class="answer">
+                                信息不完全相符会导致包裹在清关口岸需再次申报，请您提供正确信息给海外购平台客服，客服会通知物流公司向海关重新申报该包裹。重新申报流程会相应延误到货时间，建议提交订单前仔细确认，确保收件人和身份证姓名一致，身份证号及其他订单信息无误。建议收件人和订购人尽量为同一人。
+                            </span>
+                        </span>
+                            <span class="footer">
+                            <span class="block">以上一切最终解释权归<b>中国供销海外购</b>所有！</span>
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>

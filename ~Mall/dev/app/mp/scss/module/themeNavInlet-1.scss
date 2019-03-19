@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+/*
+ * themeNavInlet-1样式
+ */
+body>#body-center{
+  background: #f6f6f6;
+  margin: 0;
+  padding-bottom:30px;
+}
+[id^="themeNavInlet-1-"] {
+  width: 100%;
+  min-width: 750px;
+  display: block;
+  padding: 20px 0;
+  background: #fff;
+}
+.themeNavInlet-1-content {
+  width: 750px;
+  height: auto;
+  display: block;
+  margin: auto;
+  &>ul{
+    overflow: hidden;
+    &>li{
+      float: left;
+      width: 25%;
+      box-sizing: border-box;
+      &>a.imgBox{
+        width: 100%;
+        height: 100%;
+        display: block;
+        overflow: hidden;
+        &>img{
+          float: left;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

@@ -441,6 +441,9 @@ define(["config.page.render"], function(Render) {
                                         }
                                     }
                                     if(isContinue == 0){
+                                        options.orderDetail.customerIdNum = response.obj.userDetail.idNum;
+                                        options.orderDetail.customerName = response.obj.userDetail.name;
+                                        options.orderDetail.customerPhone = response.obj.phone;
                                         that.sendRequest("ORDER_USER_CREATE", options)
                                             .done(function (response){
                                                 if (response && response.success) {
@@ -463,6 +466,14 @@ define(["config.page.render"], function(Render) {
                                                         cancelBtn: false,
                                                         confirmBtn: false
                                                     });
+                                                    var d = {
+                                                        'logsName': 'orderSure',
+                                                        'errorCode': 'createOrder',
+                                                        'errorMsg': response.errorMsg,
+                                                        'detail': options.orderGoodsList,
+                                                        'orderId': '订单未生成'
+                                                    };
+                                                    that.sendRequest("SET_DATA_LOGS", d);
                                                     ordersInfo.typeObj[orderFlag][supplierId].attr("committed", false);
                                                     ordersInfo.typeObj[orderFlag][supplierId].attr("commitText", "重新提交");
                                                     window.localStorage.setItem("ordersInfo", JSON.stringify(ordersInfo.attr()));
@@ -475,6 +486,14 @@ define(["config.page.render"], function(Render) {
                                                     cancelBtn: false,
                                                     confirmBtn: false
                                                 });
+                                                var d = {
+                                                    'logsName': 'orderSure',
+                                                    'errorCode': 'createOrder',
+                                                    'errorMsg': response.errorMsg,
+                                                    'detail': options.orderGoodsList,
+                                                    'orderId': '订单未生成'
+                                                };
+                                                that.sendRequest("SET_DATA_LOGS", d);
                                                 ordersInfo.typeObj[orderFlag][supplierId].attr("committed", false);
                                                 ordersInfo.typeObj[orderFlag][supplierId].attr("commitText", "重新提交");
                                                 window.localStorage.setItem("ordersInfo", JSON.stringify(ordersInfo.attr()));

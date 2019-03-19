@@ -581,21 +581,21 @@
 
                 },
                 mounted: function(){
-                    var wrap = document.getElementById('wrap'),
-                        first = document.getElementById('first');
-                    var timer = window.setInterval(move, 20);
-                    wrap.onmouseover = function () {
-                        window.clearInterval(timer);
-                    };
-                    wrap.onmouseout = function () {
-                        timer = window.setInterval(move, 20);
-                    };
-                    function move() {
-                        wrap.scrollLeft++;
-                        if (wrap.scrollLeft >= first.scrollWidth) {
-                            wrap.scrollLeft = 0;
-                        }
-                    }
+                    // var wrap = document.getElementById('wrap'),
+                    //     first = document.getElementById('first');
+                    // var timer = window.setInterval(move, 20);
+                    // wrap.onmouseover = function () {
+                    //     window.clearInterval(timer);
+                    // };
+                    // wrap.onmouseout = function () {
+                    //     timer = window.setInterval(move, 20);
+                    // };
+                    // function move() {
+                    //     wrap.scrollLeft++;
+                    //     if (wrap.scrollLeft >= first.scrollWidth) {
+                    //         wrap.scrollLeft = 0;
+                    //     }
+                    // }
                 }
             });
         }
@@ -785,28 +785,9 @@
                 mounted: function(){
                     var that = this;
                     formatSeconds(that);
-                    // var id = '#content-';
-                    // if(that.activeType != null){
-                    //     id += that.activeType;
-                    // } else {
-                    //     id += 0;
-                    // }
-                    setInterval(function(){
-                        formatSeconds(that);
-                    },1000);
-                    // $('.content-product').removeClass('active');
-                    // $('.content-time').removeClass('active');
-                    // $(id).addClass('active');
-                    // $(id).prev().addClass('active');
-                    // $('.content-tab').on('click','.tab-item',function(){
-                    //     var type = $(this).attr('data-type');
-                    //     $(this).addClass('active').siblings('.active').removeClass('active');
-                    //     var id = '#content-' + type;
-                    //     $('.content-product').removeClass('active');
-                    //     $('.content-time').removeClass('active');
-                    //     $(id).addClass('active');
-                    //     $(id).prev().addClass('active');
-                    // });
+                    // setInterval(function(){
+                    //     formatSeconds(that);
+                    // },1000);
                     function dateTimeFormate(date){
                         if(!date){
                             return;
@@ -971,6 +952,32 @@
                     //         }
                     //     }
                     // }
+                }
+            });
+        }
+        if ((/^activity-2-\d+$/).test(role)) {
+            Module[role] =  new Vue({
+                el: element,
+                data: {},
+                methods: {},
+                created: function(){
+
+                },
+                mounted: function(){
+
+                }
+            });
+        }
+        if ((/^activity-3-\d+$/).test(role)) {
+            Module[role] =  new Vue({
+                el: element,
+                data: {},
+                methods: {},
+                created: function(){
+
+                },
+                mounted: function(){
+
                 }
             });
         }
@@ -1735,20 +1742,42 @@
                                 });
                                 return tags;
                             },
-                            returnMsg: function(exciseTax, incrementTax){
+                            returnMsg: function(exciseTax, incrementTax, spcPrice){
                                 var str = '';
                                 var that = this;
                                 var freeTax = this.mdData.freeTax;
                                 var freePost = this.mdData.freePost;
-                                switch(freeTax){
-                                    case 0: str += '<li>消费税率：<span>'+exciseTax+'%</span></li><li>增值税率：<span>'+incrementTax+'%</span></li>'; break;
-                                    case 1: str += '<li>消费税率：<span>包税</span></li>'; break;
+                                var type = this.mdData.type;
+                                var itemContCode = this.itemContCode;
+                                if(itemContCode !== 'itemHide'){
+                                    if(type == 0){
+                                        if(freeTax == 0){
+                                            var taxFee = 0;
+                                            var totalPrice = this.quantity * spcPrice;
+                                            exciseTax = exciseTax / 100;
+                                            incrementTax = incrementTax /100;
+                                            if (exciseTax && exciseTax != 0) {
+                                                taxFee += (totalPrice + 0) / (1 - exciseTax) * exciseTax * 0.7;
+                                            }
+                                            if (incrementTax && incrementTax != 0) {
+                                                taxFee += ((totalPrice + 0) + (totalPrice + 0) / (1 - exciseTax) * exciseTax) * incrementTax * 0.7;
+                                            }
+                                            str += '预计税费￥' + taxFee.toFixed(2);
+                                        }else if(freeTax == 1){
+                                            str += '包税';
+                                        }
+                                    }else if(type == 2){
+                                        str +='包税';
+                                    }
+                                    switch(freePost){
+                                        case 0: str += ''; break;
+                                        case 1: str += '包邮'; break;
+                                        case 2: str += (that.isFreePost? '包邮': '邮费到付'); break;
+                                    }
+                                }else{
+                                    str = '请选择商品规格';
                                 }
-                                switch(freePost){
-                                    case 0: str += ''; break;
-                                    case 1: str += '<li>配送方式：<span>包邮</span></li>'; break;
-                                    case 2: str += '<li>配送方式：<span>' + (that.isFreePost? '包邮': '邮费到付') + '</span></li>'; break;
-                                }
+
                                 return str;
                             },
                             returnSupplierName: function(){
@@ -2513,6 +2542,42 @@
                 mounted: function(){
 
                 }
+            });
+        }
+        if ((/^themeBanner-1-\d+$/).test(role)){
+            Module[role] =  new Vue({
+                el: element,
+                data: {},
+                methods: {},
+                created: function(){},
+                mounted: function(){}
+            });
+        }
+        if ((/^themeNavInlet-1-\d+$/).test(role)){
+            Module[role] =  new Vue({
+                el: element,
+                data: {},
+                methods: {},
+                created: function(){},
+                mounted: function(){}
+            });
+        }
+        if ((/^themeNavInlet-2-\d+$/).test(role)){
+            Module[role] =  new Vue({
+                el: element,
+                data: {},
+                methods: {},
+                created: function(){},
+                mounted: function(){}
+            });
+        }
+        if ((/^themeFloor-1-\d+$/).test(role)){
+            Module[role] =  new Vue({
+                el: element,
+                data: {},
+                methods: {},
+                created: function(){},
+                mounted: function(){}
             });
         }
     };

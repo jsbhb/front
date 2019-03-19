@@ -638,6 +638,72 @@
       margin: 0 auto;
       display: block;
     }
+    & > .userBook{
+      display:block;
+      border-top:1px solid #e7e7e7;
+      min-height:590px;
+      padding: 16px 30px 28px;
+      &>h1{
+        font-size: 18px;
+        color: #e60211;
+        line-height: 30px;
+        padding-bottom: 10px;
+        margin-top: 10px;
+        &.center{
+          text-align: center;
+        }
+      }
+      &>p{
+        font-size:14px;
+        color:#333;
+        line-height:25px;
+        span{
+          display: inline-block;
+          &.nickName{
+            width: 100%;
+          }
+          &.header{
+            width: 100%;
+            margin-bottom: 15px;
+          }
+          &.stage{
+            width: 100%;
+            & > .path1{
+              float: left;
+              width: 26px;
+              margin-left: 28px;
+            }
+            & > .path2{
+              float: left;
+              width: calc(100% - 54px);
+            }
+            & > .question{
+              margin-left: 54px;
+              display: block;
+              font-weight: 600;
+              color: #e60211;
+              text-decoration: underline;
+            }
+            & > .answer{
+              margin-left: 54px;
+              display: block;
+            }
+          }
+          &.footer{
+            width: 100%;
+            margin-top: 10px;
+            & > .block{
+              width: 100%;
+              text-align: right;
+              &.right{
+                text-align: right;
+                padding-right: 100px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 

@@ -1,0 +1,29 @@
+<div id="themeFloor-1-{{sign}}" v-cloak>
+    <div class="themeFloor-1-content">
+        <div class="themeFloor-title">
+            {{own.title}}
+        </div>
+        <div class="goodsList">
+            {{#each cont}}
+                <a class="goodsItem" href="{{href}}">
+                    <div class="goodsItem-db">
+                        <div class="goodsImg">
+                            <img src="{{picPath}}" alt="中国供销海外购">
+                        </div>
+                        <div class="goodsName">{{goodsName}}</div>
+                        <div class="goodsDesc">{{description}}</div>
+                        <div class="goodsPrice">
+                            ￥
+                            <span class="price">
+                                {{price}}
+                            </span>
+                            <span class="realPrice">
+                            ￥{{realPrice}}
+                        </span>
+                        </div>
+                    </div>
+                </a>
+            {{/each}}
+        </div>
+    </div>
+</div>

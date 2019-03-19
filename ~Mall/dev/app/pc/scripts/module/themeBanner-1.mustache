@@ -1,0 +1,13 @@
+<div id="themeBanner-1-{{sign}}" v-cloak>
+    <div class="themeBanner-1-content">
+        <div class="themeBanner-bannerImg">
+            {{#each cont}}
+                {{#if picPath}}
+                    <a href="{{{href}}}" target="_blank" class="imgBox">
+                        <img src="{{{picPath}}}" alt="中国供销海外购">
+                    </a>
+                {{/if}}
+            {{/each}}
+        </div>
+    </div>
+</div>

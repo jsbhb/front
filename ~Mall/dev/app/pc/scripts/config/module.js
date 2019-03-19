@@ -323,20 +323,20 @@
                         });
                 },
                 mounted: function(){
-                    var wrap = document.getElementById('wrap'), first = document.getElementById('first');
-                    var timer = window.setInterval(move, 20);
-                    wrap.onmouseover = function () {
-                        window.clearInterval(timer);
-                    };
-                    wrap.onmouseout = function () {
-                        timer = window.setInterval(move, 20);
-                    };
-                    function move() {
-                        wrap.scrollLeft++;
-                        if (wrap.scrollLeft >= first.scrollWidth) {
-                            wrap.scrollLeft = 0;
-                        }
-                    }
+                    // var wrap = document.getElementById('wrap'), first = document.getElementById('first');
+                    // var timer = window.setInterval(move, 20);
+                    // wrap.onmouseover = function () {
+                    //     window.clearInterval(timer);
+                    // };
+                    // wrap.onmouseout = function () {
+                    //     timer = window.setInterval(move, 20);
+                    // };
+                    // function move() {
+                    //     wrap.scrollLeft++;
+                    //     if (wrap.scrollLeft >= first.scrollWidth) {
+                    //         wrap.scrollLeft = 0;
+                    //     }
+                    // }
                 }
             });
             $(element).on("click", ".header-1-content .btn_search", function(){
@@ -823,7 +823,8 @@
                 data: {
                     mainHide: mainHide,
                     siteInfo: jsData.siteInfo,
-                    qqHref: "http://wpa.qq.com/msgrd?v=3&uin=" + jsData.siteInfo.qq + "&=qq&menu=yes"
+                    qqHref: "http://wpa.qq.com/msgrd?v=3&uin=" + jsData.siteInfo.qq + "&=qq&menu=yes",
+                    miniImg: 'https://static.cncoopbuy.com:8080/wechat/appletcode/'+ (shopId || 2) +'/'+ (shopId || 2) +'.png'
                 }
             });
             $(element).on("click", ".footer-1-content .myKf .top", function(){
@@ -1226,19 +1227,40 @@
                                     }
                                 }
                             },
-                            returnMsg: function(exciseTax, incrementTax){
+                            returnMsg: function(exciseTax, incrementTax, spcPrice){
                                 var str = '';
                                 var that = this;
                                 var freePost = this.mdData.freePost;
                                 var freeTax = this.mdData.freeTax;
-                                switch(freeTax){
-                                    case 0: str += '消费税率：'+(exciseTax||0)+'%，增值税率：'+(incrementTax||0)+'% '; break;
-                                    case 1: str += '包税'; break;
-                                }
-                                switch(freePost){
-                                    case 0: str += ''; break;
-                                    case 1: str += '包邮'; break;
-                                    case 2: str += that.isFreePost? '包邮': '邮费到付'; break;
+                                var type = this.mdData.type;
+                                var itemContCode = this.itemContCode;
+                                if(itemContCode !== 'itemHide'){
+                                    if(type == 0){
+                                        if(freeTax == 0){
+                                            var taxFee = 0;
+                                            var totalPrice = this.quantity * spcPrice;
+                                            exciseTax = exciseTax / 100;
+                                            incrementTax = incrementTax /100;
+                                            if (exciseTax && exciseTax != 0) {
+                                                taxFee += (totalPrice + 0) / (1 - exciseTax) * exciseTax * 0.7;
+                                            }
+                                            if (incrementTax && incrementTax != 0) {
+                                                taxFee += ((totalPrice + 0) + (totalPrice + 0) / (1 - exciseTax) * exciseTax) * incrementTax * 0.7;
+                                            }
+                                            str += '(预计税费￥' + taxFee.toFixed(2) + ')';
+                                        }else if(freeTax == 1){
+                                            str += '包税';
+                                        }
+                                    }else if(type == 2){
+                                        str += '包税';
+                                    }
+                                    switch(freePost){
+                                        case 0: str += ''; break;
+                                        case 1: str += '包邮'; break;
+                                        case 2: str += that.isFreePost? '包邮': '邮费到付'; break;
+                                    }
+                                }else{
+                                    str = '请选择商品规格';
                                 }
                                 return str;
                             },
@@ -5084,6 +5106,9 @@
                                                 orderDetail.taxFee = rOrder.taxFee;
                                                 orderDetail.postFee = rOrder.postFee;
                                                 orderDetail.payment = (rOrder.postFee * 1 + rOrder.taxFee * 1 + rOrder.supplierRealPrice * 1).toFixed(2);
+                                                orderDetail.customerIdNum = response.obj.userDetail.idNum;
+                                                orderDetail.customerName = response.obj.userDetail.name;
+                                                orderDetail.customerPhone = response.obj.phone;
 
                                                 $.each(rOrder.itemObj, function (n3, o3) {
                                                     if (o3.ids) {
@@ -5296,6 +5321,14 @@
                                                                     else {
                                                                         alertDefault.content = '当前二维码获取失败！';
                                                                     }
+                                                                    var d = {
+                                                                        'logsName': 'orderSure',
+                                                                        'errorCode': 'createOrder',
+                                                                        'errorMsg': response.errorMsg,
+                                                                        'detail': options.orderGoodsList,
+                                                                        'orderId': '订单未生成'
+                                                                    };
+                                                                    jsModel.send("SET_DATA_LOGS", d);
                                                                     rOrders.typeObj[typeId][supplierId].submitState = true;
                                                                     rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
                                                                 }
@@ -5379,6 +5412,14 @@
                                                                     else {
                                                                         alertDefault.content = '生成订单失败！';
                                                                     }
+                                                                    var d = {
+                                                                        'logsName': 'orderSure',
+                                                                        'errorCode': 'createOrder',
+                                                                        'errorMsg': response.errorMsg,
+                                                                        'detail': options.orderGoodsList,
+                                                                        'orderId': '订单未生成'
+                                                                    };
+                                                                    jsModel.send("SET_DATA_LOGS", d);
                                                                     rOrders.typeObj[typeId][supplierId].submitState = true;
                                                                     rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
                                                                 }
@@ -5462,6 +5503,14 @@
                                                                     else {
                                                                         alertDefault.content = '生成订单失败！';
                                                                     }
+                                                                    var d = {
+                                                                        'logsName': 'orderSure',
+                                                                        'errorCode': 'createOrder',
+                                                                        'errorMsg': response.errorMsg,
+                                                                        'detail': options.orderGoodsList,
+                                                                        'orderId': '订单未生成'
+                                                                    };
+                                                                    jsModel.send("SET_DATA_LOGS", d);
                                                                     rOrders.typeObj[typeId][supplierId].submitState = true;
                                                                     rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
                                                                 }
@@ -5543,6 +5592,14 @@
                                                                     else {
                                                                         alertDefault.content = '生成订单失败！';
                                                                     }
+                                                                    var d = {
+                                                                        'logsName': 'orderSure',
+                                                                        'errorCode': 'createOrder',
+                                                                        'errorMsg': response.errorMsg,
+                                                                        'detail': options.orderGoodsList,
+                                                                        'orderId': '订单未生成'
+                                                                    };
+                                                                    jsModel.send("SET_DATA_LOGS", d);
                                                                     rOrders.typeObj[typeId][supplierId].submitState = true;
                                                                     rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
                                                                 }
@@ -5562,6 +5619,14 @@
                                                             else {
                                                                 alertDefault.content = '生成订单失败！';
                                                             }
+                                                            var d = {
+                                                                'logsName': 'orderSure',
+                                                                'errorCode': 'createOrder',
+                                                                'errorMsg': response.errorMsg,
+                                                                'detail': options.orderGoodsList,
+                                                                'orderId': '订单未生成'
+                                                            };
+                                                            jsModel.send("SET_DATA_LOGS", d);
                                                             rOrders.typeObj[typeId][supplierId].submitState = true;
                                                             rOrders.typeObj[typeId][supplierId].submitText = "重新提交";
                                                         })
@@ -7247,7 +7312,113 @@
                 }
             });
         }
+        if ((/^activity-2-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {}
+            });
+        }
+        if ((/^activity-3-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {}
+            });
+        }
+        if ((/^themeBanner-1-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {},
+                mounted: function(){
+                    $('#body-center').css('background','#f6f6f6');
+                    $('#body-center').css('margin-bottom','0');
+                    $('#body-center').css('padding-bottom','30px');
+                }
+            });
+        }
+        if ((/^themeNavInlet-1-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {}
+            });
+        }
+        if ((/^themeNavInlet-2-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {}
+            });
+        }
+        if ((/^themeFloor-1-\d+$/).test(role)) {
+            Module[role] = new Vue({
+                el: element,
+                data: {}
+            });
+        }
+        if ((/^themeSideFixed-1-\d+$/).test(role)) {
+            $("[id^='themeFloor-1-']").each(function(){
+                var id = "#" + $(this).attr("id");
+                var name = $(this).find(".themeFloor-title").text();
+                list.push({ name: name,  id: id})
+            });
 
+            Module[role] =  new Vue({
+                el: element,
+                data: {
+                    list: list,
+                    active_offset: 0,
+                    position_offset: 108,
+                    isShow: false
+                },
+                methods: {
+                    setElementCSS: function($element){
+                        var bodyWidth = $("body").width();
+                        var windowHeight = window.innerHeight;
+                        var thisHeight = $element.height();
+                        var width = (bodyWidth-1340)/2;
+                        var height = (windowHeight-thisHeight)/2;
+                        height = height>150? height: 150;
+                        this.active_offset = height;
+                        if(bodyWidth>=1300){
+                            $element.css({
+                                "display": "block",
+                                "position": "fixed",
+                                "top": height+"px",
+                                "left": width+"px"
+                            });
+                        }else{
+                            $element.css({
+                                "display":"none"
+                            });
+                        }
+                    }
+                },
+                mounted: function(){
+                    var that = this;
+                    var allFloor = $('.themeFloor-1-content');
+                    var firstFloor = $('.themeFloor-1-content')[0];
+                    var lastFloor = $('.themeFloor-1-content')[allFloor.length-1];
+                    var floorHeight = $(firstFloor).innerHeight();
+                    var firstFloor_offset = $(firstFloor).offset().top - 100;
+                    var lastFloor_offset = $(lastFloor).offset().top + floorHeight - 100;
+                    that.setElementCSS($(that.$el));
+                    window.onresize = function temp() {
+                        that.setElementCSS($(that.$el));
+                    };
+                    $('body').scrollMonitor({
+                        active_offset: that.active_offset,
+                        position_offset: that.position_offset
+                    });
+                    $(window).scroll(function(){
+                        var scrollHeight = $(window).scrollTop();
+                        if(scrollHeight >= firstFloor_offset && scrollHeight <= lastFloor_offset){
+                            that.isShow = true;
+
+                        }else{
+                            that.isShow = false;
+                        }
+                    });
+                }
+            });
+        }
     };
 
     window.app.getModule = function(name){

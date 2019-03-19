@@ -39,6 +39,10 @@
       margin:0 10px;
       color:#009944;
       cursor:pointer;
+      &.top-right{
+        float: right;
+        margin-right: 73px;
+      }
     }
   }
 }
