@@ -1634,6 +1634,46 @@ app.route("/Data/handle/visit/json")
 
     });
 
+//日志记录
+app.route("/Data/handle/logs")
+    .post(function(req, res){
+        var defs = [];
+        var errorCode= req.body.errorCode;
+        var userId = req.body.userId;
+        var shopId = req.body.shopId;
+        var detail = req.body.detail;
+        var orderId = req.body.orderId;
+        var errorMsg = req.body.errorMsg;
+        var logsName = req.body.logsName;
+        var timestamp = new Date().getTime();
+        var currentDate = formatDate({ time: timestamp, format: 'yyyy-MM-dd'});
+        var time = formatDate({ time: timestamp, format: 'yyyy/MM/dd HH:mm:ss'});
+        var distJson = rootPath + '/data/logs/' + logsName + '/' + currentDate + '.json';
+        var userData = { 'data': {} };
+        var bodyData = {
+            'errorCode': errorCode,
+            'userId': userId,
+            'shopId': shopId,
+            'errorMsg': errorMsg,
+            'detail': detail,
+            'orderId': orderId,
+            'time': time
+        };
+
+        if (iUtil.isFileSync(distJson)){
+            userData = JSON.parse(iUtil.getFileSync(distJson, 'utf-8')) || userData;
+        }
+
+        if (bodyData) {
+            var logsId = errorCode + '-' + userId + '-' + shopId + '-' + timestamp;
+            userData.data[logsId] = bodyData;
+            defs = iUtil.setFile(distJson, JSON.stringify(userData), true);
+        }
+
+        iUtil.iPromise.all(defs)
+            .then(function(){ res.send({ errorMsg: '', success: true, obj: "日志写入成功!" }) })
+            .catch(function(err){ res.send({ errorMsg: "日志写入失败!", success: false, obj: err }) });
+    });
 
 app.route("/Render/handle/goods")
     .post(function(req, res){
