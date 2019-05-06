@@ -44,8 +44,7 @@
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
-        // hm.src = "https://hm.baidu.com/hm.js?f4f7bcbeb7a569cd22586e1d3c316189"; //测试
-        hm.src = "https://hm.baidu.com/hm.js?1ce1c5147085862d1eee7133508e9edd";  //正式
+        hm.src = "https://hm.baidu.com/hm.js?4dbba34e06b6de16dd9df2ecfeeffd50";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();

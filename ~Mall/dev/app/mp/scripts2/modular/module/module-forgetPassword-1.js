@@ -80,7 +80,7 @@ define(["config.page.render"], function(Render) {
             var message = that.modules.message;
             var $parent = $node.parents('.component-forgetPassword-validation');
             $element.find("#account").blur();
-            if(that.jsUtil.weChat.browser()){
+            // if(that.jsUtil.weChat.browser()){
                 setTimeout(function(){
                     var request = that.renderData.global.request.attr();
                     var account_state = !$element.find("#account").hasClass("state_error");
@@ -119,14 +119,14 @@ define(["config.page.render"], function(Render) {
                         })
                     }
                 }, 200);
-            }else{
-                message.refresh({
-                    type: "error",
-                    cancelBtn: false,
-                    confirmBtn: false,
-                    content: "请在微信端进行操作！"
-                });
-            }
+            // }else{
+            //     message.refresh({
+            //         type: "error",
+            //         cancelBtn: false,
+            //         confirmBtn: false,
+            //         content: "请在微信端进行操作！"
+            //     });
+            // }
         },
         ".component-forgetPassword-forgetPasswordBtn:not(.state_error) touchend": function(){
             var that = this;

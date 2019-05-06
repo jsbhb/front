@@ -23,7 +23,7 @@
     var shopDescribe =  jsData.siteInfo.shopDescribe;
     var jumpUrl =       jsUtil.url.getParam("jumpUrl", 1);
     var goodsName =     jsUtil.url.getParam("goodsName");
-    var sortId =        jsUtil.url.getParam("sortId");
+    var sortId =        sessionStorage.getItem('sortId') || 0;
 
     var Page = {
         'jsData':          jsData,

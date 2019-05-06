@@ -76,7 +76,7 @@
             <div class="goodsDetail-discount close" v-if="couponList && couponList.length">
                 <ul>
                     <li :couponId="item.couponId" v-for="item in couponList">
-                        <img src="/images/platform/goods/icon_discounts.png" alt="中国供销海外购">
+                        <img src="/images/platform/goods/icon_discounts.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                         <span>{{!item.name}}</span>
                         <span class="btn btn_needReceive" v-if="item.receiveStatus != '1'">领取</span>
                         <span class="received" v-if="item.receiveStatus == '1'">已领取</span>
@@ -161,7 +161,7 @@
                         </div>
                     </div>
                 </div>
-                <img src="/images/platform/goods/icon_cancel.png" class="btn_cancel" alt="中国供销海外购">
+                <img src="/images/platform/goods/icon_cancel.png" class="btn_cancel" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
             </div>
             <div class="goodsDetail-alert-bg" v-show="alertBgShow"></div>
         </div>

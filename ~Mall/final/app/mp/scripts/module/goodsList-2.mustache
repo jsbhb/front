@@ -9,7 +9,7 @@
             <div class="content-list">
                 {{#each cont}}
                     <div class="list-item">
-                        <a href="{{{href}}}">
+                        <a href="{{{href}}}" @click="setStatistics" id="{{goodsId}}" title="{{own.title}}">
                             <ul>
                                 <li class="shopImg">
                                     <img src="{{{picPath}}}" alt="{{{title}}}">
@@ -18,7 +18,7 @@
                                 <li class="shopPrice">
                                     <span v-html="showPrice({{price}})" class="text"></span>
                                     {{#notShow}}
-                                        <span class="img"><img src="/images/platform/goodsList/goodsList-shopCart.png" alt="中国供销海外购"></span>
+                                        <span class="img"><img src="/images/platform/goodsList/goodsList-shopCart.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款"></span>
                                     {{/notShow}}
                                 </li>
                             </ul>
@@ -27,7 +27,7 @@
                 {{/each}}
                 <div class="list-item lookMore">
                     <a href="{{{own.href}}}">
-                        <img src="/images/platform/goodsList/goodsList-more.png" alt="中国供销海外购">
+                        <img src="/images/platform/goodsList/goodsList-more.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                     </a>
                 </div>
             </div>

@@ -128,8 +128,8 @@
                                 </li>
                                 <li class="pageLi">
                                     <span class="show_num"><i>{{!pagination.currentPage}}</i> / <b>{{!pagination.totalPages}}</b></span>
-                                    <img @click='pageImgClick' class="pageImg prev" :src="pagination.currentPage != 1? '/images/platform/icon_prv_set.jpg': '/images/platform/icon_prv_nor.jpg'" alt="中国供销海外购">
-                                    <img @click='pageImgClick' class="pageImg next" :src="pagination.currentPage != pagination.totalPages? '/images/platform/icon_next_set.jpg': '/images/platform/icon_next_nor.jpg'" alt="中国供销海外购">
+                                    <img @click='pageImgClick' class="pageImg prev" :src="pagination.currentPage != 1? '/images/platform/icon_prv_set.jpg': '/images/platform/icon_prv_nor.jpg'" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
+                                    <img @click='pageImgClick' class="pageImg next" :src="pagination.currentPage != pagination.totalPages? '/images/platform/icon_next_set.jpg': '/images/platform/icon_next_nor.jpg'" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                                 </li>
                             </ul>
                         </div>
@@ -137,8 +137,11 @@
                             <template v-if="goodsList && goodsList.length">
                                 <div class="img_shrink" :goodsId="item.goodsId" v-for="item in goodsList" :toUrl='item.href' :isSingleSpec="item.goodsSpecsList && item.goodsSpecsList.length  > 1? 'no': 'yes'">
                                     <a :href="item.href" target="_blank" class="imgBox">
-                                        <img class="goodsImg" :src="getPath(item.goodsFileList, '/images/platform/default_img.jpg')" alt="中国供销海外购">
-                                        <img class="corner_mark" :src="returnImgSrc(item.type)" alt="中国供销海外购">
+                                        <img class="goodsImg" :src="getPath(item.goodsFileList, '/images/platform/default_img.jpg')" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
+                                        <img class="corner_mark" :src="returnImgSrc(item.type)" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
+                                        <template v-if="item.goodsSpecsList">
+                                            <img class="remark_icon" :src="returnIconSrc(item.goodsSpecsList)" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款" onerror="javascript:this.remove()">
+                                        </template>
                                     </a>
                                     <a :href="item.href" target="_blank" class="infoBox">
                                         <div class="img_shrink_address">
@@ -154,7 +157,7 @@
                                             <strong><b><span>￥</span>{{!returnPrice(item.realPrice)}}</b><s v-html="returnOldPrice(item.realPrice, item.price)"></s></strong>
                                         </div>
                                         <div class="img_shrink_btnBox">
-                                            <img class="search_addShopCart" src="/images/platform/icon_shoppingCart.png" @click="toAddShopCart" alt="中国供销海外购">
+                                            <img class="search_addShopCart" src="/images/platform/icon_shoppingCart.png" @click="toAddShopCart" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                                         </div>
                                     </div>
                                 </div>

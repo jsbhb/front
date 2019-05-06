@@ -1,5 +1,6 @@
 
 var fs =           require('fs');
+var path =         require("path");
 var redis =        require('redis');
 var iUtil =        require('iUtil');
 var https =        require('https');
@@ -10,6 +11,7 @@ var compression =  require('compression');
 var schedule =     require('node-schedule');
 var xlsx =         require('node-xlsx');
 var app =          require('express')();
+var formidable =   require('formidable');
 
 
 var visitTimer =      null;
@@ -19,9 +21,9 @@ var edition =         '';
 var defRegion =       '/www';
 var rootPath =        '/opt/front/~Mall' + edition;
 var certPath =        '/opt/front/~Mall' + edition + '/pack/.cert';
-var mDomain =         'https://m.cncoopbuy.com';
-var pDomain =         'https://www.cncoopbuy.com';
-var fDomain =         'https://fl.cncoopbuy.com';
+var mDomain =         'https://m.cncoopay.com';
+var pDomain =         'https://www.cncoopay.com';
+var fDomain =         'https://fl.cncoopay.com';
 
 var privateKey  =     fs.readFileSync(certPath + '/ssl.key', 'utf8');
 var certificate =     fs.readFileSync(certPath + '/ssl.pem', 'utf8');
@@ -495,71 +497,83 @@ var SEOHandle = function(opt) {
     var i, origin, goodsName;
     switch (system + ':' + page) {
         case "pcMall:index":
-            Object.assign(opt.seo, {
-                title: "中国供销海外购",
-                keywords: "中国供销海外购,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
-                description: "中国供销海外购, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
-            });
+            if(JSON.stringify(opt.seo) == "{}"){
+                Object.assign(opt.seo, {
+                    title: "中国供销海外购",
+                    keywords: "中国供销海外购,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
+                    description: "中国供销海外购, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
+                });
+            }
             break;
         case "mpMall:index":
-            Object.assign(opt.seo, {
-                title: "中国供销海外购",
-                keywords: "中国供销海外购,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
-                description: "中国供销海外购, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
-            });
+            if(JSON.stringify(opt.seo) == "{}"){
+                Object.assign(opt.seo, {
+                    title: "中国供销海外购",
+                    keywords: "中国供销海外购,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
+                    description: "中国供销海外购, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
+                });
+            }
             break;
         case "fmpMall:nav":
-            Object.assign(opt.seo, {
-                title: "福利商城",
-                keywords: "福利商城,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
-                description: "福利商城, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
-            });
+            if(JSON.stringify(opt.seo) == "{}"){
+                Object.assign(opt.seo, {
+                    title: "福利商城",
+                    keywords: "福利商城,海淘网站,跨境购,母婴用品,进口商品,网上购物,保税区,跨境电商,跨境贸易",
+                    description: "福利商城, 跨境电商, 跨境贸易, 提供丰富的正品海外商品, 欢迎广大顾客光临购买！"
+                });
+            }
             break;
         case "pcMall:goodsDetail":
-            for(i in (opt.module||[])){
-                if(opt.module[i].code === "goodsDetail-1"){
-                    if (iUtil.isObject(opt.module[i].cont)) {
-                        origin = opt.module[i].cont.origin;
-                        goodsName = opt.module[i].cont.customGoodsName;
-                        Object.assign(opt.seo, {
-                            title: goodsName,
-                            keywords: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购",
-                            description: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购"
-                        });
+            if(JSON.stringify(opt.seo) == "{}"){
+                for(i in (opt.module||[])){
+                    if(opt.module[i].code === "goodsDetail-1"){
+                        if (iUtil.isObject(opt.module[i].cont)) {
+                            origin = opt.module[i].cont.origin;
+                            goodsName = opt.module[i].cont.customGoodsName;
+                            Object.assign(opt.seo, {
+                                title: goodsName,
+                                keywords: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购",
+                                description: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购"
+                            });
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             break;
         case "mpMall:goodsDetail":
-            for(i in (opt.module||[])){
-                if(opt.module[i].code === "goodsDetail-1"){
-                    if (iUtil.isObject(opt.module[i].cont)) {
-                        origin = opt.module[i].cont.origin;
-                        goodsName = opt.module[i].cont.customGoodsName;
-                        Object.assign(opt.seo, {
-                            title: goodsName,
-                            keywords: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购",
-                            description: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购"
-                        });
+            if(JSON.stringify(opt.seo) == "{}"){
+                for(i in (opt.module||[])){
+                    if(opt.module[i].code === "goodsDetail-1"){
+                        if (iUtil.isObject(opt.module[i].cont)) {
+                            origin = opt.module[i].cont.origin;
+                            goodsName = opt.module[i].cont.customGoodsName;
+                            Object.assign(opt.seo, {
+                                title: goodsName,
+                                keywords: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购",
+                                description: goodsName + (origin? "(" + origin + ")": "") + "--中国供销海外购"
+                            });
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             break;
         case "fmpMall:goodsDetail":
-            for(i in (opt.module||[])){
-                if(opt.module[i].code === "goodsDetail-1"){
-                    if (iUtil.isObject(opt.module[i].cont)) {
-                        origin = opt.module[i].cont.origin;
-                        goodsName = opt.module[i].cont.customGoodsName;
-                        Object.assign(opt.seo, {
-                            title: goodsName,
-                            keywords: goodsName + (origin? "(" + origin + ")": "") + "--福利商城",
-                            description: goodsName + (origin? "(" + origin + ")": "") + "--福利商城"
-                        });
+            if(JSON.stringify(opt.seo) == "{}"){
+                for(i in (opt.module||[])){
+                    if(opt.module[i].code === "goodsDetail-1"){
+                        if (iUtil.isObject(opt.module[i].cont)) {
+                            origin = opt.module[i].cont.origin;
+                            goodsName = opt.module[i].cont.customGoodsName;
+                            Object.assign(opt.seo, {
+                                title: goodsName,
+                                keywords: goodsName + (origin? "(" + origin + ")": "") + "--福利商城",
+                                description: goodsName + (origin? "(" + origin + ")": "") + "--福利商城"
+                            });
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             break;
@@ -609,7 +623,7 @@ var shouldFilter = function(req, res){
 client.auth('Xinhai2017');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(compression({filter: shouldFilter}));
+// app.use(compression({filter: shouldFilter}));
 httpsServer.listen(8888);
 
 
@@ -619,7 +633,7 @@ app.route("*")
         res.header("Content-Type", "application/json;charset=utf-8");
         res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        var isHostname = (/^front\.cncoopbuy\.com$/).test(req.hostname);
+        var isHostname = (/^front\.cncoopay\.com$/).test(req.hostname);
         isHostname || res.redirect(301, "https://" + req.hostname + req.url);
         isHostname && (/^OPTIONS$/i).test(req.method) && res.send(200);
         isHostname && !(/^OPTIONS$/i).test(req.method) && next();
@@ -1121,11 +1135,14 @@ app.route("/Page/handle")
             var distMod =    '';
             var distWeb =    '';
             var defHtml =    '';
+            var header =     '';
             var script =     '';
             var bodyCont =   '';
             var bodyHeader = '';
             var bodyCenter = '';
             var bodyFooter = '';
+            var detailPath = '';
+            var detailHtml = '';
 
             switch (system)  {
                 case "pcMall":
@@ -1267,6 +1284,16 @@ app.route("/Page/handle")
                     modArr[n].area === 'bodyFooter' && (bodyFooter += iUtil.render(mFile, rData));
                     script += '\nwindow.app.setModule("' + mdRole + '", "' + mdMark + '");\n';
                 }
+                if(modArr[n].code == 'goodsDetail-1'){
+                    if(system == 'pcMall'){
+                        header = '<link rel="alternate" href="' + mDomain + modArr[n].cont.href + '">';
+                    }else if(system == 'mpMall'){
+                        header = '<link rel="canonical" href="' + pDomain + modArr[n].cont.href + '">';
+                    }
+                    bodyCont += '<h1 style="display:none;">'+ (seo.title || modArr[n].cont.customGoodsName) +'</h1>';
+                    detailPath = modArr[n].cont.detailPath;
+                    detailHtml = iUtil.getFileSync('/opt/static/goods' + modArr[n].cont.detailPath.split('goods')[1],'utf-8');
+                }
             }
 
             seo =  SEOHandle({ seo: seo, page: page, system: system, module: module });
@@ -1274,11 +1301,20 @@ app.route("/Page/handle")
             html = iUtil.getFileSync(defHtml, 'utf-8');
             html = iUtil.render(html, { seo: seo, page: page, domain: domain });
 
+            if(detailHtml && system == 'pcMall'){
+                var bodyArrPc = bodyCenter.split('<div class="showMsgContent">');
+                bodyCenter = bodyArrPc[0] + '<div class="showMsgContent">' + detailHtml + bodyArrPc[1];
+            }else if(detailHtml && system == 'mpMall'){
+                var bodyArrMp = bodyCenter.split('<div class="detailMsgContent">');
+                bodyCenter = bodyArrMp[0] + '<div class="detailMsgContent">' + detailHtml + bodyArrMp[1];
+            }
+
             bodyCont   && (html = iUtil.append(html, ["<body>", "</body>"], bodyCont));
             bodyHeader && (html = iUtil.append(html, ["<div id='body-header'>", "</div>"], bodyHeader));
             bodyCenter && (html = iUtil.append(html, ["<div id='body-center'>", "</div>"], bodyCenter));
             bodyFooter && (html = iUtil.append(html, ["<div id='body-footer'>", "</div>"], bodyFooter));
             script     && (html = iUtil.append(html, ["<script tag='module'>", "</script>"], script));
+            header     && (html = iUtil.append(html, ["<head>", "</head>"], header));
 
             defs = defs.concat(iUtil.setFile(jsonFile, iUtil.clean(json), true));
             defs = defs.concat(iUtil.setFile(htmlFile, iUtil.clean(html), true));
@@ -2032,4 +2068,155 @@ app.route("/Redis/handle/gradeBO")
                 res.send({ errorMsg: data.shopId, success: true, obj: result });
             }
         });
+    });
+
+//数据统计
+app.route('/Data/handle/statistics')
+    .post(function(req,res){
+        var defs = [];
+        var type = req.body.type;
+        var userId = req.body.userId;
+        var shopId = req.body.shopId;
+        var goodsId = req.body.goodsId;
+        var logsName = req.body.logsName;
+        var timestamp = new Date().getTime();
+        var logsId = userId + '-' + shopId + '-' + goodsId;
+        var currentDate = formatDate({ time: timestamp, format: 'yyyy-MM-dd'});
+        var distJson = rootPath + '/data/logs/' + logsName + '/' + currentDate + '.json';
+        var userData = { 'data': {} };
+
+        if (iUtil.isFileSync(distJson)){
+            userData = JSON.parse(iUtil.getFileSync(distJson, 'utf-8')) || userData;
+        }
+
+        if(userData.data[logsId]){
+            if(userData.data[logsId][type]){
+                userData.data[logsId][type] ++;
+            }else{
+                userData.data[logsId][type] = 1;
+            }
+        }else{
+            userData.data[logsId] = {};
+            userData.data[logsId][type] = 1;
+        }
+
+        defs = iUtil.setFile(distJson, JSON.stringify(userData), true);
+
+        iUtil.iPromise.all(defs)
+            .then(function(){ res.send({ errorMsg: '', success: true, obj: "日志写入成功!" }) })
+            .catch(function(err){ res.send({ errorMsg: "日志写入失败!", success: false, obj: err }) });
+    });
+
+//图片上传
+app.route('/Data/img/upLoad')
+    .post(function(req,res){
+        var form = new formidable.IncomingForm();
+        var timestamp = new Date().getTime();
+        form.encoding = 'utf-8';
+        form.uploadDir = path.join(__dirname + "/../../static/wechat/spread/pic");
+        form.keepExtensions = true;//保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;
+        form.parse(req, function(err, fields, files){
+            var oldPath = files.image.path;//这里的路径是图片的本地路径
+            var filesArr = files.image.path.split('.');
+            var type = filesArr[filesArr.length-1];
+            var newPath = path.join(path.dirname(oldPath), timestamp + '.' + type);
+            var rePath = '/spread/pic/' + timestamp + '.' + type;
+            fs.rename(oldPath, newPath, function() {//fs.rename重命名图片名称
+                res.json({ downUrl: rePath })
+            })
+        })
+    });
+
+//开店信息收集
+app.route("/Data/img/json")
+    .post(function(req, res){
+        var defs = [];
+        var shopId  = req.body.shopId;
+        var userName = req.body.userName;
+        var userPhone = req.body.userPhone;
+        var userAddress = req.body.userAddress;
+        var userCompany = req.body.userCompany;
+        var userContent = req.body.userContent;
+        var userCardImg1 = req.body.cardImg1;
+        var userCardImg2 = req.body.cardImg2;
+        var userCompanyImg = req.body.companyImg;
+        var timestamp = new Date().getTime();
+        var currentDate = formatDate({ time: timestamp, format: 'yyyy-MM-dd'});
+        var distJson = rootPath + '/../../static/wechat/spread/json/' + currentDate + '.json';
+        var userData = { 'data': {} };
+        var bodyData = {
+            'shopId'         : shopId,
+            'userName'       : userName,
+            'userPhone'      : userPhone,
+            'userCompany'    : userCompany,
+            'userAddress'    : userAddress,
+            'userContent'    : userContent,
+            'userCardImg1'   : userCardImg1,
+            'userCardImg2'   : userCardImg2,
+            'userCompanyImg' : userCompanyImg
+        };
+
+        if (iUtil.isFileSync(distJson)){
+            userData = JSON.parse(iUtil.getFileSync(distJson, 'utf-8')) || userData;
+        }
+
+        if (bodyData) {
+            userData.data[userPhone + '-' + shopId] = bodyData;
+            defs = iUtil.setFile(distJson, JSON.stringify(userData), true);
+        }
+
+        iUtil.iPromise.all(defs)
+            .then(function(){ res.send({ errorMsg: '', success: true, obj: "访问记录写入成功!" }) })
+            .catch(function(err){ res.send({ errorMsg: "访问记录写入失败!", success: false, obj: err }) });
+
+    });
+
+app.route("/Data/img/excel")
+    .post(function(req,res){
+        var defs = [];
+        var jsonString;
+        var date = req.body.date;
+        var distJson = rootPath + '/../../static/wechat/spread/json/' + date + '.json';
+        var distExcel = rootPath + '/../../static/wechat/spread/json/' + date + '.xlsx';
+        var writeData=[ ['店铺ID','用户名称','手机号码','联系地址','公司名称','留言内容','身份证正面','身份证反面','营业执照'] ];
+        if(jsonString = iUtil.getFileSync(distJson, 'utf-8')) {
+            var sData = {};
+            var nData = {};
+            var popVal = '';
+            var jsonData = JSON.parse(iUtil.getFileSync(distJson, 'utf-8'));
+            if (iUtil.isObject(jsonData) && iUtil.isObject(jsonData.data)) {
+                for (var k1 in jsonData.data) {
+                    sData[jsonData.data[k1].userPhone] = sData[jsonData.data[k1].userPhone] || [];
+                    sData[jsonData.data[k1].userPhone].push(k1);
+                }
+                for (var k2 in sData) {
+                    popVal = sData[k2].pop();
+                    nData[popVal] = jsonData.data[popVal];
+                }
+                if (nData) {
+                    var nDataKeys = Object.keys(nData).sort();
+                    for (var n = 0, m = nDataKeys.length; n < m; n++) {
+                        var k4 = nDataKeys[n];
+                        writeData.push([
+                            nData[k4].shopId,
+                            nData[k4].userName,
+                            nData[k4].userPhone,
+                            nData[k4].userAddress,
+                            nData[k4].userCompany,
+                            nData[k4].userContent,
+                            nData[k4].userCardImg1,
+                            nData[k4].userCardImg2,
+                            nData[k4].userCompanyImg
+                        ]);
+                    }
+                }
+
+                defs = iUtil.setFile(distExcel, xlsx.build([{name: 'sheet1', data: writeData}]), true);
+
+                iUtil.iPromise.all(defs)
+                    .then(function(){ res.send({ errorMsg: '', success: true, obj: "excel生成成功!" }) })
+                    .catch(function(err){ res.send({ errorMsg: "excel生成失败!", success: false, obj: err }) });
+            }
+        }
     });

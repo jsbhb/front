@@ -3,15 +3,15 @@
         <div class="nav-showCont">
             {{#if data}}
                 <div class="contType inlineBlock" :class="mode"  @mouseenter='contTypeMouseenter' @mouseleave='contTypeMouseleave'>
-                    <img src="/images/platform/nav/off/1.png" alt="中国供销海外购">
+                    <img src="/images/platform/nav/off/1.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                     <span class="classify inlineBlock">商品分类</span>
                     <ul :style="{height: 50*{{data.length}}}"  @mouseenter='contTypeUlMouseenter' @mouseleave='contTypeUlMouseleave'>
                         {{#each data}}
                             <li id="{{id}}" @mouseenter='contTypeUlLiMouseenter'>
                             <span class="contTypeTitle" @click='contTypeTitleClick'>
-                                <img src="{{{tagPath}}}" class="mark" alt="中国供销海外购">
+                                <img src="{{{tagPath}}}" class="mark" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                                 <span>{{{industryName}}}</span>
-                                <img src="/images/platform/nav/off/2.png" class="arrow" alt="中国供销海外购">
+                                <img src="/images/platform/nav/off/2.png" class="arrow" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                             </span>
                                 <div class="showContItemList">
                                     <div>

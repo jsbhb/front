@@ -105,6 +105,13 @@
         max-width: 120px;
         height: auto;
       }
+      #small img.remark_icon{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        max-width: 60px;
+        height: auto;
+      }
       #mask {
         width: 168px;
         height: 168px;
@@ -177,7 +184,7 @@
       .goodsDetail-mainMsg-middle li.title{
         padding-left:0;
       }
-      .goodsDetail-mainMsg-middle li.title h1{
+      .goodsDetail-mainMsg-middle li.title h2,.goodsDetail-mainMsg-middle li.title h1{
         font-size:18px;
         font-weight:600;
         margin-bottom:16px;
@@ -292,7 +299,7 @@
       .goodsDetail-mainMsg-middle li.tax b:hover .alert_box{
         display:block;
       }
-      .goodsDetail-mainMsg-middle li.tax b .alert_box h2{
+      .goodsDetail-mainMsg-middle li.tax b .alert_box h2,.goodsDetail-mainMsg-middle li.tax b .alert_box h1{
         font-size:15px;
       }
       .goodsDetail-mainMsg-middle li.discount{
@@ -643,7 +650,7 @@
       border-top:1px solid #e7e7e7;
       min-height:590px;
       padding: 16px 30px 28px;
-      &>h1{
+      &>h2,h1{
         font-size: 18px;
         color: #e60211;
         line-height: 30px;
@@ -668,7 +675,7 @@
           }
           &.stage{
             width: 100%;
-            & > .path1{
+            & > .path2{
               float: left;
               width: 26px;
               margin-left: 28px;

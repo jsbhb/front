@@ -513,12 +513,17 @@
                     }
                 },
                 mounted: function(){
+                    var that = this;
                     $(element).on("click", ".nav-1-content .contNav > a", function(e){
                         var oldHref = $(this).attr('href');
                         var sortId = $(this).attr('sortId');
-                        jsUtil.path.getParam(oldHref, 'upShelves')
-                         ? window.location.href = jsUtil.path.setParam(oldHref, { sortId: sortId,  filterCategory: 'show' })
-                         : window.location.href = jsUtil.path.setParam(oldHref, { sortId: sortId });
+                        sessionStorage.setItem('sortId',sortId);
+                        that.sortId = sortId;
+                        if(jsUtil.path.getParam(oldHref, 'upShelves')){
+                            window.location.href = jsUtil.path.setParam(oldHref, {filterCategory: 'show'});
+                        }else{
+                            window.location.href = oldHref;
+                        }
                         return false;
                     });
                 }
@@ -606,7 +611,19 @@
             Module[role] =  new Vue({
                 el: element,
                 data: {},
-                methods: {}
+                methods: {
+                    setStatistics: function(e){
+                        var data = {
+                            type: 'PC楼层-' + $(e.currentTarget).attr('title'),
+                            userId: localStorage.getItem('userId') || 0,
+                            shopId: localStorage.getItem('shopId') || 2,
+                            goodsId: $(e.currentTarget).attr('id'),
+                            logsName: 'statistics'
+                        };
+                        jsModel.send("SET_DATA_STATISTICS", data)
+                            .done(function(response){});
+                    }
+                }
             });
         }
         if ((/^floor-2-\d+$/).test(role)) {
@@ -625,24 +642,9 @@
                 mounted: function(){
                     var that = this;
                     formatSeconds(that);
-                    // var id = '#content-';
-                    // if(that.activeType != null){
-                    //     id += that.activeType;
-                    // } else {
-                    //     id += 0;
-                    // }
                     setInterval(function(){
                         formatSeconds(that);
                     },1000);
-                    // $('.floor-content').removeClass('active');
-                    // $(id).addClass('active');
-                    // $('.tab-list').on('click','li',function(){
-                    //     var type = $(this).attr('data-type');
-                    //     $(this).addClass('active').siblings('.active').removeClass('active');
-                    //     var id = '#content-' + type;
-                    //     $('.floor-content').removeClass('active');
-                    //     $(id).addClass('active');
-                    // });
                     function dateTimeFormate(date){
                         if(!date){
                             return;
@@ -824,7 +826,7 @@
                     mainHide: mainHide,
                     siteInfo: jsData.siteInfo,
                     qqHref: "http://wpa.qq.com/msgrd?v=3&uin=" + jsData.siteInfo.qq + "&=qq&menu=yes",
-                    miniImg: 'https://static.cncoopbuy.com:8080/wechat/appletcode/'+ (shopId || 2) +'/'+ (shopId || 2) +'.png'
+                    miniImg: 'https://static.cncoopay.com:8080/wechat/appletcode/'+ (shopId || 2) +'/'+ (shopId || 2) +'.png'
                 }
             });
             $(element).on("click", ".footer-1-content .myKf .top", function(){
@@ -1756,7 +1758,31 @@
                                         window.location.href = encodeURI("/orderSure.html?jumpUrl=" + that.pathUrl);
                                 }
                                 window.localStorage.setItem("ordersInfo", JSON.stringify(ordersInfo));
-                            }
+                            },
+                            returnIconSrc: function(list){
+                                var tags = [];
+                                var goodsTagList = [];
+                                $.each(list||[], function(index, obj){
+                                    $.each(obj.tagList||[], function(i, o){
+                                        goodsTagList.push(o);
+                                    });
+                                });
+                                $.each(goodsTagList||[], function(i, o){
+                                    switch (o.tagName) {
+                                        case '特卖商品': $.inArray('icon_tag1', tags) === -1 && tags.push("icon_tag1"); break;
+                                        case '新品推荐': $.inArray('icon_tag2', tags) === -1 && tags.push("icon_tag2"); break;
+                                    }
+                                });
+                                if(tags.length == 1 && tags[0] == 'icon_tag1'){
+                                    return '/images/platform/page/icon_hot.png';
+                                }else if(tags.length == 1 && tags[0] == 'icon_tag2'){
+                                    return '/images/platform/page/icon_new.png';
+                                }else if(tags.length == 2){
+                                    return '/images/platform/page/icon_hot.png';
+                                }else{
+                                    return '';
+                                }
+                            },
                         },
                         beforeCreate: function(){
                             var that = this;
@@ -3755,6 +3781,30 @@
                                     case 2: imgSrc = '/images/platform/tag/icon_normal.png'; break;
                                 }
                                 return imgSrc;
+                            },
+                            returnIconSrc: function(list){
+                                var tags = [];
+                                var goodsTagList = [];
+                                $.each(list||[], function(index, obj){
+                                    $.each(obj.tagList||[], function(i, o){
+                                        goodsTagList.push(o);
+                                    });
+                                });
+                                $.each(goodsTagList||[], function(i, o){
+                                    switch (o.tagName) {
+                                        case '特卖商品': $.inArray('icon_tag1', tags) === -1 && tags.push("icon_tag1"); break;
+                                        case '新品推荐': $.inArray('icon_tag2', tags) === -1 && tags.push("icon_tag2"); break;
+                                    }
+                                });
+                                if(tags.length == 1 && tags[0] == 'icon_tag1'){
+                                    return '/images/platform/page/icon_hot.png';
+                                }else if(tags.length == 1 && tags[0] == 'icon_tag2'){
+                                    return '/images/platform/page/icon_new.png';
+                                }else if(tags.length == 2){
+                                    return '/images/platform/page/icon_hot.png';
+                                }else{
+                                    return '';
+                                }
                             },
                             returnPrice: function(realPrice){
                                 return realPrice*1 > 0? (realPrice*1).toFixed(2): '0.00'
@@ -7273,7 +7323,7 @@
         }
         if ((/^bargainRule-1-\d+$/).test(role)){
             var alertDefault = Module['alertDefault-1-1'];
-            var miniPath = 'https://static.cncoopbuy.com:8080/wechat/appletcode/' + (shopId || 2) + '/' + (shopId || 2) + '.png';
+            var miniPath = 'https://static.cncoopay.com:8080/wechat/appletcode/' + (shopId || 2) + '/' + (shopId || 2) + '.png';
             Module[role] =  new Vue({
                 el: element,
                 data: {
@@ -7315,13 +7365,39 @@
         if ((/^activity-2-\d+$/).test(role)) {
             Module[role] = new Vue({
                 el: element,
-                data: {}
+                data: {},
+                methods: {
+                    setStatistics: function(e){
+                        var data = {
+                            type: 'PC端本周特卖',
+                            userId: localStorage.getItem('userId') || 0,
+                            shopId: localStorage.getItem('shopId') || 2,
+                            goodsId: $(e.currentTarget).attr('id'),
+                            logsName: 'statistics'
+                        };
+                        jsModel.send("SET_DATA_STATISTICS", data)
+                            .done(function(response){});
+                    }
+                }
             });
         }
         if ((/^activity-3-\d+$/).test(role)) {
             Module[role] = new Vue({
                 el: element,
-                data: {}
+                data: {},
+                methods: {
+                    setStatistics: function(e){
+                        var data = {
+                            type: 'PC端新品推荐',
+                            userId: localStorage.getItem('userId') || 0,
+                            shopId: localStorage.getItem('shopId') || 2,
+                            goodsId: $(e.currentTarget).attr('id'),
+                            logsName: 'statistics'
+                        };
+                        jsModel.send("SET_DATA_STATISTICS", data)
+                            .done(function(response){});
+                    }
+                }
             });
         }
         if ((/^themeBanner-1-\d+$/).test(role)) {

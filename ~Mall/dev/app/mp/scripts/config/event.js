@@ -47,10 +47,10 @@
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
-        // hm.src = "https://hm.baidu.com/hm.js?d536a8c6a1f6e18061b244bfb83fadd7"; //测试
-        hm.src = "https://hm.baidu.com/hm.js?0f46df470fc4b1325e2c2d6c57dc8604"; //正式
+        hm.src = "https://hm.baidu.com/hm.js?0f0c265cc703e3fcde5395755170efcd";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
+
     })();
 
 }());

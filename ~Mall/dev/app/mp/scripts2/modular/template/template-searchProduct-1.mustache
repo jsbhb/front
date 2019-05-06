@@ -8,7 +8,7 @@
                      {{addElementClass region.config.sortType 4 "sortType4"}}">
                 价格
                 {{#returnImg region.config.sortType}}
-                       <img src="/images/platform/product/{{path}}.png" class="sort" alt="中国供销海外购">
+                       <img src="/images/platform/product/{{path}}.png" class="sort" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                 {{/returnImg}}
             </li>
         </ul>
@@ -32,8 +32,9 @@
                                             <img src="/images/platform/account/default_img.jpg" alt="{{{customGoodsName}}}">
                                         {{/if}}
                                         {{#returnIsShow type}}
-                                            <img class="corner_mark" src="{{returnImgSrc type}}" alt="中国供销海外购">
+                                            <img class="corner_mark" src="{{returnImgSrc type}}" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                                         {{/returnIsShow}}
+                                        {{{returnIcon goodsSpecsList}}}
                                     </div>
                                 </div>
                                 <div class="description">
@@ -64,7 +65,7 @@
                                 <li>
                                     <span class="price">￥{{returnPrice realPrice}}</span>
                                     <span class="imgBox search_addShoppingCart">
-                                        <img src="/images/platform/search/icon_shoppingCart.png" alt="中国供销海外购">
+                                        <img src="/images/platform/search/icon_shoppingCart.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                                     </span>
                                 </li>
                             </ul>
@@ -82,13 +83,13 @@
     {{#if region.response.goodsList}}
         {{^if region.response.goodsList.length}}
             <div class="empty_search">
-                <img src="/images/platform/product/search.png" alt="中国供销海外购">
+                <img src="/images/platform/product/search.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                 <span class="text">您寻找的商品还未上架！</span>
             </div>
         {{/if}}
     {{else}}
         <div class="empty_search">
-            <img src="/images/platform/product/search.png" alt="中国供销海外购">
+            <img src="/images/platform/product/search.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
             <span class="text">您寻找的商品还未上架！</span>
         </div>
     {{/if}}

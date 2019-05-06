@@ -15,9 +15,9 @@ var device =       require('device');
 var edition =       '';
 var defRegion =     '/test';
 var rootPath =      '/opt/front';
-var mDomain =       'https://test.cncoopbuy.com';
-var pDomain =       'https://test2.cncoopbuy.com';
-var fDomain =       'https://test3.cncoopbuy.com';
+var mDomain =       'https://test.cncoopay.com';
+var pDomain =       'https://test2.cncoopay.com';
+var fDomain =       'https://test3.cncoopay.com';
 var certPath =      rootPath + '/~Mall' + edition + '/pack/.cert';
 var dataPath =      rootPath + '/~Mall' + edition + '/data/mall/pc';
 var pDataPath =     rootPath + '/~Mall' + edition + '/data/mall/public';
@@ -44,7 +44,7 @@ var proxyFilter =   function(pathname, req){
     return false;
 };
 var proxyOptions =  {
-    target: 'https://test2.cncoopbuy.com',
+    target: 'https://test2.cncoopay.com',
     changeOrigin: true,
     pathRewrite: {},
     router: {}
@@ -61,7 +61,7 @@ router.all('*', function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var isOptions =   (/^OPTIONS$/i).test(req.method);
     var isAtWeChat =  device(req.get("User-Agent")).weChat();
-    var isHostname =  (/^test2\.cncoopbuy\.com$/).test(req.hostname);
+    var isHostname =  (/^test2\.cncoopay\.com$/).test(req.hostname);
     if (!isHostname) {
         res.redirect(301, "https://" + req.hostname + req.url);
         return;

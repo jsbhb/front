@@ -24,7 +24,7 @@
     var goodsId =       jsData.location.pathname.replace(/(\/?[^\/]+\/)*([^\/]+)\.html$/i, '$2');
     var jumpUrl =       jsUtil.url.getParam("jumpUrl", 1);
     var itemId =        jsUtil.url.getParam("itemId");
-    var sortId =        jsUtil.url.getParam("sortId");
+    var sortId =        sessionStorage.getItem('sortId');
 
     var Page = {
         'jsData':          jsData,

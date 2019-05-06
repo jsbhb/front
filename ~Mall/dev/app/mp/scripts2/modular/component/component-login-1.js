@@ -30,6 +30,13 @@ define(["text!modular/template/template-login-1.mustache"], function(template){
                     }
                     return options.fn(tShopArr);
                 }
+            },
+            returnBtnShow: function(options){
+                if(!api.jsUtil.weChat.browser()){
+                    return options.inverse(this);
+                }else{
+                    return options.fn(this);
+                }
             }
         },
         scope: {

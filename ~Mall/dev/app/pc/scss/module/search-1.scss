@@ -426,18 +426,20 @@
         .img_shrink > a.imgBox > img {
           max-width: 100%;
           max-height: 100%;
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom:0;
-          top: 0;
-          margin: auto;
         }
         .img_shrink > a.imgBox > img.corner_mark{
-          max-width: 90px;
-          height: auto;
-          padding: 0;
-          margin: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 60px;
+          height: 60px;
+        }
+        .img_shrink > a.imgBox > img.remark_icon{
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 50px;
+          height: 50px;
         }
         .img_shrink > a.infoBox {
           display: block;

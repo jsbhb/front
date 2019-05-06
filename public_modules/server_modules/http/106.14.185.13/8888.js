@@ -16,9 +16,9 @@ var visitTimer =      null;
 var VisitOnceTimer =  null;
 var isDebug =         true;
 var rootPath =       '/opt/front/~Mall';
-var mDomain =        'http://test.cncoopbuy.com';
-var pDomain =        'http://test2.cncoopbuy.com';
-var fDomain =        'http://test3.cncoopbuy.com';
+var mDomain =        'http://test.cncoopay.com';
+var pDomain =        'http://test2.cncoopay.com';
+var fDomain =        'http://test3.cncoopay.com';
 
 
 var DBHandle =  function(opt) {

@@ -33,9 +33,9 @@ var proxyOptions = {
 
 var app =          express();
 var router =       express.Router();
-var mDomain =      'http://test.cncoopbuy.com';
-var pDomain =      'http://test2.cncoopbuy.com';
-var fDomain =      'http://test3.cncoopbuy.com';
+var mDomain =      'http://test.cncoopay.com';
+var pDomain =      'http://test2.cncoopay.com';
+var fDomain =      'http://test3.cncoopay.com';
 var dataPath =     '/opt/front/~Mall/data/mall/fmp';
 var pDataPath =    '/opt/front/~Mall/data/mall/public';
 var safePath =     '/opt/front/~Mall/pack/region/test/fmp/security';

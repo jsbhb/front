@@ -1,7 +1,7 @@
 
 //"http://localhost:8888";
-//"https://front.cncoopbuy.com";
-//"https://testfront.cncoopbuy.com";
+//"https://front.cncoopay.com";
+//"https://testfront.cncoopay.com";
 var host = "http://localhost:8888";
 
 
@@ -14,9 +14,9 @@ function addRegion(region) {
         data: JSON.stringify({
             region: region,
             gradeId: 2,
-            domainName: 'https://test2.cncoopbuy.com/',
-            mDomainName: 'https://test.cncoopbuy.com/',
-            fDomainName: 'https://test3.cncoopbuy.com/',
+            domainName: 'https://test2.cncoopay.com/',
+            mDomainName: 'https://test.cncoopay.com/',
+            fDomainName: 'https://test3.cncoopay.com/',
         }),
         success:function(response){ console.log(response); },
         error:function(response){ console.log(response); }

@@ -18,9 +18,9 @@ var isDebug =         false;
 var edition =         '';
 var defRegion =       '/www';
 var rootPath =        '/opt/front/~Mall' + edition;
-var mDomain =         'http://m.cncoopbuy.com';
-var pDomain =         'http://www.cncoopbuy.com';
-var fDomain =         'http://fl.cncoopbuy.com';
+var mDomain =         'http://m.cncoopay.com';
+var pDomain =         'http://www.cncoopay.com';
+var fDomain =         'http://fl.cncoopay.com';
 
 
 var DBHandle = function(opt) {

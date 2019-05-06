@@ -1,9 +1,9 @@
 
 //"http://localhost:8888";
-//"https://front.cncoopbuy.com";
-//"https://testfront.cncoopbuy.com";
+//"https://front.cncoopay.com";
+//"https://testfront.cncoopay.com";
 // var host = "http://localhost:8888";
-var host = "https://testfront.cncoopbuy.com";
+var host = "https://testfront.cncoopay.com";
 
 /** 区域中心页面创建 */
 function addPage(region, page) {

@@ -1,7 +1,7 @@
 <div id="goodsList-3-{{sign}}" v-cloak>
     <div class="goodsList-3-content">
         <div class="commodity-header">
-            <img src="{{{own.picPath}}}" alt="中国供销海外购">
+            <img src="{{{own.picPath}}}" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
         </div>
         <div class="commodity-center">
             {{#each cont}}
@@ -16,7 +16,7 @@
                                 {{{title}}}
                             </li>
                             <li class="shopIcon" v-if="tagExist('{{tagPath}}')">
-                                <img :src="item" v-for="item in tagHandle('{{tagPath}}')" alt="中国供销海外购">
+                                <img :src="item" v-for="item in tagHandle('{{tagPath}}')" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                             </li>
                             <li class="shopPrice">
                                 <span class="origin">

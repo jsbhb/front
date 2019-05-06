@@ -19,9 +19,9 @@ var edition =         '';
 var defRegion =       '/test';
 var rootPath =        '/opt/front/~Mall' + edition;
 var certPath =        '/opt/front/~Mall' + edition + '/pack/.cert';
-var mDomain =         'https://test.cncoopbuy.com';
-var pDomain =         'https://test2.cncoopbuy.com';
-var fDomain =         'https://test3.cncoopbuy.com';
+var mDomain =         'https://test.cncoopay.com';
+var pDomain =         'https://test2.cncoopay.com';
+var fDomain =         'https://test3.cncoopay.com';
 
 var privateKey  =     fs.readFileSync(certPath + '/ssl.key', 'utf8');
 var certificate =     fs.readFileSync(certPath + '/ssl.pem', 'utf8');
@@ -617,7 +617,7 @@ app.route("*")
         res.header("Content-Type", "application/json;charset=utf-8");
         res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        var isHostname = (/^testfront\.cncoopbuy\.com$/).test(req.hostname);
+        var isHostname = (/^testfront\.cncoopay\.com$/).test(req.hostname);
         isHostname || res.redirect(301, "https://" + req.hostname + req.url);
         isHostname && (/^OPTIONS$/i).test(req.method) && res.send(200);
         isHostname && !(/^OPTIONS$/i).test(req.method) && next();

@@ -34,6 +34,31 @@ define(["text!modular/template/template-searchProduct-1.mustache"], function(tem
                 });
                 return options.fn(tags);
             },
+            returnIcon: function(goodsSpecsList, options){
+                var tags = [];
+                var goodsTagList = [];
+                var list = api.jsUtil.mustache.getDepContent(goodsSpecsList, "object");
+                $.each(list||[], function(index, obj){
+                    $.each(obj.tagList||[], function(i, o){
+                        goodsTagList.push(o);
+                    })
+                });
+                $.each(goodsTagList||[], function(i, o){
+                    switch (o.tagName) {
+                        case '特卖商品': $.inArray('icon_tag1', tags) === -1 && tags.push("icon_tag1"); break;
+                        case '新品推荐': $.inArray('icon_tag2', tags) === -1 && tags.push("icon_tag2"); break;
+                    }
+                });
+                if(tags.length == 1 && tags[0] == 'icon_tag1'){
+                    return '<img src="/images/platform/page/icon_hot.png" class="remark_icon" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">';
+                }else if(tags.length == 1 && tags[0] == 'icon_tag2'){
+                    return '<img src="/images/platform/page/icon_new.png" class="remark_icon" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">';
+                }else if(tags.length == 2){
+                    return '<img src="/images/platform/page/icon_hot.png" class="remark_icon" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">';
+                }else{
+                    return '';
+                }
+            },
             returnImg: function(sortType, options){
                 var tSortType = api.jsUtil.mustache.getContent(sortType, "number");
                 if(tSortType === 3){

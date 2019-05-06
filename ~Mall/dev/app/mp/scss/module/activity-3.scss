@@ -21,6 +21,13 @@
   font-size: 32px;
   color: #333;
 }
+.activity-3-content .title a{
+  font-size: 24px;
+  color: #666;
+  margin-right: 20px;
+  float: right;
+  line-height: 80px;
+}
 .activity-3-content .goodsList-list{
   overflow-x: auto;
   overflow-y: hidden;
@@ -71,6 +78,12 @@
   display: inline-block;
   margin: auto;
 }
+.goodsList-list .content-list .list-item .shopImg img.remark_icon{
+   max-width: 35px;
+   position: absolute;
+   right: 0;
+   top: 0;
+ }
 .goodsList-list .content-list .list-item .shopName{
   height: 48px;
   font-size: 18px;

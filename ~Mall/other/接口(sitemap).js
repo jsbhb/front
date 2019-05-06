@@ -1,8 +1,8 @@
 
 //"http://localhost:8888";
-//"https://front.cncoopbuy.com";
-//"https://testfront.cncoopbuy.com";
-var host = "http://localhost:8888";
+//"https://front.cncoopay.com";
+var host = "https://testfront.cncoopay.com";
+// var host = "http://localhost:8888";
 
 /** Sitemap 创建 */
 function addSitemap(domain, region) {

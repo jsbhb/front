@@ -18,10 +18,10 @@ var proxyOptions =  {
     changeOrigin: true,
     pathRewrite: {},
     router: {
-        "m.cncoopbuy.com":          "http://139.196.74.68:8081",
-        "www.cncoopbuy.com":        "http://139.196.74.68:8082",
-        "fl.cncoopbuy.com":         "http://139.196.74.68:8083",
-        "front.cncoopbuy.com":      "http://139.196.74.68:8888"
+        "m.cncoopay.com":          "http://139.196.74.68:8081",
+        "www.cncoopay.com":        "http://139.196.74.68:8082",
+        "fl.cncoopay.com":         "http://139.196.74.68:8083",
+        "front.cncoopay.com":      "http://139.196.74.68:8888"
     }
 };
 

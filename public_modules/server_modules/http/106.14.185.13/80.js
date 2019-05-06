@@ -18,10 +18,10 @@ var proxyOptions = {
     changeOrigin: true,
     pathRewrite: {},
     router: {
-        "test2.cncoopbuy.com":      "http://106.14.185.13:8081",
-        "test.cncoopbuy.com":       "http://106.14.185.13:8082",
-        "test3.cncoopbuy.com":      "http://106.14.185.13:8083",
-        "testfront.cncoopbuy.com":  "http://106.14.185.13:8888"
+        "test2.cncoopay.com":      "http://106.14.185.13:8081",
+        "test.cncoopay.com":       "http://106.14.185.13:8082",
+        "test3.cncoopay.com":      "http://106.14.185.13:8083",
+        "testfront.cncoopay.com":  "http://106.14.185.13:8888"
     }
 };
 

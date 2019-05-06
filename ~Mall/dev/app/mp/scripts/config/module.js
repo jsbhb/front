@@ -690,6 +690,17 @@
                 methods: {
                     showPrice: function(price){
                         return price*1 > 0? '￥' + (price*1).toFixed(2): "￥0.00";
+                    },
+                    setStatistics: function(e){
+                        var data = {
+                            type: 'H5楼层-' + $(e.currentTarget).attr('title'),
+                            userId: localStorage.getItem('userId') || 0,
+                            shopId: localStorage.getItem('shopId') || 2,
+                            goodsId: $(e.currentTarget).attr('id'),
+                            logsName: 'statistics'
+                        };
+                        jsModel.send("SET_DATA_STATISTICS", data)
+                            .done(function(response){});
                     }
                 },
                 created: function(){},
@@ -959,7 +970,19 @@
             Module[role] =  new Vue({
                 el: element,
                 data: {},
-                methods: {},
+                methods: {
+                    setStatistics: function(e){
+                        var data = {
+                            type: 'H5端本周特卖',
+                            userId: localStorage.getItem('userId') || 0,
+                            shopId: localStorage.getItem('shopId') || 2,
+                            goodsId: $(e.currentTarget).attr('id'),
+                            logsName: 'statistics'
+                        };
+                        jsModel.send("SET_DATA_STATISTICS", data)
+                            .done(function(response){});
+                    }
+                },
                 created: function(){
 
                 },
@@ -972,7 +995,19 @@
             Module[role] =  new Vue({
                 el: element,
                 data: {},
-                methods: {},
+                methods: {
+                    setStatistics: function(e){
+                        var data = {
+                            type: 'H5端新品推荐',
+                            userId: localStorage.getItem('userId') || 0,
+                            shopId: localStorage.getItem('shopId') || 2,
+                            goodsId: $(e.currentTarget).attr('id'),
+                            logsName: 'statistics'
+                        };
+                        jsModel.send("SET_DATA_STATISTICS", data)
+                            .done(function(response){});
+                    }
+                },
                 created: function(){
 
                 },
@@ -1958,6 +1993,30 @@
                                     that.quantity = quantity*1 > 0? quantity*1: 1;
                                     that.setItemCont();
                                 }
+                            },
+                            returnIconSrc: function(list){
+                                var tags = [];
+                                var goodsTagList = [];
+                                $.each(list||[], function(index, obj){
+                                    $.each(obj.tagList||[], function(i, o){
+                                        goodsTagList.push(o);
+                                    });
+                                });
+                                $.each(goodsTagList||[], function(i, o){
+                                    switch (o.tagName) {
+                                        case '特卖商品': $.inArray('icon_tag1', tags) === -1 && tags.push("icon_tag1"); break;
+                                        case '新品推荐': $.inArray('icon_tag2', tags) === -1 && tags.push("icon_tag2"); break;
+                                    }
+                                });
+                                if(tags.length == 1 && tags[0] == 'icon_tag1'){
+                                    return '/images/platform/page/icon_hot.png';
+                                }else if(tags.length == 1 && tags[0] == 'icon_tag2'){
+                                    return '/images/platform/page/icon_new.png';
+                                }else if(tags.length == 2){
+                                    return '/images/platform/page/icon_hot.png';
+                                }else{
+                                    return '';
+                                }
                             }
                         },
                         beforeCreate: function(){
@@ -2505,7 +2564,7 @@
         }
         if ((/^bargainRule-1-\d+$/).test(role)){
             var message = Module['message-1-1'];
-            var miniPath = 'https://static.cncoopbuy.com:8080/wechat/appletcode/' + (shopId || 2) + '/' + (shopId || 2) + '.png';
+            var miniPath = 'https://static.cncoopay.com:8080/wechat/appletcode/' + (shopId || 2) + '/' + (shopId || 2) + '.png';
             Module[role] =  new Vue({
                 el: element,
                 data: {

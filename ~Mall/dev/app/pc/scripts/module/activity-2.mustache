@@ -3,12 +3,16 @@
         <div class="title">
             <label>本周特卖</label>
             <span>WEEK SPECIAL</span>
+            <a href="/search.html?upShelves=1&tag=特卖商品" target="_blank">
+                查看更多 >>
+            </a>
         </div>
         {{#each cont}}
             <div class="list-item">
-            <a href="{{href}}">
+            <a href="{{href}}" @click="setStatistics" id="{{goodsId}}">
                 <div class="imgBox">
-                    <img src="{{picPath}}" alt="中国供销海外购">
+                    <img src="{{picPath}}" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
+                    <img class="remark_icon" src="/images/platform/page/icon_hot.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                 </div>
                 <div class="goodsDesc">{{description}}</div>
                 <div class="goodsName">{{title}}</div>

@@ -19,10 +19,10 @@ var proxyOptions =  {
     changeOrigin:    true,
     pathRewrite:     {},
     router: {
-        "test.cncoopbuy.com":       "https://test.cncoopbuy.com:8082",
-        "test2.cncoopbuy.com":      "https://test2.cncoopbuy.com:8081",
-        "test3.cncoopbuy.com":      "https://test3.cncoopbuy.com:8083",
-        "testfront.cncoopbuy.com":  "https://testfront.cncoopbuy.com:8888"
+        "test.cncoopay.com":       "https://test.cncoopay.com:8082",
+        "test2.cncoopay.com":      "https://test2.cncoopay.com:8081",
+        "test3.cncoopay.com":      "https://test3.cncoopay.com:8083",
+        "testfront.cncoopay.com":  "https://testfront.cncoopay.com:8888"
     }
 };
 var privateKey  =   fs.readFileSync('/opt/front/~Mall/pack/.cert/ssl.key', 'utf8');

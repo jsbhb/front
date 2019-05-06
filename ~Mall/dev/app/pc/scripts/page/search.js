@@ -22,7 +22,7 @@
     var shopHeadImg =      jsData.siteInfo.shopHeadImg;
     var shopDescribe =     jsData.siteInfo.shopDescribe;
     var jumpUrl =          jsUtil.url.getParam("jumpUrl", 1);
-    var sortId =           jsUtil.url.getParam("sortId");
+    var sortId =           sessionStorage.getItem('sortId');
     var priceMin =         jsUtil.url.getParam('priceMin');
     var priceMax =         jsUtil.url.getParam('priceMax');
     var priceAreaMin =     jsUtil.url.getParam('priceAreaMin');

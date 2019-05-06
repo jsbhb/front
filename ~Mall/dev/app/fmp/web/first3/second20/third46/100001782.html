@@ -29,7 +29,7 @@
         </span>
         <div class="header-title title_shop" v-if="title_shop">
             <div class="shopImg">
-                <img :src="shopInfo.headImg" alt="中国供销海外购">
+                <img :src="shopInfo.headImg" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
             </div>
             <div class="shopText">
                 <span>{{shopInfo.name}}</span>
@@ -67,7 +67,7 @@
             <template v-if="info_shop">
                 <div class="info_shop">
                     <div class="shopImg">
-                        <img :src="shopInfo.headImg" alt="中国供销海外购">
+                        <img :src="shopInfo.headImg" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                     </div>
                     <div class="shopText">
                         <span>{{shopInfo.name}}</span>
@@ -87,17 +87,17 @@
                     <ul>
                             <li class="bannerImg_li">
                                 <a href="javascript:void(0)" target="_blank">
-                                    <img src="https://teststatic.cncoopbuy.com:8080/goods/100001782/master/images/61a659ca-530e-429d-a0ae-c80e8869a8ba.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
+                                    <img src="https://teststatic.cncoopay.com:8080/goods/100001782/master/images/61a659ca-530e-429d-a0ae-c80e8869a8ba.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
                                 </a>
                             </li>
                             <li class="bannerImg_li">
                                 <a href="javascript:void(0)" target="_blank">
-                                    <img src="https://teststatic.cncoopbuy.com:8080/goods/100001782/master/images/ea49d48e-3cbd-468e-bcf1-91d551275c81.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
+                                    <img src="https://teststatic.cncoopay.com:8080/goods/100001782/master/images/ea49d48e-3cbd-468e-bcf1-91d551275c81.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
                                 </a>
                             </li>
                             <li class="bannerImg_li">
                                 <a href="javascript:void(0)" target="_blank">
-                                    <img src="https://teststatic.cncoopbuy.com:8080/goods/100001782/master/images/a45f6795-cdc4-4689-b50b-db74aa778807.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
+                                    <img src="https://teststatic.cncoopay.com:8080/goods/100001782/master/images/a45f6795-cdc4-4689-b50b-db74aa778807.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
                                 </a>
                             </li>
                             <img class="corner_mark" :src="imgSrc(2)" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
@@ -150,7 +150,7 @@
             <div class="goodsDetail-discount close" v-if="couponList && couponList.length">
                 <ul>
                     <li :couponId="item.couponId" v-for="item in couponList">
-                        <img src="/images/platform/goods/icon_discounts.png" alt="中国供销海外购">
+                        <img src="/images/platform/goods/icon_discounts.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
                         <span>{{item.name}}</span>
                         <span class="btn btn_needReceive" v-if="item.receiveStatus != '1'">领取</span>
                         <span class="received" v-if="item.receiveStatus == '1'">已领取</span>
@@ -179,7 +179,7 @@
                     <div class="goodsDetail-alert-body-msg">
                         <div class="goodsDetail-alert-body-msg-left">
                             <a href="javascript:void(0)">
-                                        <img src="https://teststatic.cncoopbuy.com:8080/goods/100001782/master/images/61a659ca-530e-429d-a0ae-c80e8869a8ba.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
+                                        <img src="https://teststatic.cncoopay.com:8080/goods/100001782/master/images/61a659ca-530e-429d-a0ae-c80e8869a8ba.jpg" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
                                     <img class="corner_mark" :src="imgSrc(2)" alt="澳洲澳佳宝Blackmores孕妇黄金营养素180粒">
                             </a>
                         </div>
@@ -221,7 +221,7 @@
                         </div>
                     </div>
                 </div>
-                <img src="/images/platform/goods/icon_cancel.png" class="btn_cancel" alt="中国供销海外购">
+                <img src="/images/platform/goods/icon_cancel.png" class="btn_cancel" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
             </div>
             <div class="goodsDetail-alert-bg" v-show="alertBgShow"></div>
         </div>
@@ -309,7 +309,7 @@
         <div class="searchHistory-cache" v-if="historyCache && historyCache.length">
             <h1>历史记录</h1>
             <span class="icon_delete">
-               <img src="/images/platform/header/i_delete.png" alt="中国供销海外购">
+               <img src="/images/platform/header/i_delete.png" alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款">
             </span>
             <ul>
                 <li :firstId="item.firstId" :secondId="item.secondId" :thirdId="item.thirdId" v-for="(item,index) in historyCache" v-if="index < 9">{{item.goodsName}}</li>

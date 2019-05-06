@@ -12,7 +12,7 @@ Disallow: /shopCart
 Disallow: /shoppingCart
 Disallow: /orderDetail
 Disallow: /orderSure
-Sitemap: http://m.cncoopbuy.com/sitemap/1.xml
+Sitemap: http://m.cncoopay.com/sitemap/1.xml
 
 User-Agent: Googlebot
 Disallow: /*.cfg$
@@ -28,7 +28,7 @@ Disallow: /shopCart
 Disallow: /shoppingCart
 Disallow: /orderDetail
 Disallow: /orderSure
-Sitemap: http://m.cncoopbuy.com/sitemap/1.xml
+Sitemap: http://m.cncoopay.com/sitemap/1.xml
 
 User-agent: Bingbot
 Disallow: /*.cfg$
@@ -44,7 +44,7 @@ Disallow: /shopCart
 Disallow: /shoppingCart
 Disallow: /orderDetail
 Disallow: /orderSure
-Sitemap: http://m.cncoopbuy.com/sitemap/1.xml
+Sitemap: http://m.cncoopay.com/sitemap/1.xml
 
 User-Agent: 360Spider
 Disallow: /.cfg$
@@ -60,7 +60,7 @@ Disallow: /shopCart
 Disallow: /shoppingCart
 Disallow: /orderDetail
 Disallow: /orderSure
-Sitemap: http://m.cncoopbuy.com/sitemap/1.xml
+Sitemap: http://m.cncoopay.com/sitemap/1.xml
 
 User-Agent: Sogouspider
 Disallow: /*.cfg$
@@ -76,7 +76,7 @@ Disallow: /shopCart
 Disallow: /shoppingCart
 Disallow: /orderDetail
 Disallow: /orderSure
-Sitemap: http://m.cncoopbuy.com/sitemap/1.xml
+Sitemap: http://m.cncoopay.com/sitemap/1.xml
 
 User-Agent: *
 Disallow: /*.cfg$
@@ -93,4 +93,4 @@ Disallow: /shopCart
 Disallow: /shoppingCart
 Disallow: /orderDetail
 Disallow: /orderSure
-Sitemap: http://m.cncoopbuy.com/sitemap/1.xml
+Sitemap: http://m.cncoopay.com/sitemap/1.xml

@@ -22,8 +22,11 @@
                                     <img src="/images/platform/default_img.jpg" data-normal="hide" alt="{{customGoodsName}}">
                                 {{/goodsFileList}}
                                 {{#isDef type}}
-                                    <img class="corner_mark" :src="imgSrc({{type}})" alt="中国供销海外购">
+                                    <img class="corner_mark" :src="imgSrc({{type}})" alt="{{customGoodsName}}">
                                 {{/isDef}}
+                                <template v-if="{{cont.goodsSpecsList}}">
+                                    <img class="remark_icon" :src="returnIconSrc({{cont.goodsSpecsList}})" alt="{{customGoodsName}}">
+                                </template>
                                 <div id="mask"></div>
                             </div>
                             <div class="glassList">
@@ -54,12 +57,12 @@
                     <div class="goodsDetail-mainMsg-middle">
                         <ul>
                             <li class="title">
-                                <h1>
+                                <h2>
                                     <span class="tagBox" v-if="itemContTagList && itemContTagList.length > 0">
                                         <span class="icon" :class="item" v-for="item in getTags(itemContTagList)"></span>
                                     </span>
                                     {{customGoodsName}}
-                                </h1>
+                                </h2>
                             </li>
                             <li class="description"><p>{{description}}</p></li>
                             <li class="tagInfo" v-if="itemContTag && itemContTag.preSaleName">
@@ -135,7 +138,7 @@
             <div region="advert">
                 <div class="goodsDetail-advert-content">
                     <template v-if="advertData && advertData.length > 0">
-                        <h1 class="goodsDetail-advert-title">向你推荐</h1>
+                        <h2 class="goodsDetail-advert-title">向你推荐</h2>
                         <div class="goodsDetail-advert-item" v-for="item in advertData">
                             <template v-if="item">
                                 <a :href="item.href">
@@ -152,16 +155,16 @@
                 </div>
             </div>
             <div region="showMsg">
-                <img src='/images/platform/notice.jpg' alt="中国供销海外购" v-if='imgType({{type}})'/>
+                <img src='/images/platform/notice.jpg' alt="中国供销海外购-正品保障、全网低价、跨境商品、海淘、网红爆品、明星同款" v-if='imgType({{type}})'/>
                 <div class="showMsgContent">
-                    {{#toSplit detailPath ";"}}
-                        {{#isFormat . 'image'}}
-                            <img src='http://139.196.74.68:8080/images/orignal/detail/{{.}}' alt="{{customGoodsName}}">
-                        {{/isFormat}}
-                    {{/toSplit}}
+                    <!--{{#toSplit detailPath ";"}}-->
+                        <!--{{#isFormat . 'image'}}-->
+                            <!--<img src='http://139.196.74.68:8080/images/orignal/detail/{{.}}' alt="{{customGoodsName}}">-->
+                        <!--{{/isFormat}}-->
+                    <!--{{/toSplit}}-->
                 </div>
                 <div class="userBook">
-                    <h1 class="center">消费者告知书</h1>
+                    <h2 class="center">消费者告知书</h2>
                     <p>
                         <span class="nickName">尊敬的客户您好：</span>
                         <span class="header">

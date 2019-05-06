@@ -1,7 +1,7 @@
 
 //"http://localhost:8888";
-//"https://front.cncoopbuy.com";
-//"https://testfront.cncoopbuy.com";
+//"https://front.cncoopay.com";
+//"https://testfront.cncoopay.com";
 var host = "http://localhost:8888";
 
 
